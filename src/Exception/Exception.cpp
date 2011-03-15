@@ -17,7 +17,7 @@
 	along with libsockets.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "Exception.h"
+#include <Exception/Exception.h>
 
 #include <string.h>
 #include <stdio.h>

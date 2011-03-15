@@ -17,7 +17,7 @@
 	along with libsockets.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "SocketServerSSL.h"
+#include <Socket/SocketServerSSL.h>
 
 
 SocketServerSSL::SocketServerSSL(	int port,

@@ -17,7 +17,7 @@
 	along with libsockets.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "SecurityServer.h"
+#include <Security/SecurityServer.h>
 
 SecurityServer::SecurityServer(int port) :
 	Security(),

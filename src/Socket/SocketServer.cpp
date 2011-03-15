@@ -19,11 +19,11 @@
 
 //#define DEBUG_WANTED
 
-#include "SocketServer.h"
-#include "../Exception/Exception.h"
-#include "../Security/SecurityServer.h"
-#include "../Security/SecurityServerSSL.h"
-#include "../Security/SecurityServerUnsafe.h"
+#include <Socket/SocketServer.h>
+#include <Exception/Exception.h>
+#include <Security/SecurityServer.h>
+#include <Security/SecurityServerSSL.h>
+#include <Security/SecurityServerUnsafe.h>
 
 #include <assert.h>
 #include <arpa/inet.h>

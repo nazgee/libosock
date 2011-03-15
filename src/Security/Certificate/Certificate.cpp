@@ -19,9 +19,9 @@
 
 #include <assert.h>
 
-#include "Certificate.h"
-#include "../../Exception/Exception.h"
-#include "../../defines.h"
+#include <Security/Certificate/Certificate.h>
+#include <Exception/Exception.h>
+#include <defines.h>
 
 Certificate::Certificate(std::string certFile, SSL_CTX* ctx) :
 	itsCTX(ctx),

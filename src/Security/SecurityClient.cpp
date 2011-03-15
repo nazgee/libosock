@@ -17,7 +17,7 @@
 	along with libsockets.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "SecurityClient.h"
+#include <Security/SecurityClient.h>
 
 SecurityClient::SecurityClient(Address& serverAddress) :
 	Security(),

@@ -17,8 +17,8 @@
 	along with libsockets.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "SocketServerUnsafe.h"
-#include "../Security/SecurityServerUnsafe.h"
+#include <Socket/SocketServerUnsafe.h>
+#include <Security/SecurityServerUnsafe.h>
 
 SocketServerUnsafe::SocketServerUnsafe(	int port, serviceType type) :
 	SocketServer( new SecurityServerUnsafe(port), type)

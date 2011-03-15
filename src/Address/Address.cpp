@@ -17,8 +17,8 @@
 	along with libsockets.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "Address.h"
-#include "../Exception/Exception.h"
+#include <Address/Address.h>
+#include <Exception/Exception.h>
 
 #include <string.h>
 #include <stdlib.h>

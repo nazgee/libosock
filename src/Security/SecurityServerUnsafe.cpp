@@ -17,9 +17,8 @@
 	along with libsockets.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "SecurityServer.h"
-#include "SecurityServerUnsafe.h"
-#include "../Exception/Exception.h"
+#include <Security/SecurityServerUnsafe.h>
+#include <Exception/Exception.h>
 
 SecurityServerUnsafe::SecurityServerUnsafe(int listenPort) :
 	SecurityServer(listenPort)

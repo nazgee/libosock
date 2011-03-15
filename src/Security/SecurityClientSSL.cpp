@@ -17,12 +17,13 @@
 	along with libsockets.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "SecurityClientSSL.h"
-#include "../Exception/Exception.h"
+#include <Security/SecurityClientSSL.h>
+#include <Exception/Exception.h>
 
-#include "Certificate/Certificate.h"
-#include "Key/Key.h"
-#include "Trust/Trust.h"
+#include <Security/Certificate/Certificate.h>
+#include <Security/Key/Key.h>
+#include <Security/Trust/Trust.h>
+
 
 SecurityClientSSL::SecurityClientSSL(	Address& Address,
 										std::string certFile,

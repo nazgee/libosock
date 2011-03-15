@@ -17,8 +17,8 @@
 	along with libsockets.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "../Security/SecurityClientSSL.h"
-#include "SocketClientSSL.h"
+#include <Security/SecurityClientSSL.h>
+#include <Socket/SocketClientSSL.h>
 
 SocketClientSSL::SocketClientSSL(	Address& serverAddress,
 									std::string certFile,

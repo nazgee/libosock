@@ -19,8 +19,8 @@
 
 #define DEBUG_WANTED
 
-#include "Trust.h"
-#include "../../Exception/Exception.h"
+#include <Security/Trust/Trust.h>
+#include <Exception/Exception.h>
 
 Trust::Trust(std::string trustFile, trustMode mode, SSL_CTX* ctx) :
 	itsCTX(ctx),

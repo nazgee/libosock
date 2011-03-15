@@ -17,8 +17,9 @@
 	along with libsockets.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "StringMessage.h"
-#include "../defines.h"
+#include <Message/StringMessage.h>
+#include <defines.h>
+
 #include <string.h>
 
 StringMessage::StringMessage(unsigned short dataLen)

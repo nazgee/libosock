@@ -17,8 +17,8 @@
 	along with libsockets.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "Security.h"
-#include "../defines.h"
+#include <Security/Security.h>
+#include <defines.h>
 
 #include <assert.h>
 

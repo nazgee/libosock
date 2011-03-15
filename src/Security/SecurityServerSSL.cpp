@@ -17,12 +17,12 @@
 	along with libsockets.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "SecurityServerSSL.h"
-#include "../Exception/Exception.h"
+#include <Security/SecurityServerSSL.h>
+#include <Exception/Exception.h>
 
-#include "Certificate/Certificate.h"
-#include "Key/Key.h"
-#include "Trust/Trust.h"
+#include <Security/Certificate/Certificate.h>
+#include <Security/Key/Key.h>
+#include <Security/Trust/Trust.h>
 
 SecurityServerSSL::SecurityServerSSL(int listenPort,
 		std::string certFile,

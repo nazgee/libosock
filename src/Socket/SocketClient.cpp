@@ -17,10 +17,10 @@
 	along with libsockets.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "SocketClient.h"
-#include "../Exception/Exception.h"
-#include "../Security/SecurityClientSSL.h"
-#include "../Security/SecurityClientUnsafe.h"
+#include <Socket/SocketClient.h>
+#include <Exception/Exception.h>
+#include <Security/SecurityClientSSL.h>
+#include <Security/SecurityClientUnsafe.h>
 
 #include <netdb.h>
 

@@ -17,9 +17,9 @@
 	along with libsockets.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "Key.h"
-#include "../../defines.h"
-#include "../../Exception/Exception.h"
+#include <Security/Key/Key.h>
+#include <defines.h>
+#include <Exception/Exception.h>
 
 Key::Key(std::string keyFile, SSL_CTX* ctx) :
 	itsCTX(ctx),
