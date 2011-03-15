@@ -26,8 +26,7 @@ SocketClientSSL::SocketClientSSL(	Address& serverAddress,
 									std::string trustFile,
 									std::string password,
 									SecurityClientSSL::securityMode method) :
-	SocketClient(serverAddress,
-			new SecurityClientSSL(serverAddress, certFile, keyFile, trustFile, password, method))
+	SocketClient(new SecurityClientSSL(serverAddress, certFile, keyFile, trustFile, password, method))
 {
 	DBG_CONSTRUCTOR;
 }

@@ -20,7 +20,7 @@
 #include "SocketClientUnsafe.h"
 
 SocketClientUnsafe::SocketClientUnsafe(Address& serverAddress) :
-	SocketClient(serverAddress,	new SecurityClientUnsafe(serverAddress))
+	SocketClient(new SecurityClientUnsafe(serverAddress))
 {
 	DBG_CONSTRUCTOR;
 }

@@ -30,7 +30,7 @@ protected:
 		SecurityClient* itsSecurity;
 
 public:
-	SocketClient(Address& serverAddress,  SecurityClient* security);
+	SocketClient(SecurityClient* security);
 	virtual ~SocketClient(void);
 };
 

@@ -24,7 +24,7 @@
 
 #include <netdb.h>
 
-SocketClient::SocketClient(Address& serverAddress, SecurityClient* security):
+SocketClient::SocketClient(SecurityClient* security):
 	Socket((BIO*) NULL), itsSecurity(security)
 {
 
