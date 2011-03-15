@@ -87,6 +87,9 @@ Address::Address(BIO* bio) :
 	itsBuffer(NULL), itsHostname(NULL),
 	itsPortname(NULL)
 {
+	if (bio == NULL)
+		return;
+
 	//translate socket to "host:port" string
 	int sock = BIO_get_fd(bio, NULL);
 	struct sockaddr peer;
@@ -214,7 +217,11 @@ std::string Address::GetHostAndPort(bool rebuild)
 
 std::ostream& operator <<(std::ostream &os, const Address *obj)
 {
-	os << (void*) obj << " " << obj->itsHostname << ":" << obj->itsPort;
+	if (obj->itsAddrInfo == NULL)
+		os << (void*) obj << "<undefined address>";
+	else
+		os << (void*) obj << " " << obj->itsHostname << ":" << obj->itsPort;
+
 	return os;
 }
 

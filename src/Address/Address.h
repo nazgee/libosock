@@ -47,7 +47,7 @@ private:
 public:
 	//TODO create default constructor- in some situations we might need a default Address, to which other instance Address will be assigned later
 	Address(const char* Name);
-	Address(BIO* bio);
+	Address(BIO* bio = NULL);
 	Address(const Address& other);
 	Address& operator=(const Address& other);
 	virtual ~Address(void);
