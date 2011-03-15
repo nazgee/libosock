@@ -23,15 +23,14 @@
 #include "Socket.h"
 #include "../Security/SecurityClient.h"
 
-class SecurityClient;
 class SocketClient: public Socket
 {
-protected:
-		SecurityClient* itsSecurity;
-
 public:
 	SocketClient(SecurityClient* security);
 	virtual ~SocketClient(void);
+
+private:
+	SecurityClient* itsSecurityClient;
 };
 
 #endif /* SOCKETCLIENT_H_ */

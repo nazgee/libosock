@@ -30,11 +30,8 @@
 #include <boost/scoped_ptr.hpp>
 
 SocketServer::SocketServer(SecurityServer* security, serviceType type) :
-		Socket((BIO*) NULL), itsSecurity(security), itsType(type)
+		Socket(security), itsType(type), itsSecurityServer(security)
 {
-	//TODO is it a good place for this?
-	SetBIO(itsSecurity->GetBIO());
-
 	/* first call of BIO_do_accpept does not really accept a connection-
 	 * instead it does some initial-setup only */
 	if (BIO_do_accept(GetBIO()) <= 0) {
@@ -47,13 +44,13 @@ SocketServer::SocketServer(SecurityServer* security, serviceType type) :
 SocketServer::~SocketServer(void)
 {
 	DBG_DESTRUCTOR;
+	delete itsSecurity;
 }
 
 void SocketServer::Accept(clientsHandler handler)
 {
 	BIO* client = AcceptIncoming();
 	DBG << "serving new client ..." << std::endl;
-	;
 
 	boost::scoped_ptr<Socket> socket(new Socket(client));
 	switch (itsType) {
@@ -107,7 +104,7 @@ BIO* SocketServer::AcceptIncoming()
 			throw_SSL("BIO_pop failed");
 		}
 
-		if (itsSecurity->DoHandshake(out)) {
+		if (itsSecurityServer->DoHandshake(out)) {
 			return out;
 		}
 

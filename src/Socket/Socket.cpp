@@ -30,11 +30,23 @@
 //TODO: create it in a more intelligent manner, maybe in a dedicated file?
 NullStream nullstream;
 
-Socket::Socket(BIO * bio) :
+Socket::Socket(BIO* bio) :
 	itsSD(-1),
-	itsBIO(NULL)
+	itsBIO(NULL),
+	itsSecurity(NULL)
 {
 	SetBIO(bio);
+
+	DBG_CONSTRUCTOR;
+}
+
+Socket::Socket(Security* security) :
+	itsSD(-1),
+	itsBIO(NULL),
+	itsSecurity(security)
+{
+	assert(itsSecurity != NULL);
+	SetBIO(itsSecurity->GetBIO());
 
 	DBG_CONSTRUCTOR;
 }
@@ -58,13 +70,13 @@ Socket::~Socket(void)
 	BIO_vfree(itsBIO);
 }
 
-void Socket::SetBIO(BIO * bio)
+void Socket::SetBIO(BIO* bio)
 {
-	assert(itsBIO == NULL);
-
 	itsBIO = bio;
-	if (itsBIO)
+	if (itsBIO != NULL)
 		itsSD = BIO_get_fd(itsBIO, NULL);
+	else
+		itsSD = -1;
 }
 
 int  Socket::Send(Message& Msg, int Options) const

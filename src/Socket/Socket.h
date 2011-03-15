@@ -36,15 +36,17 @@ class Socket
 {
 private:
 	int itsSD;
-	BIO * itsBIO;
+	BIO* itsBIO;
+	void SetBIO(BIO* bio);
 
 protected:
-	void SetBIO(BIO * bio);
+	Security* itsSecurity;
 	BIO* GetBIO() { return itsBIO; }
 	int GetSD() { return itsSD; }
 
 public:
-	Socket(BIO * bio = NULL);
+	Socket(BIO* bio);
+	Socket(Security* security);
 	Socket(Socket& sock);
 	virtual ~Socket(void);
 

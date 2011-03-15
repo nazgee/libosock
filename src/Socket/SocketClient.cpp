@@ -25,18 +25,15 @@
 #include <netdb.h>
 
 SocketClient::SocketClient(SecurityClient* security):
-	Socket((BIO*) NULL), itsSecurity(security)
+	Socket(security),
+	itsSecurityClient(security)
 {
-
-	//TODO consider moving it somewhere else
-	SetBIO( itsSecurity->GetBIO() );
-
 	//TODO: maybe move connect out of here, and call it explicitly as one of methods?
 	if(BIO_do_connect(GetBIO()) <= 0){
 		throw_SSL("BIO_do_connect failed");
 	}
 
-	if ( itsSecurity->IsServerVerified() ) {
+	if ( itsSecurityClient->IsServerVerified() ) {
 		WRN << "server verification failed" <<  std::endl;
 	} else {
 		DBG << "server verification succeeded" << std::endl;
@@ -48,4 +45,5 @@ SocketClient::SocketClient(SecurityClient* security):
 SocketClient::~SocketClient(void)
 {
 	DBG_DESTRUCTOR;
+	delete itsSecurity;
 }

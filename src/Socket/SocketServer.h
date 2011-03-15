@@ -25,9 +25,6 @@
 
 class SocketServer: public Socket
 {
-protected:
-	SecurityServer* itsSecurity;
-
 public:
 	typedef enum { serviceCallback, serviceProcess, serviceThread } serviceType;
 	typedef void (*clientsHandler)(const Socket& Client);
@@ -42,6 +39,7 @@ public:
 
 private:
 	serviceType itsType;
+	SecurityServer* itsSecurityServer;
 
 	BIO* AcceptIncoming();
 };
