@@ -17,6 +17,8 @@
 	along with libsockets.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#define DEBUG_WANTED
+
 #include "Socket.h"
 #include "../defines.h"
 #include "../Exception/Exception.h"
@@ -67,7 +69,8 @@ Socket::Socket(Socket& sock)
 Socket::~Socket(void)
 {
 	DBG_DESTRUCTOR;
-	BIO_vfree(itsBIO);
+	//whole BIO chain has to be fred, in order to prevent memoryleak
+	BIO_free_all(itsBIO);
 }
 
 void Socket::SetBIO(BIO* bio)
