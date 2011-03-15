@@ -27,8 +27,7 @@ SocketServerSSL::SocketServerSSL(	int port,
 						std::string password,
 						SecurityServerSSL::securityMode method,
 						serviceType type) :
-	SocketServer(port,
-			new SecurityServerSSL(port, certFile, keyFile, trustFile, password, method),
+	SocketServer( new SecurityServerSSL(port, certFile, keyFile, trustFile, password, method),
 			type)
 {
 	DBG_CONSTRUCTOR;

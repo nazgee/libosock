@@ -32,7 +32,7 @@ public:
 	typedef enum { serviceCallback, serviceProcess, serviceThread } serviceType;
 	typedef void (*clientsHandler)(const Socket& Client);
 
-	SocketServer(int port, SecurityServer* security, serviceType type = serviceCallback);
+	SocketServer(SecurityServer* security, serviceType type = serviceCallback);
 	virtual ~SocketServer(void);
 
 	//! Accept client connection and call \a handler to deal with it

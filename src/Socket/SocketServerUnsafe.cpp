@@ -21,7 +21,7 @@
 #include "../Security/SecurityServerUnsafe.h"
 
 SocketServerUnsafe::SocketServerUnsafe(	int port, serviceType type) :
-	SocketServer(port, new SecurityServerUnsafe(port), type)
+	SocketServer( new SecurityServerUnsafe(port), type)
 {
 	DBG_CONSTRUCTOR;
 }

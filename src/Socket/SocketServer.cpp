@@ -29,7 +29,7 @@
 #include <arpa/inet.h>
 #include <boost/scoped_ptr.hpp>
 
-SocketServer::SocketServer(int port, SecurityServer* security, serviceType type) :
+SocketServer::SocketServer(SecurityServer* security, serviceType type) :
 		Socket((BIO*) NULL), itsSecurity(security), itsType(type)
 {
 	//TODO is it a good place for this?
