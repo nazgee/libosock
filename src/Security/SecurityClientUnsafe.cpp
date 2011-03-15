@@ -20,7 +20,7 @@
 #include "../Exception/Exception.h"
 
 SecurityClientUnsafe::SecurityClientUnsafe(Address& serverAddress) :
-	SecurityClient(serverAddress, securityNone)
+	SecurityClient(serverAddress)
 {
 	DBG_CONSTRUCTOR;
 }

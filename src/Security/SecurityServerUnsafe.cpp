@@ -22,7 +22,7 @@
 #include "../Exception/Exception.h"
 
 SecurityServerUnsafe::SecurityServerUnsafe(int listenPort) :
-	SecurityServer(listenPort, securityNone)
+	SecurityServer(listenPort)
 {
 	DBG_CONSTRUCTOR;
 }

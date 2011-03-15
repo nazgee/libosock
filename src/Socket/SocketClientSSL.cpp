@@ -25,7 +25,7 @@ SocketClientSSL::SocketClientSSL(	Address& serverAddress,
 									std::string keyFile,
 									std::string trustFile,
 									std::string password,
-									securityMode method) :
+									SecurityClientSSL::securityMode method) :
 	SocketClient(serverAddress,
 			new SecurityClientSSL(serverAddress, certFile, keyFile, trustFile, password, method))
 {

@@ -30,7 +30,6 @@ class SocketClient: public Socket
 		SecurityClient* itsSecurity;
 
 public:
-	typedef Security::securityMode securityMode;
 	SocketClient(Address& serverAddress,  SecurityClient* security);
 	virtual ~SocketClient(void);
 };

@@ -25,7 +25,7 @@
 class SecurityServer: public Security
 {
 public:
-	SecurityServer(int port, securityMode mode);
+	SecurityServer(int port);
 	virtual ~SecurityServer();
 	//! Attempts a handshake on a given BIO, returns true on success
 	virtual bool DoHandshake(BIO* bioToShake) = 0;

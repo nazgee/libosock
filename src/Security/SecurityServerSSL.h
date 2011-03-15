@@ -28,6 +28,13 @@ class Trust;
 class SecurityServerSSL: public SecurityServer
 {
 public:
+	typedef enum
+	{
+		securityTLSv1,
+		securitySSLv2,
+		securitySSLv3,
+		securitySSLv23
+	} securityMode;
 
 	SecurityServerSSL(	int listenPort,
 						std::string certFile = "",
@@ -45,6 +52,7 @@ protected:
 	SSL_CTX* itsCTX;
 	SSL* itsSSL;
 	std::string itsPassword;	//TODO move password to Certificate/Key class
+	securityMode itsSecurityMode;
 	Certificate* itsCertificate;
 	Key* itsKey;
 	Trust* itsTrust;

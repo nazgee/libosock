@@ -19,8 +19,8 @@
 
 #include "SecurityClient.h"
 
-SecurityClient::SecurityClient(Address& serverAddress, securityMode mode) :
-	Security(mode),
+SecurityClient::SecurityClient(Address& serverAddress) :
+	Security(),
 	itsSrverAddress(serverAddress)
 {
 

@@ -21,6 +21,7 @@
 #define SOCKETCLIENTSSL_H_
 
 #include "SocketClient.h"
+#include "../Security/SecurityClientSSL.h"
 
 class SocketClientSSL: public SocketClient
 {
@@ -30,7 +31,7 @@ public:
 					std::string keyFile,
 					std::string trustFile,
 					std::string password,
-					securityMode method);
+					SecurityClientSSL::securityMode method);
 	virtual ~SocketClientSSL();
 };
 

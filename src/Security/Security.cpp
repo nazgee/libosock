@@ -24,8 +24,8 @@
 
 bool Security::libsslReady = false;
 
-Security::Security(securityMode security) :
-	itsBIO(NULL), itsSecurityMode(security)
+Security::Security() :
+	itsBIO(NULL)
 {
 	DBG_CONSTRUCTOR;
 }
@@ -51,11 +51,6 @@ SSL* Security::GetSSL()
 	SSL* ssl = NULL;
 	BIO_get_ssl(GetBIO(), &ssl);
 	return ssl;
-}
-
-bool Security::isSafe()
-{
-	return (itsSecurityMode != securityNone);
 }
 
 void Security::libsslInit()

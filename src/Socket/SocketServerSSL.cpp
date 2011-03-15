@@ -18,14 +18,14 @@
 */
 
 #include "SocketServerSSL.h"
-#include "../Security/SecurityServerSSL.h"
+
 
 SocketServerSSL::SocketServerSSL(	int port,
 						std::string certFile,
 						std::string keyFile,
 						std::string trustFile,
 						std::string password,
-						securityMode method,
+						SecurityServerSSL::securityMode method,
 						serviceType type) :
 	SocketServer(port,
 			new SecurityServerSSL(port, certFile, keyFile, trustFile, password, method),

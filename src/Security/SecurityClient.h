@@ -26,7 +26,7 @@ class SecurityClient: public Security
 {
 public:
 
-	SecurityClient(Address& serverAddress, securityMode mode);
+	SecurityClient(Address& serverAddress);
 	virtual ~SecurityClient();
 
 protected:

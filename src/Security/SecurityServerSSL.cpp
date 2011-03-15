@@ -30,7 +30,8 @@ SecurityServerSSL::SecurityServerSSL(int listenPort,
 		std::string trustFile,
 		std::string password,
 		securityMode method) :
-	SecurityServer(listenPort, method),
+	SecurityServer(listenPort),
+	itsSecurityMode(method),
 	itsCertificate(new Certificate()), itsKey(new Key()), itsTrust(new Trust())
 {
 	SetCertificate(certFile);

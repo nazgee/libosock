@@ -21,6 +21,7 @@
 #define SOCKETSERVERSSL_H_
 
 #include "SocketServer.h"
+#include "../Security/SecurityServerSSL.h"
 
 class SocketServerSSL: public SocketServer
 {
@@ -30,7 +31,7 @@ public:
 				std::string keyFile,
 				std::string trustFile,
 				std::string password,
-				securityMode method = Security::securitySSLv2,
+				SecurityServerSSL::securityMode method = SecurityServerSSL::securitySSLv2,
 				serviceType type = serviceCallback);
 	virtual ~SocketServerSSL();
 };

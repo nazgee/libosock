@@ -29,7 +29,6 @@ class SocketServer: public Socket
 		SecurityServer* itsSecurity;
 
 	public:
-		typedef Security::securityMode securityMode;
 		typedef enum { serviceCallback, serviceProcess, serviceThread } serviceType;
 		typedef void (*clientsHandler)(const Socket& Client);
 

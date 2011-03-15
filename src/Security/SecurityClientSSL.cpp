@@ -30,7 +30,8 @@ SecurityClientSSL::SecurityClientSSL(	Address& Address,
 										std::string trustFile,
 										std::string password,
 										securityMode method) :
-	SecurityClient(Address, method),
+	SecurityClient(Address),
+	itsSecurityMode(method),
 	itsCertificate(new Certificate()), itsKey(new Key()), itsTrust(new Trust())
 {
 	SetCertificate(certFile);

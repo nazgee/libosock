@@ -19,8 +19,8 @@
 
 #include "SecurityServer.h"
 
-SecurityServer::SecurityServer(int port, securityMode mode) :
-	Security(mode),
+SecurityServer::SecurityServer(int port) :
+	Security(),
 	itsListenPort(port)
 {
 

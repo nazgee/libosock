@@ -28,6 +28,14 @@ class Trust;
 class SecurityClientSSL: public SecurityClient
 {
 public:
+	typedef enum
+	{
+		securityTLSv1,
+		securitySSLv2,
+		securitySSLv3,
+		securitySSLv23
+	} securityMode;
+
 	SecurityClientSSL(	Address& Address,
 						std::string certFile,
 						std::string keyFile,
@@ -44,6 +52,7 @@ protected:
 	SSL_CTX* itsCTX;
 	SSL* itsSSL;
 	std::string itsPassword;
+	securityMode itsSecurityMode;
 	Certificate* itsCertificate;
 	Key* itsKey;
 	Trust* itsTrust;

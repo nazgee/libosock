@@ -29,26 +29,15 @@
 class Security
 {
 public:
-	typedef enum
-	{
-		securityTLSv1,
-		securitySSLv2,
-		securitySSLv3,
-		securitySSLv23,
-		securityNone
-	} securityMode;
-
-	Security(securityMode security);
+	Security();
 	virtual ~Security();
 
 	BIO* GetBIO();
 	SSL* GetSSL();
-	bool isSafe();
 
 protected:
 	static bool libsslReady;
 	BIO* itsBIO;
-	securityMode itsSecurityMode;
 
 	//!Populates new BIO with appropriate security
 	virtual BIO* PopulateBIO() = 0;
