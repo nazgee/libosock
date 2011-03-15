@@ -25,7 +25,7 @@
 
 class Certificate
 {
-protected:
+private:
 	SSL_CTX* itsCTX;
 	std::string itsCertFile;
 public:

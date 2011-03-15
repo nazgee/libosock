@@ -26,7 +26,7 @@
 class SecurityClient;
 class SocketClient: public Socket
 {
-	protected:
+protected:
 		SecurityClient* itsSecurity;
 
 public:

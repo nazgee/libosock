@@ -43,7 +43,6 @@ public:
 		DBG_CONSTRUCTOR;
 	}
 
-public:
 	int GetError(void) const
 	{
 		return itsError;

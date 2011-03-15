@@ -29,13 +29,8 @@ public:
 	//typedef int (*verifyCallback)(int, X509_STORE_CTX *);
 	typedef enum { 	trustIgnore = SSL_VERIFY_NONE,
 					trustRequire = SSL_VERIFY_PEER } trustMode;
-protected:
-	SSL_CTX* itsCTX;
-	trustMode itsMode;
-	std::string itsTrutsFile;
 
-public:
-	Trust(std::string trustFile = "", trustMode trustMode = trustIgnore, SSL_CTX* ctx = NULL);
+					Trust(std::string trustFile = "", trustMode trustMode = trustIgnore, SSL_CTX* ctx = NULL);
 	virtual ~Trust();
 
 	void SetVerify(trustMode trustMode);
@@ -43,6 +38,11 @@ public:
 	void SetContext(SSL_CTX* ctx);
 
 	void Apply();
+
+private:
+	SSL_CTX* itsCTX;
+	trustMode itsMode;
+	std::string itsTrutsFile;
 };
 
 #endif /* TRUST_H_ */

@@ -46,20 +46,13 @@ protected:
 public:
 	Socket(BIO * bio = NULL);
 	Socket(Socket& sock);
-
-public:
 	virtual ~Socket(void);
 
-public:
 	int Send(Message& Msg, int Options = 0) const;
 	int Receive(Message& Msg, int Options = 0) const;
 
-public:
-
 	friend std::ostream& operator <<(std::ostream &os, const Socket &obj);
 	friend std::ostream& operator <<(std::ostream &os, const Socket *obj);
-
-private:
 };
 
 #endif /* SOCKET_H_ */

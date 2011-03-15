@@ -27,7 +27,6 @@ public:
 	{
 	}
 
-public:
 	virtual char* Unpack(int& Bytes) const=0;
 	virtual bool Pack(char* data, int bytesNumber, int chunkNumber)=0;
 };

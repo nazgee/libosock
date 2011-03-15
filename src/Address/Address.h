@@ -52,7 +52,6 @@ public:
 	Address& operator=(const Address& other);
 	virtual ~Address(void);
 
-public:
 	uint16_t GetPortFormatNet(void) const;
 	uint16_t GetPortFormatHost(void) const;
 	struct sockaddr* GetAddr(void) const;

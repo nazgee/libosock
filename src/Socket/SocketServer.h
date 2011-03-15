@@ -25,25 +25,25 @@
 
 class SocketServer: public Socket
 {
-	protected:
-		SecurityServer* itsSecurity;
+protected:
+	SecurityServer* itsSecurity;
 
-	public:
-		typedef enum { serviceCallback, serviceProcess, serviceThread } serviceType;
-		typedef void (*clientsHandler)(const Socket& Client);
+public:
+	typedef enum { serviceCallback, serviceProcess, serviceThread } serviceType;
+	typedef void (*clientsHandler)(const Socket& Client);
 
-		SocketServer(int port, SecurityServer* security, serviceType type = serviceCallback);
-		virtual ~SocketServer(void);
+	SocketServer(int port, SecurityServer* security, serviceType type = serviceCallback);
+	virtual ~SocketServer(void);
 
-		//! Accept client connection and call \a handler to deal with it
-		void Accept(clientsHandler handler);
-		//! Accept client connection and call \a handler to deal with it; peer adress is stored in \a client
-		void Accept(Address& client, clientsHandler handler);
+	//! Accept client connection and call \a handler to deal with it
+	void Accept(clientsHandler handler);
+	//! Accept client connection and call \a handler to deal with it; peer adress is stored in \a client
+	void Accept(Address& client, clientsHandler handler);
 
-	private:
-		serviceType itsType;
+private:
+	serviceType itsType;
 
-		BIO* AcceptIncoming();
+	BIO* AcceptIncoming();
 };
 
 

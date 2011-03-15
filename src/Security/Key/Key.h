@@ -25,6 +25,7 @@
 
 class Key
 {
+private:
 	SSL_CTX* itsCTX;
 	std::string itsKeyFile;
 public:
