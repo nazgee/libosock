@@ -84,6 +84,12 @@ int StringMessage::GetFreeData(void) const
 	return itsFreeSize;
 }
 
+StringMessage& StringMessage::operator =(const char* data)
+{
+	SetData(data);
+	return *this;
+}
+
 void StringMessage::SetData(const char* data, int dataLen)
 {
 	dataLen = strnlen(data, dataLen);

@@ -37,6 +37,8 @@ public:
 	void SetDataSize(int dataLen);
 	int GetFreeData(void) const;
 
+	StringMessage& operator =(const char* data);
+
 private:
 	//! Holds content of text-message
 	char *itsData;
