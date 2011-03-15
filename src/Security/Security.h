@@ -29,7 +29,7 @@
 class Security
 {
 public:
-	Security();
+	Security(BIO* bio = NULL);
 	virtual ~Security();
 
 	BIO* GetBIO();

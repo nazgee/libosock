@@ -24,8 +24,8 @@
 
 bool Security::libsslReady = false;
 
-Security::Security() :
-	itsBIO(NULL)
+Security::Security(BIO* bio) :
+	itsBIO(bio)
 {
 	DBG_CONSTRUCTOR;
 }
