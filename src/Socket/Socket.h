@@ -1,0 +1,65 @@
+/*
+	Copyright 2011, Michal Stawinski <michal.stawinski@gmail.com>
+
+	This file is part of libsockets- C++ wrapper over OpenSSL and raw sockets.
+
+	libsockets is free software: you can redistribute it and/or modify
+	it under the terms of the GNU Lesser General Public License as published by
+	the Free Software Foundation, either version 3 of the License, or
+	(at your option) any later version.
+
+	libsockets is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	GNU Lesser General Public License for more details.
+
+	You should have received a copy of the GNU Lesser General Public License
+	along with libsockets.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
+#ifndef SOCKET_H_
+#define SOCKET_H_
+
+#include "../defines.h"
+#include "../Address/Address.h"
+#include "../Message/Message.h"
+#include "../defines.h"
+
+#include <string>
+#include <openssl/ssl.h>
+#include <openssl/err.h>
+#include <openssl/bio.h>
+#include <iostream>
+
+class Security;
+class Socket
+{
+private:
+	int itsSD;
+	BIO * itsBIO;
+
+protected:
+	void SetBIO(BIO * bio);
+	BIO* GetBIO() { return itsBIO; }
+	int GetSD() { return itsSD; }
+
+public:
+	Socket(BIO * bio = NULL);
+	Socket(Socket& sock);
+
+public:
+	virtual ~Socket(void);
+
+public:
+	int Send(Message& Msg, int Options = 0) const;
+	int Receive(Message& Msg, int Options = 0) const;
+
+public:
+
+	friend std::ostream& operator <<(std::ostream &os, const Socket &obj);
+	friend std::ostream& operator <<(std::ostream &os, const Socket *obj);
+
+private:
+};
+
+#endif /* SOCKET_H_ */
