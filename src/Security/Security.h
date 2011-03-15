@@ -25,7 +25,7 @@
 #include <openssl/bio.h>
 #include "../Address/Address.h"
 
-//! Abstract base class
+//! Abstract Security base class
 class Security
 {
 public:
@@ -34,7 +34,6 @@ public:
 
 	BIO* GetBIO();
 	SSL* GetSSL();
-	virtual bool IsPeerVerified();
 
 protected:
 	static bool libsslReady;

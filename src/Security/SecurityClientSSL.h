@@ -43,7 +43,7 @@ public:
 						std::string password,
 						securityMode method = securitySSLv2);
 	virtual ~SecurityClientSSL();
-	virtual bool IsPeerVerified();
+	virtual bool IsServerVerified();
 
 	void SetCertificate(std::string certFile);
 	void SetKey(std::string keyFile);

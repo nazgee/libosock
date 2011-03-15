@@ -30,3 +30,9 @@ SecurityServer::~SecurityServer()
 {
 
 }
+
+bool SecurityServer::DoHandshake(BIO* clientToShake)
+{
+	UNUSED(clientToShake);
+	return true;
+}

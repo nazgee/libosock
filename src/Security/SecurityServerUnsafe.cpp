@@ -43,9 +43,3 @@ BIO* SecurityServerUnsafe::PopulateBIO()
 	DBG << "populated unsafe server BIO @port=" << itsListenPort << std::endl;
 	return bio;
 }
-
-bool SecurityServerUnsafe::DoHandshake(BIO* bioToShake)
-{
-	UNUSED(bioToShake);
-	return true;
-}

@@ -53,11 +53,6 @@ SSL* Security::GetSSL()
 	return ssl;
 }
 
-bool Security::IsPeerVerified()
-{
-	return true;
-}
-
 void Security::libsslInit()
 {
 	//TODO: make it thread-safe

@@ -28,7 +28,7 @@ public:
 	SecurityServer(int port);
 	virtual ~SecurityServer();
 	//! Attempts a handshake on a given BIO, returns true on success
-	virtual bool DoHandshake(BIO* bioToShake) = 0;
+	virtual bool DoHandshake(BIO* clientToShake);
 
 protected:
 	int itsListenPort;

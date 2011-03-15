@@ -47,12 +47,6 @@ SecurityServerSSL::~SecurityServerSSL()
 	DBG_DESTRUCTOR;
 }
 
-bool SecurityServerSSL::IsPeerVerified()
-{
-	assert(GetSSL() != NULL );
-	return (SSL_get_verify_result( GetSSL() ) == X509_V_OK);
-}
-
 void SecurityServerSSL::SetCertificate(std::string certFile)
 {
 	itsCertificate->SetFile(certFile);
@@ -112,12 +106,12 @@ BIO* SecurityServerSSL::PopulateBIO()
 	return accept_bio;
 }
 
-bool SecurityServerSSL::DoHandshake(BIO* bioToShake)
+bool SecurityServerSSL::DoHandshake(BIO* clientToShake)
 {
 	int ret;
 	do {
-		ret = BIO_do_handshake(bioToShake);
-		if ( (ret <= 0) && (!BIO_should_retry(bioToShake)) ){
+		ret = BIO_do_handshake(clientToShake);
+		if ( (ret <= 0) && (!BIO_should_retry(clientToShake)) ){
 			//handshake failed
 			return false;
 		}

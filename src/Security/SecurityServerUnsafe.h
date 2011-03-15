@@ -30,7 +30,6 @@ public:
 
 protected:
 	virtual BIO* PopulateBIO();
-	virtual bool DoHandshake(BIO* bioToShake);
 };
 
 #endif /* ServerSecurityNONE_H_ */

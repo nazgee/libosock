@@ -43,7 +43,7 @@ public:
 						std::string password = "",
 						securityMode method = securitySSLv2);
 	virtual ~SecurityServerSSL();
-	virtual bool IsPeerVerified();
+	virtual bool DoHandshake(BIO* clientToShake);
 
 	void SetCertificate(std::string certFile);
 	void SetKey(std::string keyFile);
@@ -59,7 +59,6 @@ protected:
 	Trust* itsTrust;
 
 	virtual BIO* PopulateBIO();
-	virtual bool DoHandshake(BIO* bioToShake);
 	SSL_METHOD* GetMethod();
 	static int passwordCallback(char *buf, int size, int rwflag, void *usrdata);
 };

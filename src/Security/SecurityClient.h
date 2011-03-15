@@ -29,6 +29,9 @@ public:
 	SecurityClient(Address& serverAddress);
 	virtual ~SecurityClient();
 
+	//! Returns whether server was verified (i.e. has valid certificate)
+	virtual bool IsServerVerified();
+
 protected:
 	Address itsSrverAddress;
 	virtual BIO* PopulateBIO() = 0;

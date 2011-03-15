@@ -47,7 +47,7 @@ SecurityClientSSL::~SecurityClientSSL()
 	DBG_DESTRUCTOR;
 }
 
-bool SecurityClientSSL::IsPeerVerified()
+bool SecurityClientSSL::IsServerVerified()
 {
 	assert(GetSSL() != NULL );
 	return (SSL_get_verify_result( GetSSL() ) == X509_V_OK);

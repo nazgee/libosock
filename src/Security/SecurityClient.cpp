@@ -30,3 +30,8 @@ SecurityClient::~SecurityClient()
 {
 
 }
+
+bool SecurityClient::IsServerVerified()
+{
+	return true;
+}
