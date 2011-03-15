@@ -36,7 +36,7 @@ SocketClient::SocketClient(Address& serverAddress, SecurityClient* security):
 		throw_SSL("BIO_do_connect failed");
 	}
 
-	if ( SSL_get_verify_result(itsSecurity->GetSSL()) != X509_V_OK ) {
+	if ( itsSecurity->IsPeerVerified() ) {
 		WRN << "server verification failed" <<  std::endl;
 	} else {
 		DBG << "server verification succeeded" << std::endl;

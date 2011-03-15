@@ -34,6 +34,7 @@ public:
 
 	BIO* GetBIO();
 	SSL* GetSSL();
+	virtual bool IsPeerVerified();
 
 protected:
 	static bool libsslReady;
