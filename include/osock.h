@@ -25,7 +25,6 @@
 #include "Socket/SocketClientSSL.h"
 #include "Socket/SocketClientUnsafe.h"
 #include "Exception/Exception.h"
-
 #include "Message/StringMessage.h"
 
 #endif /* LIBSOCKETS_H_ */
