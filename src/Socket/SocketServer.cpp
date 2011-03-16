@@ -38,7 +38,6 @@ SocketServer::SocketServer(SecurityServer* security, serviceType type) :
 	/* first call of BIO_do_accpept does not really accept a connection-
 	 * instead it does some initial-setup only */
 	if (BIO_do_accept(GetBIO()) <= 0) {
-		delete itsSecurity;
 		throw_SSL("BIO_do_accept failed");
 	}
 	DBG_CONSTRUCTOR;
@@ -47,7 +46,6 @@ SocketServer::SocketServer(SecurityServer* security, serviceType type) :
 SocketServer::~SocketServer(void)
 {
 	DBG_DESTRUCTOR;
-	delete itsSecurity;
 }
 
 void SocketServer::Accept(clientsHandler handler)

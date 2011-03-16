@@ -46,6 +46,10 @@ SecurityClientSSL::SecurityClientSSL(	Address& Address,
 SecurityClientSSL::~SecurityClientSSL()
 {
 	DBG_DESTRUCTOR;
+	delete itsCertificate;
+	delete itsKey;
+	delete itsTrust;
+	SSL_CTX_free(itsCTX);
 }
 
 bool SecurityClientSSL::IsServerVerified()

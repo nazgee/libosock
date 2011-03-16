@@ -67,12 +67,22 @@ Socket::Socket(Socket& sock)
 Socket::~Socket(void)
 {
 	DBG_DESTRUCTOR;
-	//whole BIO chain has to be fred, in order to prevent memoryleak
-	BIO_free_all(itsBIO);
+	if (itsSecurity == NULL) {
+		//whole BIO chain has to be fred, in order to prevent memoryleak
+		DBG << "freeing BIO chain, no security was provided" << std::endl;
+		BIO_free_all(itsBIO);
+	} else {
+		DBG << "freeing given security" << std::endl;
+		delete itsSecurity;
+	}
 }
 
 void Socket::SetBIO(BIO* bio)
 {
+	if ( ( itsBIO != NULL ) && (itsSecurity != NULL) ) {
+		throw Exception("Can not use SetBIO if Socket has it's own security!", EINVAL);
+	}
+
 	itsBIO = bio;
 	if (itsBIO != NULL)
 		itsSD = BIO_get_fd(itsBIO, NULL);

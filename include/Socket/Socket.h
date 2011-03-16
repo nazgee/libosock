@@ -37,10 +37,10 @@ class Socket
 private:
 	int itsSD;
 	BIO* itsBIO;
+	Security* itsSecurity;
 	void SetBIO(BIO* bio);
 
 protected:
-	Security* itsSecurity;
 	BIO* GetBIO() { return itsBIO; }
 	int GetSD() { return itsSD; }
 

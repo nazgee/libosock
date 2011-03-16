@@ -34,7 +34,7 @@ Security::Security(BIO* bio) :
 Security::~Security()
 {
 	DBG_DESTRUCTOR;
-	BIO_free(itsBIO);
+	BIO_free_all(itsBIO);
 }
 
 BIO* Security::GetBIO()

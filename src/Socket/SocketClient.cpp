@@ -47,6 +47,5 @@ SocketClient::SocketClient(SecurityClient* security):
 SocketClient::~SocketClient(void)
 {
 	DBG_DESTRUCTOR;
-	delete itsSecurity;
 }
 }

@@ -46,6 +46,10 @@ SecurityServerSSL::SecurityServerSSL(int listenPort,
 SecurityServerSSL::~SecurityServerSSL()
 {
 	DBG_DESTRUCTOR;
+	delete itsCertificate;
+	delete itsKey;
+	delete itsTrust;
+	SSL_CTX_free(itsCTX);
 }
 
 void SecurityServerSSL::SetCertificate(std::string certFile)
