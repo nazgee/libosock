@@ -16,9 +16,9 @@
 	You should have received a copy of the GNU Lesser General Public License
 	along with libsockets.  If not, see <http://www.gnu.org/licenses/>.
 */
-
+#include <defines.h>
 #include <Socket/SocketServerSSL.h>
-
+using namespace osock;
 
 SocketServerSSL::SocketServerSSL(	int port,
 						std::string certFile,

@@ -16,13 +16,14 @@
 	You should have received a copy of the GNU Lesser General Public License
 	along with libsockets.  If not, see <http://www.gnu.org/licenses/>.
 */
-
+#include <defines.h>
 #include <Security/SecurityServerSSL.h>
 #include <Exception/Exception.h>
 
 #include <Security/Certificate/Certificate.h>
 #include <Security/Key/Key.h>
 #include <Security/Trust/Trust.h>
+using namespace osock;
 
 SecurityServerSSL::SecurityServerSSL(int listenPort,
 		std::string certFile,

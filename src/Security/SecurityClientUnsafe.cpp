@@ -16,8 +16,10 @@
 	You should have received a copy of the GNU Lesser General Public License
 	along with libsockets.  If not, see <http://www.gnu.org/licenses/>.
 */
+#include <defines.h>
 #include <Security/SecurityClientUnsafe.h>
 #include <Exception/Exception.h>
+using namespace osock;
 
 SecurityClientUnsafe::SecurityClientUnsafe(Address& serverAddress) :
 	SecurityClient(serverAddress)

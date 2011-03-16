@@ -22,11 +22,14 @@
 
 #include "SocketClient.h"
 
+namespace osock
+{
 class SocketClientUnsafe: public SocketClient
 {
 public:
 	SocketClientUnsafe(Address& serverAddress);
 	virtual ~SocketClientUnsafe();
 };
+} //namespace osock
 
 #endif /* SOCKETCLIENTUNSAFE_H_ */

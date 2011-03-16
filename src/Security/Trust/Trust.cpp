@@ -19,8 +19,10 @@
 
 #define DEBUG_WANTED
 
+#include <defines.h>
 #include <Security/Trust/Trust.h>
 #include <Exception/Exception.h>
+using namespace osock;
 
 Trust::Trust(std::string trustFile, trustMode mode, SSL_CTX* ctx) :
 	itsCTX(ctx),

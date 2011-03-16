@@ -17,11 +17,12 @@
 	along with libsockets.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <defines.h>
 #include <Socket/SocketClient.h>
 #include <Exception/Exception.h>
 #include <Security/SecurityClientSSL.h>
 #include <Security/SecurityClientUnsafe.h>
-
+using namespace osock;
 #include <netdb.h>
 
 SocketClient::SocketClient(SecurityClient* security):

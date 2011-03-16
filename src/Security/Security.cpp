@@ -21,6 +21,7 @@
 #include <defines.h>
 
 #include <assert.h>
+using namespace osock;
 
 bool Security::libsslReady = false;
 

@@ -22,11 +22,14 @@
 
 #include "SocketServer.h"
 
+namespace osock
+{
 class SocketServerUnsafe: public SocketServer
 {
 public:
 	SocketServerUnsafe(	int port, serviceType type = serviceCallback);
 	virtual ~SocketServerUnsafe();
 };
+} //namespace osock
 
 #endif /* SOCKETSERVERUNSAFE_H_ */

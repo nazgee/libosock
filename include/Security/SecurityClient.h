@@ -22,6 +22,8 @@
 
 #include "Security.h"
 
+namespace osock
+{
 class SecurityClient: public Security
 {
 public:
@@ -36,5 +38,6 @@ protected:
 	Address itsSrverAddress;
 	virtual BIO* PopulateBIO() = 0;
 };
+} //namespace osock
 
 #endif /* ClientSecurity_H_ */

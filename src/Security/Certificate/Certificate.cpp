@@ -22,6 +22,7 @@
 #include <Security/Certificate/Certificate.h>
 #include <Exception/Exception.h>
 #include <defines.h>
+using namespace osock;
 
 Certificate::Certificate(std::string certFile, SSL_CTX* ctx) :
 	itsCTX(ctx),

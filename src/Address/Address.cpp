@@ -16,9 +16,10 @@
 	You should have received a copy of the GNU Lesser General Public License
 	along with libsockets.  If not, see <http://www.gnu.org/licenses/>.
 */
-
+#include <defines.h>
 #include <Address/Address.h>
 #include <Exception/Exception.h>
+using namespace osock;
 
 #include <string.h>
 #include <stdlib.h>
@@ -215,7 +216,7 @@ std::string Address::GetHostAndPort(bool rebuild)
 	return s;
 }
 
-std::ostream& operator <<(std::ostream &os, const Address *obj)
+std::ostream& osock::operator <<(std::ostream &os, const Address *obj)
 {
 	if (obj->itsAddrInfo == NULL)
 		os << (void*) obj << "<undefined address>";

@@ -23,6 +23,8 @@
 #include <openssl/ssl.h>
 #include <string>
 
+namespace osock
+{
 class Key
 {
 private:
@@ -38,5 +40,6 @@ public:
 
 	void Apply();
 };
+} //namespace osock
 
 #endif /* KEY_H_ */

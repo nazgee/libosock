@@ -23,6 +23,8 @@
 #include "SocketServer.h"
 #include "../Security/SecurityServerSSL.h"
 
+namespace osock
+{
 class SocketServerSSL: public SocketServer
 {
 public:
@@ -35,5 +37,6 @@ public:
 				serviceType type = serviceCallback);
 	virtual ~SocketServerSSL();
 };
+} //namespace osock
 
 #endif /* SOCKETSERVERSSL_H_ */

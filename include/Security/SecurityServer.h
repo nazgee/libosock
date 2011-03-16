@@ -22,6 +22,8 @@
 
 #include "Security.h"
 
+namespace osock
+{
 class SecurityServer: public Security
 {
 public:
@@ -34,5 +36,6 @@ protected:
 	int itsListenPort;
 	virtual BIO* PopulateBIO() = 0;
 };
+} //namespace osock
 
 #endif /* ServerSecurity_H_ */

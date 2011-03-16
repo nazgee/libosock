@@ -22,6 +22,8 @@
 
 #include "SecurityServer.h"
 
+namespace osock
+{
 class SecurityServerUnsafe: public SecurityServer
 {
 public:
@@ -31,5 +33,6 @@ public:
 protected:
 	virtual BIO* PopulateBIO();
 };
+} //namespace osock
 
 #endif /* ServerSecurityNONE_H_ */

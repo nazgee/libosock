@@ -16,9 +16,10 @@
 	You should have received a copy of the GNU Lesser General Public License
 	along with libsockets.  If not, see <http://www.gnu.org/licenses/>.
 */
-
+#include <defines.h>
 #include <Socket/SocketServerUnsafe.h>
 #include <Security/SecurityServerUnsafe.h>
+using namespace osock;
 
 SocketServerUnsafe::SocketServerUnsafe(	int port, serviceType type) :
 	SocketServer( new SecurityServerUnsafe(port), type)

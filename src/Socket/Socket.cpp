@@ -23,6 +23,7 @@
 #include <defines.h>
 #include <Exception/Exception.h>
 #include <Security/Security.h>
+using namespace osock;
 
 #include <assert.h>
 #include <arpa/inet.h>
@@ -30,7 +31,7 @@
 #include <boost/scoped_array.hpp>
 
 //TODO: create it in a more intelligent manner, maybe in a dedicated file?
-NullStream nullstream;
+osock::NullStream nullstream;
 
 Socket::Socket(BIO* bio) :
 	itsSD(-1),
@@ -140,7 +141,7 @@ int  Socket::Receive(Message& Msg, int Options) const
 	return bytes;
 }
 
-std::ostream& operator <<(std::ostream &os,const Socket *obj)
+std::ostream& osock::operator <<(std::ostream &os,const Socket *obj)
 {
 	os << (void*)obj << " itsBIO=" << obj->itsBIO << " itsSD=" << obj->itsSD;
 	return os;

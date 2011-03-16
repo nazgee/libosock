@@ -23,6 +23,8 @@
 #include "Socket.h"
 #include "../Security/SecurityClient.h"
 
+namespace osock
+{
 class SocketClient: public Socket
 {
 public:
@@ -32,5 +34,6 @@ public:
 private:
 	SecurityClient* itsSecurityClient;
 };
+} //namespace osock
 
 #endif /* SOCKETCLIENT_H_ */

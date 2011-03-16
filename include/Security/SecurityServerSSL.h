@@ -22,6 +22,8 @@
 
 #include "SecurityServer.h"
 
+namespace osock
+{
 class Key;
 class Certificate;
 class Trust;
@@ -62,5 +64,6 @@ protected:
 	SSL_METHOD* GetMethod();
 	static int passwordCallback(char *buf, int size, int rwflag, void *usrdata);
 };
+} //namespace osock
 
 #endif /* ServerSecuritySSL_H_ */

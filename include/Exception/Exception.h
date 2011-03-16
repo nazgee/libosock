@@ -23,8 +23,9 @@
 #include <openssl/err.h>
 #include <errno.h>
 #include <iostream>
-#include "../defines.h"
 
+namespace osock
+{
 class Exception
 {
 private:
@@ -32,16 +33,8 @@ private:
 	int itsError;
 
 public:
-	Exception(const std::string& msg, int error = 0) :
-		itsMessage(msg), itsError(error)
-	{
-		DBG_DESTRUCTOR;
-		WRN << itsMessage << std::endl;
-	}
-	virtual ~Exception(void)
-	{
-		DBG_CONSTRUCTOR;
-	}
+	Exception(const std::string& msg, int error = 0);
+	virtual ~Exception(void);
 
 	int GetError(void) const
 	{
@@ -87,5 +80,6 @@ public:
 	{
 	}
 };
+} //namespace osock
 
 #endif /* EXCEPTIONS_H_ */

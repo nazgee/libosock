@@ -16,11 +16,12 @@
 	You should have received a copy of the GNU Lesser General Public License
 	along with libsockets.  If not, see <http://www.gnu.org/licenses/>.
 */
-
+#include <defines.h>
 #include <Message/StringMessage.h>
 #include <defines.h>
 
 #include <string.h>
+using namespace osock;
 
 StringMessage::StringMessage(unsigned short dataLen)
 {

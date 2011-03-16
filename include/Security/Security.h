@@ -25,6 +25,8 @@
 #include <openssl/bio.h>
 #include "../Address/Address.h"
 
+namespace osock
+{
 //! Abstract Security base class
 class Security
 {
@@ -43,5 +45,6 @@ protected:
 	virtual BIO* PopulateBIO() = 0;
 	static void libsslInit();
 };
+} //namespace osock
 
 #endif /* SECURITY_H_ */

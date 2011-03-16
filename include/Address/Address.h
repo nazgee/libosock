@@ -20,15 +20,14 @@
 #ifndef HOSTADDRESS_H_
 #define HOSTADDRESS_H_
 
-#include "../defines.h"
 #include <stdint.h>
 #include <string>
 #include <netdb.h>
 #include <openssl/bio.h>
 #include <boost/scoped_array.hpp>
 
-///////////////////////////////////////////////////////////////////////////////
-/// Address
+namespace osock
+{
 class Address
 {
 private:
@@ -62,5 +61,6 @@ public:
 	friend std::ostream& operator <<(std::ostream &os, const Address &obj);
 	friend std::ostream& operator <<(std::ostream &os, const Address *obj);
 };
+} //namespace osock
 
 #endif /* HOSTADDRESS_H_ */

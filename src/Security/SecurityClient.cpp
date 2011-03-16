@@ -18,6 +18,7 @@
 */
 
 #include <Security/SecurityClient.h>
+using namespace osock;
 
 SecurityClient::SecurityClient(Address& serverAddress) :
 	Security(),

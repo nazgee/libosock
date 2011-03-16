@@ -19,12 +19,13 @@
 
 //#define DEBUG_WANTED
 
+#include <defines.h>
 #include <Socket/SocketServer.h>
 #include <Exception/Exception.h>
 #include <Security/SecurityServer.h>
 #include <Security/SecurityServerSSL.h>
 #include <Security/SecurityServerUnsafe.h>
-
+using namespace osock;
 #include <assert.h>
 #include <arpa/inet.h>
 #include <boost/scoped_ptr.hpp>

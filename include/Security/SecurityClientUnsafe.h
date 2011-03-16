@@ -22,6 +22,8 @@
 
 #include "SecurityClient.h"
 
+namespace osock
+{
 class SecurityClientUnsafe: public SecurityClient
 {
 public:
@@ -31,5 +33,6 @@ public:
 protected:
 	virtual BIO* PopulateBIO();
 };
+} //namespace osock
 
 #endif /* ClientSecurityNONE_H_ */

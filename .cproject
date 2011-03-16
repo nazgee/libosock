@@ -21,7 +21,9 @@
 						<toolChain id="org.eclipse.linuxtools.cdt.autotools.core.toolChain.1578743978" name="GNU Autotools Toolchain" superClass="org.eclipse.linuxtools.cdt.autotools.core.toolChain">
 							<targetPlatform id="org.eclipse.linuxtools.cdt.autotools.core.toolchain.targetPlatform.1037402312" isAbstract="false" name="GNU Autotools Target Platform" superClass="org.eclipse.linuxtools.cdt.autotools.core.toolchain.targetPlatform"/>
 							<builder id="org.eclipse.linuxtools.cdt.autotools.core.toolchain.builder.1435330475" managedBuildOn="true" name="null.Build (GNU)" superClass="org.eclipse.linuxtools.cdt.autotools.core.toolchain.builder"/>
-							<tool id="org.eclipse.linuxtools.cdt.autotools.core.gnu.toolchain.tool.configure.1230292854" name="configure" superClass="org.eclipse.linuxtools.cdt.autotools.core.gnu.toolchain.tool.configure"/>
+							<tool id="org.eclipse.linuxtools.cdt.autotools.core.gnu.toolchain.tool.configure.1230292854" name="configure" superClass="org.eclipse.linuxtools.cdt.autotools.core.gnu.toolchain.tool.configure">
+								<option id="org.eclipse.linuxtools.cdt.autotools.core.option.configure.name.1335285397" superClass="org.eclipse.linuxtools.cdt.autotools.core.option.configure.name" value="org.eclipse.linuxtools.cdt.autotools.core.configuration.build.165609258" valueType="string"/>
+							</tool>
 							<tool id="org.eclipse.linuxtools.cdt.autotools.core.toolchain.tool.autogen.1480524764" name="autogen.sh" superClass="org.eclipse.linuxtools.cdt.autotools.core.toolchain.tool.autogen"/>
 							<tool id="org.eclipse.linuxtools.cdt.autotools.core.toolchain.tool.gcc.1385703810" name="GCC C Compiler" superClass="org.eclipse.linuxtools.cdt.autotools.core.toolchain.tool.gcc">
 								<inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.504160551" superClass="cdt.managedbuild.tool.gnu.c.compiler.input"/>
@@ -415,18 +417,58 @@
 						<useDefaultCommand>true</useDefaultCommand>
 						<runAllBuilders>false</runAllBuilders>
 					</target>
-					<target name="install-nobase_osock_includeHEADERS" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
-						<buildCommand>make</buildCommand>
-						<buildArguments/>
-						<buildTarget>install-nobase_osock_includeHEADERS</buildTarget>
-						<stopOnError>true</stopOnError>
-						<useDefaultCommand>true</useDefaultCommand>
-						<runAllBuilders>false</runAllBuilders>
-					</target>
 					<target name="install-nodist_osock_libincludeHEADERS" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
 						<buildCommand>make</buildCommand>
 						<buildArguments/>
 						<buildTarget>install-nodist_osock_libincludeHEADERS</buildTarget>
+						<stopOnError>true</stopOnError>
+						<useDefaultCommand>true</useDefaultCommand>
+						<runAllBuilders>false</runAllBuilders>
+					</target>
+					<target name="install-osockaddress_includeHEADERS" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
+						<buildCommand>make</buildCommand>
+						<buildArguments/>
+						<buildTarget>install-osockaddress_includeHEADERS</buildTarget>
+						<stopOnError>true</stopOnError>
+						<useDefaultCommand>true</useDefaultCommand>
+						<runAllBuilders>false</runAllBuilders>
+					</target>
+					<target name="install-osockexception_includeHEADERS" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
+						<buildCommand>make</buildCommand>
+						<buildArguments/>
+						<buildTarget>install-osockexception_includeHEADERS</buildTarget>
+						<stopOnError>true</stopOnError>
+						<useDefaultCommand>true</useDefaultCommand>
+						<runAllBuilders>false</runAllBuilders>
+					</target>
+					<target name="install-osockloose_includeHEADERS" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
+						<buildCommand>make</buildCommand>
+						<buildArguments/>
+						<buildTarget>install-osockloose_includeHEADERS</buildTarget>
+						<stopOnError>true</stopOnError>
+						<useDefaultCommand>true</useDefaultCommand>
+						<runAllBuilders>false</runAllBuilders>
+					</target>
+					<target name="install-osockmessage_includeHEADERS" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
+						<buildCommand>make</buildCommand>
+						<buildArguments/>
+						<buildTarget>install-osockmessage_includeHEADERS</buildTarget>
+						<stopOnError>true</stopOnError>
+						<useDefaultCommand>true</useDefaultCommand>
+						<runAllBuilders>false</runAllBuilders>
+					</target>
+					<target name="install-osocksecurity_includeHEADERS" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
+						<buildCommand>make</buildCommand>
+						<buildArguments/>
+						<buildTarget>install-osocksecurity_includeHEADERS</buildTarget>
+						<stopOnError>true</stopOnError>
+						<useDefaultCommand>true</useDefaultCommand>
+						<runAllBuilders>false</runAllBuilders>
+					</target>
+					<target name="install-osocksocket_includeHEADERS" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
+						<buildCommand>make</buildCommand>
+						<buildArguments/>
+						<buildTarget>install-osocksocket_includeHEADERS</buildTarget>
 						<stopOnError>true</stopOnError>
 						<useDefaultCommand>true</useDefaultCommand>
 						<runAllBuilders>false</runAllBuilders>
@@ -551,170 +593,170 @@
 						<useDefaultCommand>true</useDefaultCommand>
 						<runAllBuilders>false</runAllBuilders>
 					</target>
-					<target name="src/Address/Address.lo" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
+					<target name="src/Address/libosock_1.0_la-Address.lo" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
 						<buildCommand>make</buildCommand>
 						<buildArguments/>
-						<buildTarget>src/Address/Address.lo</buildTarget>
+						<buildTarget>src/Address/libosock_1.0_la-Address.lo</buildTarget>
 						<stopOnError>true</stopOnError>
 						<useDefaultCommand>true</useDefaultCommand>
 						<runAllBuilders>false</runAllBuilders>
 					</target>
-					<target name="src/Exception/Exception.lo" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
+					<target name="src/Exception/libosock_1.0_la-Exception.lo" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
 						<buildCommand>make</buildCommand>
 						<buildArguments/>
-						<buildTarget>src/Exception/Exception.lo</buildTarget>
+						<buildTarget>src/Exception/libosock_1.0_la-Exception.lo</buildTarget>
 						<stopOnError>true</stopOnError>
 						<useDefaultCommand>true</useDefaultCommand>
 						<runAllBuilders>false</runAllBuilders>
 					</target>
-					<target name="src/Message/Message.lo" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
+					<target name="src/Message/libosock_1.0_la-Message.lo" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
 						<buildCommand>make</buildCommand>
 						<buildArguments/>
-						<buildTarget>src/Message/Message.lo</buildTarget>
+						<buildTarget>src/Message/libosock_1.0_la-Message.lo</buildTarget>
 						<stopOnError>true</stopOnError>
 						<useDefaultCommand>true</useDefaultCommand>
 						<runAllBuilders>false</runAllBuilders>
 					</target>
-					<target name="src/Message/StringMessage.lo" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
+					<target name="src/Message/libosock_1.0_la-StringMessage.lo" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
 						<buildCommand>make</buildCommand>
 						<buildArguments/>
-						<buildTarget>src/Message/StringMessage.lo</buildTarget>
+						<buildTarget>src/Message/libosock_1.0_la-StringMessage.lo</buildTarget>
 						<stopOnError>true</stopOnError>
 						<useDefaultCommand>true</useDefaultCommand>
 						<runAllBuilders>false</runAllBuilders>
 					</target>
-					<target name="src/Security/Certificate/Certificate.lo" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
+					<target name="src/Security/Certificate/libosock_1.0_la-Certificate.lo" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
 						<buildCommand>make</buildCommand>
 						<buildArguments/>
-						<buildTarget>src/Security/Certificate/Certificate.lo</buildTarget>
+						<buildTarget>src/Security/Certificate/libosock_1.0_la-Certificate.lo</buildTarget>
 						<stopOnError>true</stopOnError>
 						<useDefaultCommand>true</useDefaultCommand>
 						<runAllBuilders>false</runAllBuilders>
 					</target>
-					<target name="src/Security/Key/Key.lo" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
+					<target name="src/Security/Key/libosock_1.0_la-Key.lo" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
 						<buildCommand>make</buildCommand>
 						<buildArguments/>
-						<buildTarget>src/Security/Key/Key.lo</buildTarget>
+						<buildTarget>src/Security/Key/libosock_1.0_la-Key.lo</buildTarget>
 						<stopOnError>true</stopOnError>
 						<useDefaultCommand>true</useDefaultCommand>
 						<runAllBuilders>false</runAllBuilders>
 					</target>
-					<target name="src/Security/Security.lo" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
+					<target name="src/Security/libosock_1.0_la-Security.lo" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
 						<buildCommand>make</buildCommand>
 						<buildArguments/>
-						<buildTarget>src/Security/Security.lo</buildTarget>
+						<buildTarget>src/Security/libosock_1.0_la-Security.lo</buildTarget>
 						<stopOnError>true</stopOnError>
 						<useDefaultCommand>true</useDefaultCommand>
 						<runAllBuilders>false</runAllBuilders>
 					</target>
-					<target name="src/Security/SecurityClient.lo" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
+					<target name="src/Security/libosock_1.0_la-SecurityClient.lo" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
 						<buildCommand>make</buildCommand>
 						<buildArguments/>
-						<buildTarget>src/Security/SecurityClient.lo</buildTarget>
+						<buildTarget>src/Security/libosock_1.0_la-SecurityClient.lo</buildTarget>
 						<stopOnError>true</stopOnError>
 						<useDefaultCommand>true</useDefaultCommand>
 						<runAllBuilders>false</runAllBuilders>
 					</target>
-					<target name="src/Security/SecurityClientSSL.lo" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
+					<target name="src/Security/libosock_1.0_la-SecurityClientSSL.lo" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
 						<buildCommand>make</buildCommand>
 						<buildArguments/>
-						<buildTarget>src/Security/SecurityClientSSL.lo</buildTarget>
+						<buildTarget>src/Security/libosock_1.0_la-SecurityClientSSL.lo</buildTarget>
 						<stopOnError>true</stopOnError>
 						<useDefaultCommand>true</useDefaultCommand>
 						<runAllBuilders>false</runAllBuilders>
 					</target>
-					<target name="src/Security/SecurityClientUnsafe.lo" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
+					<target name="src/Security/libosock_1.0_la-SecurityClientUnsafe.lo" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
 						<buildCommand>make</buildCommand>
 						<buildArguments/>
-						<buildTarget>src/Security/SecurityClientUnsafe.lo</buildTarget>
+						<buildTarget>src/Security/libosock_1.0_la-SecurityClientUnsafe.lo</buildTarget>
 						<stopOnError>true</stopOnError>
 						<useDefaultCommand>true</useDefaultCommand>
 						<runAllBuilders>false</runAllBuilders>
 					</target>
-					<target name="src/Security/SecurityServer.lo" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
+					<target name="src/Security/libosock_1.0_la-SecurityServer.lo" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
 						<buildCommand>make</buildCommand>
 						<buildArguments/>
-						<buildTarget>src/Security/SecurityServer.lo</buildTarget>
+						<buildTarget>src/Security/libosock_1.0_la-SecurityServer.lo</buildTarget>
 						<stopOnError>true</stopOnError>
 						<useDefaultCommand>true</useDefaultCommand>
 						<runAllBuilders>false</runAllBuilders>
 					</target>
-					<target name="src/Security/SecurityServerSSL.lo" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
+					<target name="src/Security/libosock_1.0_la-SecurityServerSSL.lo" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
 						<buildCommand>make</buildCommand>
 						<buildArguments/>
-						<buildTarget>src/Security/SecurityServerSSL.lo</buildTarget>
+						<buildTarget>src/Security/libosock_1.0_la-SecurityServerSSL.lo</buildTarget>
 						<stopOnError>true</stopOnError>
 						<useDefaultCommand>true</useDefaultCommand>
 						<runAllBuilders>false</runAllBuilders>
 					</target>
-					<target name="src/Security/SecurityServerUnsafe.lo" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
+					<target name="src/Security/libosock_1.0_la-SecurityServerUnsafe.lo" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
 						<buildCommand>make</buildCommand>
 						<buildArguments/>
-						<buildTarget>src/Security/SecurityServerUnsafe.lo</buildTarget>
+						<buildTarget>src/Security/libosock_1.0_la-SecurityServerUnsafe.lo</buildTarget>
 						<stopOnError>true</stopOnError>
 						<useDefaultCommand>true</useDefaultCommand>
 						<runAllBuilders>false</runAllBuilders>
 					</target>
-					<target name="src/Security/Trust/Trust.lo" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
+					<target name="src/Security/Trust/libosock_1.0_la-Trust.lo" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
 						<buildCommand>make</buildCommand>
 						<buildArguments/>
-						<buildTarget>src/Security/Trust/Trust.lo</buildTarget>
+						<buildTarget>src/Security/Trust/libosock_1.0_la-Trust.lo</buildTarget>
 						<stopOnError>true</stopOnError>
 						<useDefaultCommand>true</useDefaultCommand>
 						<runAllBuilders>false</runAllBuilders>
 					</target>
-					<target name="src/Socket/Socket.lo" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
+					<target name="src/Socket/libosock_1.0_la-Socket.lo" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
 						<buildCommand>make</buildCommand>
 						<buildArguments/>
-						<buildTarget>src/Socket/Socket.lo</buildTarget>
+						<buildTarget>src/Socket/libosock_1.0_la-Socket.lo</buildTarget>
 						<stopOnError>true</stopOnError>
 						<useDefaultCommand>true</useDefaultCommand>
 						<runAllBuilders>false</runAllBuilders>
 					</target>
-					<target name="src/Socket/SocketClient.lo" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
+					<target name="src/Socket/libosock_1.0_la-SocketClient.lo" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
 						<buildCommand>make</buildCommand>
 						<buildArguments/>
-						<buildTarget>src/Socket/SocketClient.lo</buildTarget>
+						<buildTarget>src/Socket/libosock_1.0_la-SocketClient.lo</buildTarget>
 						<stopOnError>true</stopOnError>
 						<useDefaultCommand>true</useDefaultCommand>
 						<runAllBuilders>false</runAllBuilders>
 					</target>
-					<target name="src/Socket/SocketClientSSL.lo" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
+					<target name="src/Socket/libosock_1.0_la-SocketClientSSL.lo" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
 						<buildCommand>make</buildCommand>
 						<buildArguments/>
-						<buildTarget>src/Socket/SocketClientSSL.lo</buildTarget>
+						<buildTarget>src/Socket/libosock_1.0_la-SocketClientSSL.lo</buildTarget>
 						<stopOnError>true</stopOnError>
 						<useDefaultCommand>true</useDefaultCommand>
 						<runAllBuilders>false</runAllBuilders>
 					</target>
-					<target name="src/Socket/SocketClientUnsafe.lo" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
+					<target name="src/Socket/libosock_1.0_la-SocketClientUnsafe.lo" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
 						<buildCommand>make</buildCommand>
 						<buildArguments/>
-						<buildTarget>src/Socket/SocketClientUnsafe.lo</buildTarget>
+						<buildTarget>src/Socket/libosock_1.0_la-SocketClientUnsafe.lo</buildTarget>
 						<stopOnError>true</stopOnError>
 						<useDefaultCommand>true</useDefaultCommand>
 						<runAllBuilders>false</runAllBuilders>
 					</target>
-					<target name="src/Socket/SocketServer.lo" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
+					<target name="src/Socket/libosock_1.0_la-SocketServer.lo" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
 						<buildCommand>make</buildCommand>
 						<buildArguments/>
-						<buildTarget>src/Socket/SocketServer.lo</buildTarget>
+						<buildTarget>src/Socket/libosock_1.0_la-SocketServer.lo</buildTarget>
 						<stopOnError>true</stopOnError>
 						<useDefaultCommand>true</useDefaultCommand>
 						<runAllBuilders>false</runAllBuilders>
 					</target>
-					<target name="src/Socket/SocketServerSSL.lo" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
+					<target name="src/Socket/libosock_1.0_la-SocketServerSSL.lo" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
 						<buildCommand>make</buildCommand>
 						<buildArguments/>
-						<buildTarget>src/Socket/SocketServerSSL.lo</buildTarget>
+						<buildTarget>src/Socket/libosock_1.0_la-SocketServerSSL.lo</buildTarget>
 						<stopOnError>true</stopOnError>
 						<useDefaultCommand>true</useDefaultCommand>
 						<runAllBuilders>false</runAllBuilders>
 					</target>
-					<target name="src/Socket/SocketServerUnsafe.lo" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
+					<target name="src/Socket/libosock_1.0_la-SocketServerUnsafe.lo" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
 						<buildCommand>make</buildCommand>
 						<buildArguments/>
-						<buildTarget>src/Socket/SocketServerUnsafe.lo</buildTarget>
+						<buildTarget>src/Socket/libosock_1.0_la-SocketServerUnsafe.lo</buildTarget>
 						<stopOnError>true</stopOnError>
 						<useDefaultCommand>true</useDefaultCommand>
 						<runAllBuilders>false</runAllBuilders>
@@ -759,18 +801,58 @@
 						<useDefaultCommand>true</useDefaultCommand>
 						<runAllBuilders>false</runAllBuilders>
 					</target>
-					<target name="uninstall-nobase_osock_includeHEADERS" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
-						<buildCommand>make</buildCommand>
-						<buildArguments/>
-						<buildTarget>uninstall-nobase_osock_includeHEADERS</buildTarget>
-						<stopOnError>true</stopOnError>
-						<useDefaultCommand>true</useDefaultCommand>
-						<runAllBuilders>false</runAllBuilders>
-					</target>
 					<target name="uninstall-nodist_osock_libincludeHEADERS" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
 						<buildCommand>make</buildCommand>
 						<buildArguments/>
 						<buildTarget>uninstall-nodist_osock_libincludeHEADERS</buildTarget>
+						<stopOnError>true</stopOnError>
+						<useDefaultCommand>true</useDefaultCommand>
+						<runAllBuilders>false</runAllBuilders>
+					</target>
+					<target name="uninstall-osockaddress_includeHEADERS" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
+						<buildCommand>make</buildCommand>
+						<buildArguments/>
+						<buildTarget>uninstall-osockaddress_includeHEADERS</buildTarget>
+						<stopOnError>true</stopOnError>
+						<useDefaultCommand>true</useDefaultCommand>
+						<runAllBuilders>false</runAllBuilders>
+					</target>
+					<target name="uninstall-osockexception_includeHEADERS" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
+						<buildCommand>make</buildCommand>
+						<buildArguments/>
+						<buildTarget>uninstall-osockexception_includeHEADERS</buildTarget>
+						<stopOnError>true</stopOnError>
+						<useDefaultCommand>true</useDefaultCommand>
+						<runAllBuilders>false</runAllBuilders>
+					</target>
+					<target name="uninstall-osockloose_includeHEADERS" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
+						<buildCommand>make</buildCommand>
+						<buildArguments/>
+						<buildTarget>uninstall-osockloose_includeHEADERS</buildTarget>
+						<stopOnError>true</stopOnError>
+						<useDefaultCommand>true</useDefaultCommand>
+						<runAllBuilders>false</runAllBuilders>
+					</target>
+					<target name="uninstall-osockmessage_includeHEADERS" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
+						<buildCommand>make</buildCommand>
+						<buildArguments/>
+						<buildTarget>uninstall-osockmessage_includeHEADERS</buildTarget>
+						<stopOnError>true</stopOnError>
+						<useDefaultCommand>true</useDefaultCommand>
+						<runAllBuilders>false</runAllBuilders>
+					</target>
+					<target name="uninstall-osocksecurity_includeHEADERS" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
+						<buildCommand>make</buildCommand>
+						<buildArguments/>
+						<buildTarget>uninstall-osocksecurity_includeHEADERS</buildTarget>
+						<stopOnError>true</stopOnError>
+						<useDefaultCommand>true</useDefaultCommand>
+						<runAllBuilders>false</runAllBuilders>
+					</target>
+					<target name="uninstall-osocksocket_includeHEADERS" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
+						<buildCommand>make</buildCommand>
+						<buildArguments/>
+						<buildTarget>uninstall-osocksocket_includeHEADERS</buildTarget>
 						<stopOnError>true</stopOnError>
 						<useDefaultCommand>true</useDefaultCommand>
 						<runAllBuilders>false</runAllBuilders>

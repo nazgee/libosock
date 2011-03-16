@@ -23,6 +23,8 @@
 #include <openssl/ssl.h>
 #include <string>
 
+namespace osock
+{
 class Certificate
 {
 private:
@@ -38,5 +40,6 @@ public:
 
 	void Apply();
 };
+} //namespace osock
 
 #endif /* CERTIFICATE_H_ */

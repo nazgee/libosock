@@ -23,6 +23,8 @@
 #include <openssl/ssl.h>
 #include <string>
 
+namespace osock
+{
 class Trust
 {
 public:
@@ -44,5 +46,6 @@ private:
 	trustMode itsMode;
 	std::string itsTrutsFile;
 };
+} //namespace osock
 
 #endif /* TRUST_H_ */

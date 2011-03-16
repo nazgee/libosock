@@ -16,12 +16,23 @@
 	You should have received a copy of the GNU Lesser General Public License
 	along with libsockets.  If not, see <http://www.gnu.org/licenses/>.
 */
-
+#include <defines.h>
 #include <Exception/Exception.h>
 
 #include <string.h>
 #include <stdio.h>
+using namespace osock;
 
+Exception::Exception(const std::string& msg, int error) :
+	itsMessage(msg), itsError(error)
+{
+	DBG_DESTRUCTOR;
+	WRN << itsMessage << std::endl;
+}
+Exception::~Exception(void)
+{
+	DBG_CONSTRUCTOR;
+}
 
 void Exception::Print(void) const
 {

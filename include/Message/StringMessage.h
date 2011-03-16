@@ -22,6 +22,8 @@
 
 #include "Message.h"
 
+namespace osock
+{
 class StringMessage: public Message
 {
 public:
@@ -52,5 +54,6 @@ private:
 	//! Appends \a len bytes from \a str to this StringMessage
 	void ExpandData(const char* data, int dataLen = -1);
 };
+} //namespace osock
 
 #endif /* STRINGMESSAGE_H_ */

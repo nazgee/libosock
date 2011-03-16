@@ -23,6 +23,8 @@
 #include "SocketClient.h"
 #include "../Security/SecurityClientSSL.h"
 
+namespace osock
+{
 class SocketClientSSL: public SocketClient
 {
 public:
@@ -34,5 +36,6 @@ public:
 					SecurityClientSSL::securityMode method);
 	virtual ~SocketClientSSL();
 };
+} //namespace osock
 
 #endif /* SOCKETCLIENTSSL_H_ */

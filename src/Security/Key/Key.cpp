@@ -20,6 +20,7 @@
 #include <Security/Key/Key.h>
 #include <defines.h>
 #include <Exception/Exception.h>
+using namespace osock;
 
 Key::Key(std::string keyFile, SSL_CTX* ctx) :
 	itsCTX(ctx),

@@ -20,10 +20,8 @@
 #ifndef SOCKET_H_
 #define SOCKET_H_
 
-#include "../defines.h"
 #include "../Address/Address.h"
 #include "../Message/Message.h"
-#include "../defines.h"
 
 #include <string>
 #include <openssl/ssl.h>
@@ -31,6 +29,8 @@
 #include <openssl/bio.h>
 #include <iostream>
 
+namespace osock
+{
 class Security;
 class Socket
 {
@@ -56,5 +56,6 @@ public:
 	friend std::ostream& operator <<(std::ostream &os, const Socket &obj);
 	friend std::ostream& operator <<(std::ostream &os, const Socket *obj);
 };
+} //namespace osock
 
 #endif /* SOCKET_H_ */

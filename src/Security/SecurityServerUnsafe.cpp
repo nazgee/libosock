@@ -17,8 +17,10 @@
 	along with libsockets.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <defines.h>
 #include <Security/SecurityServerUnsafe.h>
 #include <Exception/Exception.h>
+using namespace osock;
 
 SecurityServerUnsafe::SecurityServerUnsafe(int listenPort) :
 	SecurityServer(listenPort)

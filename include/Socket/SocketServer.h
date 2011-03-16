@@ -23,6 +23,8 @@
 #include "Socket.h"
 #include "../Security/SecurityServer.h"
 
+namespace osock
+{
 class SocketServer: public Socket
 {
 public:
@@ -43,6 +45,6 @@ private:
 
 	BIO* AcceptIncoming();
 };
-
+} //namespace osock
 
 #endif /* SOCKETSERVER_H_ */
