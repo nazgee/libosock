@@ -25,11 +25,13 @@
 #include <Security/SecurityServer.h>
 #include <Security/SecurityServerSSL.h>
 #include <Security/SecurityServerUnsafe.h>
-using namespace osock;
+
 #include <assert.h>
 #include <arpa/inet.h>
 #include <boost/scoped_ptr.hpp>
 
+namespace osock
+{
 SocketServer::SocketServer(SecurityServer* security, serviceType type) :
 		Socket(security), itsType(type), itsSecurityServer(security)
 {
@@ -116,4 +118,5 @@ BIO* SocketServer::AcceptIncoming()
 	} while (1);
 
 	return out;
+}
 }

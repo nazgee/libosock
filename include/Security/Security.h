@@ -20,10 +20,11 @@
 #ifndef SECURITY_H_
 #define SECURITY_H_
 
+#include "../Address/Address.h"
+
 #include <openssl/ssl.h>
 #include <openssl/err.h>
 #include <openssl/bio.h>
-#include "../Address/Address.h"
 
 namespace osock
 {

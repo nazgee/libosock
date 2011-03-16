@@ -16,15 +16,16 @@
 	You should have received a copy of the GNU Lesser General Public License
 	along with libsockets.  If not, see <http://www.gnu.org/licenses/>.
 */
-
 #include <defines.h>
 #include <Socket/SocketClient.h>
 #include <Exception/Exception.h>
 #include <Security/SecurityClientSSL.h>
 #include <Security/SecurityClientUnsafe.h>
-using namespace osock;
+
 #include <netdb.h>
 
+namespace osock
+{
 SocketClient::SocketClient(SecurityClient* security):
 	Socket(security),
 	itsSecurityClient(security)
@@ -47,4 +48,5 @@ SocketClient::~SocketClient(void)
 {
 	DBG_DESTRUCTOR;
 	delete itsSecurity;
+}
 }

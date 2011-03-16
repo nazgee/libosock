@@ -20,8 +20,9 @@
 #include <defines.h>
 #include <Security/SecurityServerUnsafe.h>
 #include <Exception/Exception.h>
-using namespace osock;
 
+namespace osock
+{
 SecurityServerUnsafe::SecurityServerUnsafe(int listenPort) :
 	SecurityServer(listenPort)
 {
@@ -43,4 +44,5 @@ BIO* SecurityServerUnsafe::PopulateBIO()
 
 	DBG << "populated unsafe server BIO @port=" << itsListenPort << std::endl;
 	return bio;
+}
 }

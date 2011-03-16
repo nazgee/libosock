@@ -18,8 +18,9 @@
 */
 #include <defines.h>
 #include <Socket/SocketServerSSL.h>
-using namespace osock;
 
+namespace osock
+{
 SocketServerSSL::SocketServerSSL(	int port,
 						std::string certFile,
 						std::string keyFile,
@@ -36,4 +37,5 @@ SocketServerSSL::SocketServerSSL(	int port,
 SocketServerSSL::~SocketServerSSL()
 {
 	DBG_DESTRUCTOR;
+}
 }

@@ -19,8 +19,9 @@
 #include <defines.h>
 #include <Socket/SocketServerUnsafe.h>
 #include <Security/SecurityServerUnsafe.h>
-using namespace osock;
 
+namespace osock
+{
 SocketServerUnsafe::SocketServerUnsafe(	int port, serviceType type) :
 	SocketServer( new SecurityServerUnsafe(port), type)
 {
@@ -30,4 +31,5 @@ SocketServerUnsafe::SocketServerUnsafe(	int port, serviceType type) :
 SocketServerUnsafe::~SocketServerUnsafe()
 {
 	DBG_DESTRUCTOR;
+}
 }

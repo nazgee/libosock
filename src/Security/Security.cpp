@@ -16,13 +16,13 @@
 	You should have received a copy of the GNU Lesser General Public License
 	along with libsockets.  If not, see <http://www.gnu.org/licenses/>.
 */
-
-#include <Security/Security.h>
 #include <defines.h>
+#include <Security/Security.h>
 
 #include <assert.h>
-using namespace osock;
 
+namespace osock
+{
 bool Security::libsslReady = false;
 
 Security::Security(BIO* bio) :
@@ -63,4 +63,5 @@ void Security::libsslInit()
 		SSL_library_init(); /* initialize library */
 		libsslReady = true;
 	}
+}
 }

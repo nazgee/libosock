@@ -21,8 +21,9 @@
 
 #include <string.h>
 #include <stdio.h>
-using namespace osock;
 
+namespace osock
+{
 Exception::Exception(const std::string& msg, int error) :
 	itsMessage(msg), itsError(error)
 {
@@ -37,4 +38,5 @@ Exception::~Exception(void)
 void Exception::Print(void) const
 {
 	std::cerr << itsMessage << itsError << std::endl;
+}
 }

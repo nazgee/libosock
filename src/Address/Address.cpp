@@ -19,18 +19,18 @@
 #include <defines.h>
 #include <Address/Address.h>
 #include <Exception/Exception.h>
-using namespace osock;
 
 #include <string.h>
 #include <stdlib.h>
 #include <errno.h>
-
 #include <arpa/inet.h>
 #include <netinet/ip.h>
 #include <netinet/tcp.h>
 #include <assert.h>
 #include <stdio.h>
 
+namespace osock
+{
 void Address::GetAddrInfo(char* host, char* port, struct addrinfo **ai)
 {
 	int error = getaddrinfo(host, port, NULL, ai);
@@ -216,7 +216,7 @@ std::string Address::GetHostAndPort(bool rebuild)
 	return s;
 }
 
-std::ostream& osock::operator <<(std::ostream &os, const Address *obj)
+std::ostream& operator <<(std::ostream &os, const Address *obj)
 {
 	if (obj->itsAddrInfo == NULL)
 		os << (void*) obj << "<undefined address>";
@@ -229,4 +229,5 @@ std::ostream& osock::operator <<(std::ostream &os, const Address *obj)
 std::ostream& operator <<(std::ostream &os, const Address &obj)
 {
 	return operator<<(os, &obj);
+}
 }

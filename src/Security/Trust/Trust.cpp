@@ -22,8 +22,10 @@
 #include <defines.h>
 #include <Security/Trust/Trust.h>
 #include <Exception/Exception.h>
-using namespace osock;
 
+
+namespace osock
+{
 Trust::Trust(std::string trustFile, trustMode mode, SSL_CTX* ctx) :
 	itsCTX(ctx),
 	itsMode(mode),
@@ -64,4 +66,5 @@ void Trust::Apply()
 	SSL_CTX_set_verify(itsCTX, itsMode, NULL);
 	/* certificates CA chain is hardcoded to 1 */
 	SSL_CTX_set_verify_depth(itsCTX,1);
+}
 }

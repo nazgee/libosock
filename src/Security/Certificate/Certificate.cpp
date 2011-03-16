@@ -17,13 +17,14 @@
 	along with libsockets.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <assert.h>
-
+#include <defines.h>
 #include <Security/Certificate/Certificate.h>
 #include <Exception/Exception.h>
-#include <defines.h>
-using namespace osock;
 
+#include <assert.h>
+
+namespace osock
+{
 Certificate::Certificate(std::string certFile, SSL_CTX* ctx) :
 	itsCTX(ctx),
 	itsCertFile(certFile)
@@ -65,4 +66,4 @@ void Certificate::Apply()
 		throw_SSL("SSL_CTX_use_certificate_file failed");
 	}
 }
-
+}

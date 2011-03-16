@@ -19,13 +19,12 @@
 #include <defines.h>
 #include <Security/SecurityClientSSL.h>
 #include <Exception/Exception.h>
-
 #include <Security/Certificate/Certificate.h>
 #include <Security/Key/Key.h>
 #include <Security/Trust/Trust.h>
-using namespace osock;
 
-
+namespace osock
+{
 SecurityClientSSL::SecurityClientSSL(	Address& Address,
 										std::string certFile,
 										std::string keyFile,
@@ -151,4 +150,5 @@ int SecurityClientSSL::passwordCallback(char *buf, int size, int rwflag, void *u
 		ERR_FUNC << "Could not retrieve password from userdata=" << userdata << std::endl;
 		return 0;
 	}
+}
 }

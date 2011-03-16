@@ -19,8 +19,9 @@
 #include <defines.h>
 #include <Security/SecurityClientUnsafe.h>
 #include <Socket/SocketClientUnsafe.h>
-using namespace osock;
 
+namespace osock
+{
 SocketClientUnsafe::SocketClientUnsafe(Address& serverAddress) :
 	SocketClient(new SecurityClientUnsafe(serverAddress))
 {
@@ -30,4 +31,5 @@ SocketClientUnsafe::SocketClientUnsafe(Address& serverAddress) :
 SocketClientUnsafe::~SocketClientUnsafe()
 {
 	DBG_DESTRUCTOR;
+}
 }

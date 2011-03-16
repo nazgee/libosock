@@ -19,8 +19,9 @@
 #include <defines.h>
 #include <Security/SecurityClientUnsafe.h>
 #include <Exception/Exception.h>
-using namespace osock;
 
+namespace osock
+{
 SecurityClientUnsafe::SecurityClientUnsafe(Address& serverAddress) :
 	SecurityClient(serverAddress)
 {
@@ -40,4 +41,5 @@ BIO* SecurityClientUnsafe::PopulateBIO()
 	}
 	DBG << "populated unsafe client BIO @host=" << itsSrverAddress.GetHostAndPort() << std::endl;
 	return bio;
+}
 }

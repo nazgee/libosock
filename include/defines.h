@@ -20,12 +20,13 @@
 #ifndef DEFINES_H_
 #define DEFINES_H_
 
+#include <Utilities/Logger.h>
+
 #include <sys/socket.h>
 #include <stdio.h>
 #include <iostream>
 #include <sstream>
 #include <typeinfo>
-#include <Utilities/Logger.h>
 
 namespace osock
 {

@@ -19,8 +19,9 @@
 #include <defines.h>
 #include <Security/SecurityClientSSL.h>
 #include <Socket/SocketClientSSL.h>
-using namespace osock;
 
+namespace osock
+{
 SocketClientSSL::SocketClientSSL(	Address& serverAddress,
 									std::string certFile,
 									std::string keyFile,
@@ -35,4 +36,5 @@ SocketClientSSL::SocketClientSSL(	Address& serverAddress,
 SocketClientSSL::~SocketClientSSL()
 {
 	DBG_DESTRUCTOR;
+}
 }

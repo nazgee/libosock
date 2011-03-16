@@ -18,11 +18,11 @@
 */
 #include <defines.h>
 #include <Message/StringMessage.h>
-#include <defines.h>
 
 #include <string.h>
-using namespace osock;
 
+namespace osock
+{
 StringMessage::StringMessage(unsigned short dataLen)
 {
 	itsData = new char[dataLen];
@@ -120,4 +120,5 @@ void StringMessage::ExpandData(const char* data, int dataLen)
 	}
 	itsDataSize += dataLen;
 	strncat(itsData, data, dataLen);
+}
 }

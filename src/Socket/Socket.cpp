@@ -19,20 +19,17 @@
 
 //#define DEBUG_WANTED
 
-#include <Socket/Socket.h>
 #include <defines.h>
+#include <Socket/Socket.h>
 #include <Exception/Exception.h>
 #include <Security/Security.h>
-using namespace osock;
 
 #include <assert.h>
 #include <arpa/inet.h>
-
 #include <boost/scoped_array.hpp>
 
-//TODO: create it in a more intelligent manner, maybe in a dedicated file?
-osock::NullStream nullstream;
-
+namespace osock
+{
 Socket::Socket(BIO* bio) :
 	itsSD(-1),
 	itsBIO(NULL),
@@ -141,7 +138,7 @@ int  Socket::Receive(Message& Msg, int Options) const
 	return bytes;
 }
 
-std::ostream& osock::operator <<(std::ostream &os,const Socket *obj)
+std::ostream& operator <<(std::ostream &os,const Socket *obj)
 {
 	os << (void*)obj << " itsBIO=" << obj->itsBIO << " itsSD=" << obj->itsSD;
 	return os;
@@ -150,4 +147,5 @@ std::ostream& osock::operator <<(std::ostream &os,const Socket *obj)
 std::ostream& operator <<(std::ostream &os,const Socket &obj)
 {
 	return operator<<(os, &obj);
+}
 }

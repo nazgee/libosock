@@ -18,8 +18,9 @@
 */
 #include <defines.h>
 #include <Security/SecurityServer.h>
-using namespace osock;
 
+namespace osock
+{
 SecurityServer::SecurityServer(int port) :
 	Security(),
 	itsListenPort(port)
@@ -36,4 +37,5 @@ bool SecurityServer::DoHandshake(BIO* clientToShake)
 {
 	UNUSED(clientToShake);
 	return true;
+}
 }

@@ -16,10 +16,10 @@
 	You should have received a copy of the GNU Lesser General Public License
 	along with libsockets.  If not, see <http://www.gnu.org/licenses/>.
 */
-
 #include <Security/SecurityClient.h>
-using namespace osock;
 
+namespace osock
+{
 SecurityClient::SecurityClient(Address& serverAddress) :
 	Security(),
 	itsSrverAddress(serverAddress)
@@ -35,4 +35,5 @@ SecurityClient::~SecurityClient()
 bool SecurityClient::IsServerVerified()
 {
 	return true;
+}
 }

@@ -17,11 +17,13 @@
 	along with libsockets.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <Security/Key/Key.h>
 #include <defines.h>
-#include <Exception/Exception.h>
-using namespace osock;
 
+#include <Security/Key/Key.h>
+#include <Exception/Exception.h>
+
+namespace osock
+{
 Key::Key(std::string keyFile, SSL_CTX* ctx) :
 	itsCTX(ctx),
 	itsKeyFile(keyFile)
@@ -60,4 +62,5 @@ void Key::Apply()
 	if (!SSL_CTX_check_private_key(itsCTX)) {
 		throw_SSL("Private key does not match the public certificate");
 	}
+}
 }
