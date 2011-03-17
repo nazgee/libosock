@@ -38,11 +38,14 @@ public:
 	void Accept(clientsHandler handler);
 	//! Accept client connection and call \a handler to deal with it; peer adress is stored in \a client
 	void Accept(Address& client, clientsHandler handler);
+	//! Checks whether this server instance is main- or forked-one.
+	bool IsMainInstance();
 
 private:
 	serviceType itsType;
 	SecurityServer* itsSecurityServer;
-
+	bool isForked;
+	void SetForked(bool forked);
 	BIO* AcceptIncoming();
 };
 } //namespace osock

@@ -33,7 +33,8 @@
 namespace osock
 {
 SocketServer::SocketServer(SecurityServer* security, serviceType type) :
-		Socket(security), itsType(type), itsSecurityServer(security)
+		Socket(security), itsType(type), itsSecurityServer(security),
+		isForked(false)
 {
 	/* first call of BIO_do_accpept does not really accept a connection-
 	 * instead it does some initial-setup only */
@@ -73,22 +74,48 @@ void SocketServer::Accept(Address& Addr, clientsHandler handler)
 	BIO* client = AcceptIncoming();
 	DBG << "serving new client ..." << std::endl;
 
-	boost::scoped_ptr<Socket> socket(new Socket(client));
-
 	//assign client address to given argument, so caller knows who had been served
 	Addr = Address(client);
 
 	switch (itsType) {
 		case serviceCallback: {
+			boost::scoped_ptr<Socket> socket(new Socket(client));
 			handler(*socket);
-			DBG << "... client served" << std::endl;
-		}
-			break;
-		case serviceProcess:
+			DBG << "Client served in main thread, using callback" << std::endl;
+		} break;
+		case serviceProcess: {
+			int childpid = fork();
+			if (childpid < 0)
+				throw StdException("Error while forking!");
+
+			if (childpid == 0) {
+				boost::scoped_ptr<Socket> socket(new Socket(client));
+				SetForked(true);
+				DBG << "Child is about to serve client using callback in" << std::endl;
+				handler(*socket);
+				DBG << "Child served client, using callback" << std::endl;
+			} else {
+				BIO_vfree(client);
+				DBG << "Parent spawned child, getting back to accepting" << std::endl;
+//				sleep(10);
+			}
+		} break;
 		case serviceThread:
 		default:
 			assert(0);
 	}
+}
+
+bool SocketServer::IsMainInstance()
+{
+	DBG << "isForked=" << isForked << std::endl;
+	return !isForked;
+}
+
+void SocketServer::SetForked(bool forked)
+{
+	DBG << "isForked=" << isForked << "->" << forked << std::endl;
+	isForked = forked;
 }
 
 BIO* SocketServer::AcceptIncoming()
