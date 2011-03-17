@@ -40,10 +40,9 @@ Security::~Security()
 BIO* Security::GetBIO()
 {
 	if (!itsBIO) {
-		itsBIO = PopulateBIO();
+		SetBIO(PopulateBIO());
 	}
 	assert(itsBIO != NULL);
-
 	return itsBIO;
 }
 
@@ -52,6 +51,12 @@ SSL* Security::GetSSL()
 	SSL* ssl = NULL;
 	BIO_get_ssl(GetBIO(), &ssl);
 	return ssl;
+}
+
+void Security::SetBIO(BIO* bio)
+{
+	assert(itsBIO != NULL);
+	itsBIO = bio;
 }
 
 void Security::libsslInit()

@@ -42,6 +42,7 @@ protected:
 	static bool libsslReady;
 	BIO* itsBIO;
 
+	void SetBIO(BIO* bio);
 	//!Populates new BIO with appropriate security
 	virtual BIO* PopulateBIO() = 0;
 	static void libsslInit();
