@@ -116,12 +116,19 @@ bool SecurityServerSSL::DoHandshake(BIO* clientToShake)
 	int ret;
 	do {
 		ret = BIO_do_handshake(clientToShake);
-		if ( (ret <= 0) && (!BIO_should_retry(clientToShake)) ){
-			//handshake failed
-			return false;
+		if (ret <= 0) {
+			if (!BIO_should_retry(clientToShake)) {
+				//handshake failed, and there is no need to retry
+				WRN << "handhaking client failed ultimately" << std::endl;
+				return false;
+			} else {
+				//handshake failed, but there is a chance it will succeed on retry
+				DBG << "failed, retrying as recommended by BIO_should_retry()" << std::endl;
+			}
 		}
-		DBG << "another attempt" << std::endl;
 	} while(ret <= 0);
+
+	DBG << "handshaking client succeeded" << std::endl;
 	return true;
 }
 
