@@ -43,9 +43,9 @@ std::ostream& Logger::Print(logLevel loglevel)
 		return nullingstream;
 	} else {
 		if (loglevel <= logDebug)
-			return std::cout;
+			return std::cout << getpid() << ">";
 		else
-			return std::cerr;
+			return std::cerr << getpid() << ">";
 	}
 }
 }
