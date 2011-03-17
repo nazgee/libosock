@@ -72,7 +72,7 @@ Socket::~Socket(void)
 		DBG << "freeing BIO chain, no security was provided" << std::endl;
 		BIO_free_all(itsBIO);
 	} else {
-		DBG << "freeing given security" << std::endl;
+		DBG << "freeing my security" << std::endl;
 		delete itsSecurity;
 	}
 }
@@ -101,7 +101,7 @@ int  Socket::Send(Message& Msg, int Options) const
 		i = BIO_write(itsBIO, &buf[off], bytes);
 		if (i <= 0) {
 			if (BIO_should_retry(itsBIO)) {
-				DBG << "sleeping before retrying write" << std::endl;
+				WRN << "sleeping before retrying write" << std::endl;
 				sleep(1);
 				continue;
 			}

@@ -46,6 +46,7 @@ protected:
 
 public:
 	Socket(BIO* bio);
+	//! \a security will be destroyed when ~Socket will be executed
 	Socket(Security* security);
 	Socket(Socket& sock);
 	virtual ~Socket(void);
