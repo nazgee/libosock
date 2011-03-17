@@ -17,7 +17,7 @@
 	along with libsockets.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-//#define DEBUG_WANTED
+#define DEBUG_WANTED
 
 #include <defines.h>
 #include <Socket/SocketServer.h>
@@ -91,9 +91,10 @@ void SocketServer::Accept(Address& Addr, clientsHandler handler)
 			if (childpid == 0) {
 				boost::scoped_ptr<Socket> socket(new Socket(client));
 				SetForked(true);
-				DBG << "Child is about to serve client using callback in" << std::endl;
+				DBG << "Child process is about to serve client" << std::endl;
 				handler(*socket);
-				DBG << "Child served client, using callback" << std::endl;
+				DBG << "Child process served client" << std::endl;
+				PreventBIOcleanup();
 			} else {
 				BIO_vfree(client);
 				DBG << "Parent spawned child, getting back to accepting" << std::endl;

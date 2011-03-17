@@ -16,6 +16,9 @@
 	You should have received a copy of the GNU Lesser General Public License
 	along with libsockets.  If not, see <http://www.gnu.org/licenses/>.
 */
+
+#define DEBUG_WANTED
+
 #include <defines.h>
 #include <Security/Security.h>
 
@@ -34,7 +37,19 @@ Security::Security(BIO* bio) :
 Security::~Security()
 {
 	DBG_DESTRUCTOR;
-	BIO_free_all(itsBIO);
+	if (doNotCleanup) {
+		DBG << "closing itsBIO was surpressed!" << std::endl;
+		return;
+	}
+
+	if (GetSSL() != NULL) {
+		DBG << "closing SSL itsBIO=" << itsBIO << std::endl;
+		SSL_shutdown(GetSSL());
+		SSL_free(GetSSL());
+	} else {
+		DBG << "closing raw itsBIO="<< itsBIO << std::endl;
+		BIO_free_all(itsBIO);
+	}
 }
 
 BIO* Security::GetBIO()
@@ -53,10 +68,20 @@ SSL* Security::GetSSL()
 	return ssl;
 }
 
+void Security::PreventBIOcleanup()
+{
+	doNotCleanup = true;
+}
+
 void Security::SetBIO(BIO* bio)
 {
-	assert(itsBIO != NULL);
 	itsBIO = bio;
+}
+
+BIO* Security::PopulateBIO()
+{
+	assert(itsBIO != NULL);
+	return itsBIO;
 }
 
 void Security::libsslInit()

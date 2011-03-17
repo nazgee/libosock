@@ -17,7 +17,7 @@
 	along with libsockets.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-//#define DEBUG_WANTED
+#define DEBUG_WANTED
 
 #include <defines.h>
 #include <Socket/Socket.h>
@@ -32,21 +32,16 @@ namespace osock
 {
 Socket::Socket(BIO* bio) :
 	itsSD(-1),
-	itsBIO(NULL),
-	itsSecurity(NULL)
+	itsSecurity(new Security(bio))
 {
-	SetBIO(bio);
-
 	DBG_CONSTRUCTOR;
 }
 
 Socket::Socket(Security* security) :
 	itsSD(-1),
-	itsBIO(NULL),
 	itsSecurity(security)
 {
 	assert(itsSecurity != NULL);
-	SetBIO(itsSecurity->GetBIO());
 
 	DBG_CONSTRUCTOR;
 }
@@ -67,27 +62,17 @@ Socket::Socket(Socket& sock)
 Socket::~Socket(void)
 {
 	DBG_DESTRUCTOR;
-	if (itsSecurity == NULL) {
-		//whole BIO chain has to be fred, in order to prevent memoryleak
-		DBG << "freeing BIO chain, no security was provided" << std::endl;
-		BIO_free_all(itsBIO);
-	} else {
-		DBG << "freeing my security" << std::endl;
-		delete itsSecurity;
-	}
+	delete itsSecurity;
 }
 
-void Socket::SetBIO(BIO* bio)
+BIO* Socket::GetBIO() const
 {
-	if ( ( itsBIO != NULL ) && (itsSecurity != NULL) ) {
-		throw Exception("Can not use SetBIO if Socket has it's own security!", EINVAL);
-	}
+	return itsSecurity->GetBIO();
+}
 
-	itsBIO = bio;
-	if (itsBIO != NULL)
-		itsSD = BIO_get_fd(itsBIO, NULL);
-	else
-		itsSD = -1;
+void Socket::PreventBIOcleanup()
+{
+	itsSecurity->PreventBIOcleanup();
 }
 
 int  Socket::Send(Message& Msg, int Options) const
@@ -98,9 +83,10 @@ int  Socket::Send(Message& Msg, int Options) const
 	int i, off = 0;
 	for (;;) {
 		DBG << "sending " << bytes << "B" << std::endl;
-		i = BIO_write(itsBIO, &buf[off], bytes);
+		BIO* b = GetBIO();
+		i = BIO_write(b, &buf[off], bytes);
 		if (i <= 0) {
-			if (BIO_should_retry(itsBIO)) {
+			if (BIO_should_retry(GetBIO())) {
 				WRN << "sleeping before retrying write" << std::endl;
 				sleep(1);
 				continue;
@@ -126,13 +112,13 @@ int  Socket::Receive(Message& Msg, int Options) const
 	boost::scoped_array<char> buf(new char[bufsize]);
 
 	do {
-		bytes = BIO_read(itsBIO, buf.get(), bufsize);
+		bytes = BIO_read(GetBIO(), buf.get(), bufsize);
 		if (bytes == 0) {
 			throw_SSL("BIO_read returned 0 - client disconnected");
 		}
 
 		if (bytes < 0) {
-			if (BIO_should_retry(itsBIO)) {
+			if (BIO_should_retry(GetBIO())) {
 				DBG << "sleeping before retrying read" << std::endl;
 				//XXX is sleeping here really needed?!
 				sleep(1);
@@ -150,7 +136,7 @@ int  Socket::Receive(Message& Msg, int Options) const
 
 std::ostream& operator <<(std::ostream &os,const Socket *obj)
 {
-	os << (void*)obj << " itsBIO=" << obj->itsBIO << " itsSD=" << obj->itsSD;
+	os << (void*)obj << " itsBIO=" << obj->GetBIO() << " itsSD=" << obj->itsSD;
 	return os;
 }
 

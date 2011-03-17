@@ -37,14 +37,16 @@ public:
 
 	BIO* GetBIO();
 	SSL* GetSSL();
+	void PreventBIOcleanup();
 
 protected:
 	static bool libsslReady;
 	BIO* itsBIO;
+	bool doNotCleanup;
 
 	void SetBIO(BIO* bio);
 	//!Populates new BIO with appropriate security
-	virtual BIO* PopulateBIO() = 0;
+	virtual BIO* PopulateBIO();
 	static void libsslInit();
 };
 } //namespace osock

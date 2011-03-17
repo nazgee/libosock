@@ -39,7 +39,7 @@ Logger::~Logger()
 
 std::ostream& Logger::Print(logLevel loglevel)
 {
-	if(loglevel < printLoglevel) {
+	if(loglevel <= printLoglevel) {
 		return nullingstream;
 	} else {
 		if (loglevel <= logDebug)

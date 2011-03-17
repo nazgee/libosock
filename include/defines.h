@@ -35,6 +35,10 @@ namespace osock
 #undef DEBUG_FORCED_PRINTOUTS
 #undef DEBUG_FORCED_CONSTRUCTORS
 #undef DEBUG_FORCED_DESTRUCTORS
+
+#undef DEBUG_SURPRESSED_PRINTOUTS
+#undef DEBUG_SURPRESSED_CONSTRUCTORS
+#undef DEBUG_SURPRESSED_DESTRUCTORS
 /*
  * DEBUG_FORCED_ZZZ - should be used only locally (here) - it will force
  * 		turning on given category of debugs GLOBALLY - regardless of
@@ -48,6 +52,10 @@ namespace osock
 //#define DEBUG_FORCED_CONSTRUCTORS
 //#define DEBUG_FORCED_DESTRUCTORS
 
+#define DEBUG_SURPRESSED_PRINTOUTS
+#define DEBUG_SURPRESSED_CONSTRUCTORS
+#define DEBUG_SURPRESSED_DESTRUCTORS
+
 #define LOG_SEPARATOR	" | "
 
 //TODO demangle class name from typeid
@@ -58,7 +66,7 @@ namespace osock
 	outstream << header << __func__ << " line:" << __LINE__ << separator
 
 //debugs logging
-#if defined(DEBUG_WANTED) || defined(DEBUG_FORCED_PRINTOUTS)
+#if (defined(DEBUG_WANTED) || defined(DEBUG_FORCED_PRINTOUTS)) && (!defined(DEBUG_SURPRESSED_PRINTOUTS))
 #define DBG 			LOGLINE_CLASS(Logger::Print(Logger::logDebug), "dbg   ", LOG_SEPARATOR)
 #define DBG_FUNC		LOGLINE_FUNC(Logger::Print(Logger::logDebug), "dbg   ", LOG_SEPARATOR)
 #else
@@ -66,13 +74,13 @@ extern struct osock::NullStream nullstream;
 #define DBG 			LOGLINE_CLASS(Logger::Print(Logger::logOff), "dbg   ", LOG_SEPARATOR)
 #define DBG_FUNC		LOGLINE_FUNC(Logger::Print(Logger::logOff), "dbg   ", LOG_SEPARATOR)
 #endif
-#if defined(DEBUG_WANTED) || defined(DEBUG_FORCED_CONSTRUCTORS)
+#if (defined(DEBUG_WANTED) || defined(DEBUG_FORCED_CONSTRUCTORS)) && (!defined(DEBUG_SURPRESSED_PRINTOUTS))
 #define DBG_CONSTRUCTOR	LOGLINE_FUNC(Logger::Print(Logger::logDebug), "dbg  +", LOG_SEPARATOR) << this << std::endl
 #else
 extern struct osock::NullStream nullstream;
 #define DBG_CONSTRUCTOR	LOGLINE_FUNC(Logger::Print(Logger::logOff), "dbg  +", LOG_SEPARATOR) << this << std::endl
 #endif
-#if defined(DEBUG_WANTED) || defined(DEBUG_FORCED_DESTRUCTORS)
+#if (defined(DEBUG_WANTED) || defined(DEBUG_FORCED_DESTRUCTORS)) && (!defined(DEBUG_SURPRESSED_PRINTOUTS))
 #define DBG_DESTRUCTOR	LOGLINE_FUNC(Logger::Print(Logger::logDebug), "dbg  ", LOG_SEPARATOR) << this << std::endl
 #else
 extern struct osock::NullStream nullstream;

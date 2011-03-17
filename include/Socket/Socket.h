@@ -36,13 +36,12 @@ class Socket
 {
 private:
 	int itsSD;
-	BIO* itsBIO;
 	Security* itsSecurity;
-	void SetBIO(BIO* bio);
 
 protected:
-	BIO* GetBIO() { return itsBIO; }
+	BIO* GetBIO() const;
 	int GetSD() { return itsSD; }
+	void PreventBIOcleanup();
 
 public:
 	Socket(BIO* bio);
