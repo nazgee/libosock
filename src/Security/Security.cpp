@@ -29,7 +29,8 @@ namespace osock
 bool Security::libsslReady = false;
 
 Security::Security(BIO* bio) :
-	itsBIO(bio)
+	itsBIO(bio),
+	doNotCleanup(false)
 {
 	DBG_CONSTRUCTOR;
 }
