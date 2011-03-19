@@ -35,7 +35,7 @@ SecurityClientUnsafe::~SecurityClientUnsafe()
 
 BIO* SecurityClientUnsafe::PopulateBIO()
 {
-	BIO* bio = BIO_new_connect( const_cast<char *>(itsSrverAddress.GetHostAndPort().data()) );
+	BIO* bio = BIO_new_connect( const_cast<char *>(itsSrverAddress.GetHostAndPort().c_str()) );
 	if(bio == NULL) {
 		throw_SSL("BIO_new_connect failed");
 	}

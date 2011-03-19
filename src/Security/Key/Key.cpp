@@ -55,7 +55,7 @@ void Key::Apply()
 	}
 
 	/* set the private key from keyFile */
-	if (SSL_CTX_use_PrivateKey_file(itsCTX, itsKeyFile.data(), SSL_FILETYPE_PEM) <= 0) {
+	if (SSL_CTX_use_PrivateKey_file(itsCTX, itsKeyFile.c_str(), SSL_FILETYPE_PEM) <= 0) {
 		throw_SSL("Loading Private key failed");
 	}
 	/* verify private key */

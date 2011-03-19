@@ -133,7 +133,7 @@ BIO* SecurityClientSSL::PopulateBIO()
 	/*The hostname can be an IP address. The hostname can also include the port
 	 * in the form hostname:port . It is also acceptable to use the form
 	 * "hostname/any/other/path" or "hostname:port/any/other/path".*/
-	BIO_set_conn_hostname(bio, itsSrverAddress.GetHostAndPort().data());
+	BIO_set_conn_hostname(bio, itsSrverAddress.GetHostAndPort().c_str());
 
 	DBG << "populated safe client BIO @host=" << itsSrverAddress.GetHostAndPort() << std::endl;
 	return bio;
@@ -145,7 +145,7 @@ int SecurityClientSSL::passwordCallback(char *buf, int size, int rwflag, void *u
 
 	if (obj != NULL) {
 		DBG_FUNC << "Requesting password from "<< obj << std::endl;
-		strncpy(buf, obj->itsPassword.data(), size);
+		strncpy(buf, obj->itsPassword.c_str(), size);
 		buf[size - 1] = '\0';
 		return (strlen(buf));
 

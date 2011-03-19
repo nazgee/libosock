@@ -104,7 +104,7 @@ BIO* SecurityServerSSL::PopulateBIO()
 	 * BIO_set_conn_port() for connect BIOs, that is it can be a numerical port
 	 * string or a string to lookup using getservbyname() and a string table. */
 	std::string port = to_string(itsListenPort);
-	BIO* accept_bio = BIO_new_accept( const_cast<char *>(port.data()) );
+	BIO* accept_bio = BIO_new_accept( const_cast<char *>(port.c_str()) );
 	if(accept_bio == NULL) {
 		throw_SSL("BIO_new_accept failed");
 	}
@@ -161,7 +161,7 @@ int SecurityServerSSL::passwordCallback(char *buf, int size, int rwflag, void *u
 
 	if (obj != NULL) {
 		DBG_FUNC << "Requesting password from "<< obj << std::endl;
-		strncpy(buf, obj->itsPassword.data(), size);
+		strncpy(buf, obj->itsPassword.c_str(), size);
 		buf[size - 1] = '\0';
 		return (strlen(buf));
 

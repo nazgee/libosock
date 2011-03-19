@@ -37,7 +37,7 @@ SecurityServerUnsafe::~SecurityServerUnsafe()
 BIO* SecurityServerUnsafe::PopulateBIO()
 {
 	std::string port = to_string(itsListenPort);
-	BIO* bio = BIO_new_accept(const_cast<char*>(port.data()));
+	BIO* bio = BIO_new_accept(const_cast<char*>(port.c_str()));
 	if (bio == NULL) {
 		throw_SSL("BIO_new_accept failed");
 	}

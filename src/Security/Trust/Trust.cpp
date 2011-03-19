@@ -62,7 +62,7 @@ void Trust::Apply()
 		return;
 	}
 
-	SSL_CTX_load_verify_locations(itsCTX, itsTrutsFile.data(), NULL);
+	SSL_CTX_load_verify_locations(itsCTX, itsTrutsFile.c_str(), NULL);
 	SSL_CTX_set_verify(itsCTX, itsMode, NULL);
 	/* certificates CA chain is hardcoded to 1 */
 	SSL_CTX_set_verify_depth(itsCTX,1);

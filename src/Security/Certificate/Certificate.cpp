@@ -62,7 +62,7 @@ void Certificate::Apply()
 		return;
 	}
 
-	if (SSL_CTX_use_certificate_file(itsCTX, itsCertFile.data(), SSL_FILETYPE_PEM)<= 0) {
+	if (SSL_CTX_use_certificate_file(itsCTX, itsCertFile.c_str(), SSL_FILETYPE_PEM)<= 0) {
 		throw_SSL("SSL_CTX_use_certificate_file failed");
 	}
 }
