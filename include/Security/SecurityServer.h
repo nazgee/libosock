@@ -29,12 +29,11 @@ class SecurityServer: public Security
 public:
 	SecurityServer(int port);
 	virtual ~SecurityServer();
-	//! Attempts a handshake on a given BIO, returns true on success
-	virtual bool DoHandshake(BIO* clientToShake);
+	//! Attempts a handshake on a given BIO, \return pointer to BIO chain (NULL on failure)
+	virtual BIO* DoHandshake(BIO* clientToShake);
 
 protected:
 	int itsListenPort;
-	virtual BIO* PopulateBIO() = 0;
 };
 } //namespace osock
 

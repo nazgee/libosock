@@ -17,7 +17,7 @@
 	along with libsockets.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#define DEBUG_WANTED
+//#define DEBUG_WANTED
 
 #include <defines.h>
 #include <Security/Trust/Trust.h>

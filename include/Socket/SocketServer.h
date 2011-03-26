@@ -34,19 +34,22 @@ public:
 	SocketServer(SecurityServer* security, serviceType type = serviceCallback);
 	virtual ~SocketServer(void);
 
-	//! Accept client connection and call \a handler to deal with it
-	void Accept(clientsHandler handler);
 	//! Accept client connection and call \a handler to deal with it; peer adress is stored in \a client
-	void Accept(Address& client, clientsHandler handler);
+	virtual void Accept(Address& client, clientsHandler handler);
 	//! Checks whether this server instance is main- or forked-one.
 	bool IsMainInstance();
 
 private:
-	serviceType itsType;
 	SecurityServer* itsSecurityServer;
 	bool isForked;
+
+protected:
+	serviceType itsType;
 	void SetForked(bool forked);
+	//! Waits for client to connect \return BIO* of the connected client
 	BIO* AcceptIncoming();
+	//! Performs cleanup on a given client
+	virtual void ClientCleanup(BIO* bio2cleaup);
 };
 } //namespace osock
 

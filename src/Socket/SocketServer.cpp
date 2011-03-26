@@ -17,7 +17,7 @@
 	along with libsockets.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#define DEBUG_WANTED
+//#define DEBUG_WANTED
 
 #include <defines.h>
 #include <Socket/SocketServer.h>
@@ -25,20 +25,20 @@
 #include <Security/SecurityServer.h>
 #include <Security/SecurityServerSSL.h>
 #include <Security/SecurityServerUnsafe.h>
+#include <Utilities/SSLWrap.h>
 
 #include <assert.h>
 #include <arpa/inet.h>
-#include <boost/scoped_ptr.hpp>
 
 namespace osock
 {
 SocketServer::SocketServer(SecurityServer* security, serviceType type) :
-		Socket(security), itsType(type), itsSecurityServer(security),
-		isForked(false)
+		Socket(security), itsSecurityServer(security),
+		isForked(false), itsType(type)
 {
-	/* first call of BIO_do_accpept does not really accept a connection-
-	 * instead it does some initial-setup only */
-	if (BIO_do_accept(GetBIO()) <= 0) {
+	// First call of BIO_do_accpept does not really accept a connection-
+	// instead it does some initial-setup only
+	if (SSLWrap::BIO_do_accept_(GetBIO()) <= 0) {
 		throw_SSL("BIO_do_accept failed");
 	}
 	DBG_CONSTRUCTOR;
@@ -49,61 +49,102 @@ SocketServer::~SocketServer(void)
 	DBG_DESTRUCTOR;
 }
 
-void SocketServer::Accept(clientsHandler handler)
-{
-	BIO* client = AcceptIncoming();
-	DBG << "serving new client ..." << std::endl;
-
-	boost::scoped_ptr<Socket> socket(new Socket(client));
-	switch (itsType) {
-		case serviceCallback: {
-			handler(*socket);
-			DBG << "... client served" << std::endl;
-			;
-		}
-			break;
-		case serviceProcess:
-		case serviceThread:
-		default:
-			assert(0);
-	}
-}
-
 void SocketServer::Accept(Address& Addr, clientsHandler handler)
 {
-	BIO* client = AcceptIncoming();
-	DBG << "serving new client ..." << std::endl;
+	while (1) {
+		BIO* client = AcceptIncoming();
+		// Assign client address, so caller knows who had been served
+		Addr = Address(client);
 
-	//assign client address to given argument, so caller knows who had been served
-	Addr = Address(client);
+		DBG << "serving new client: " << Addr << std::endl;
 
-	switch (itsType) {
-		case serviceCallback: {
-			boost::scoped_ptr<Socket> socket(new Socket(client));
-			handler(*socket);
-			DBG << "Client served in main thread, using callback" << std::endl;
-		} break;
-		case serviceProcess: {
-			int childpid = fork();
-			if (childpid < 0)
-				throw StdException("Error while forking!");
+		switch (itsType) {
+			case serviceCallback: {
+				// Perform handshake to decide whether client is authorized
+				BIO* auth = itsSecurityServer->DoHandshake(client);
+				if (auth == NULL) {
+					DBG << "Handshake with " << Addr << " failed"
+							<< std::endl;
+					ClientCleanup(client);
+					// Let's wait for another client
+					break;
+				}
 
-			if (childpid == 0) {
-				boost::scoped_ptr<Socket> socket(new Socket(client));
-				SetForked(true);
-				DBG << "Child process is about to serve client" << std::endl;
-				handler(*socket);
-				DBG << "Child process served client" << std::endl;
-				PreventBIOcleanup();
-			} else {
-				BIO_vfree(client);
-				DBG << "Parent spawned child, getting back to accepting" << std::endl;
-//				sleep(10);
-			}
-		} break;
-		case serviceThread:
-		default:
-			assert(0);
+				// Call handler to serve client
+				try {
+					Socket socket(auth);
+					handler(socket);
+				} catch (std::exception &e) {
+					WRN << "Handler threw " << e.what() << std::endl;
+					ClientCleanup(auth);
+					throw;
+				}
+
+				//perform some cleanup
+				ClientCleanup(auth);
+				DBG << "Client: " << Addr << " served" << std::endl;
+				return;
+			} break;
+			case serviceProcess: {
+				int childpid = fork();
+				if (childpid < 0)
+					throw StdException("Error while forking!");
+
+				if (childpid == 0) {
+					// We have to make sure that parent's BIO will not be closed
+					// when we (child) will be cleaning up
+					if (SSLWrap::BIO_set_close_(GetBIO(), BIO_NOCLOSE) != 1)
+						throw_SSL("BIO_set_close failed!");
+					SetForked(true);
+
+					// Perform handshake to decide whether client is authorized
+					BIO* auth = itsSecurityServer->DoHandshake(client);
+					if (auth == NULL) {
+						DBG << "Handshake with " << Addr << " failed"
+								<< std::endl;
+						ClientCleanup(client);
+						// Let's wait for another client
+						break;
+					}
+
+					// Call handler to serve client
+					try {
+						Socket socket(auth);
+						handler(socket);
+					} catch (std::exception &e) {
+						WRN << "Handler threw " << e.what() << std::endl;
+						ClientCleanup(auth);
+						throw;
+					}
+
+					// Perform some cleanup
+					DBG << "Client: " << Addr << " served" << std::endl;
+					ClientCleanup(auth);
+					return;
+				} else {
+					// We have to make sure that child's BIO will not be closed
+					// when we (parent) will be cleaning up
+					if (SSLWrap::BIO_set_close_(client, BIO_NOCLOSE) != 1)
+						throw_SSL("BIO_set_close failed!");
+
+					// Perform some cleanup
+					DBG << "Getting back to accepting clients" << std::endl;
+					ClientCleanup(client);
+					return;
+				}
+			} break;
+			case serviceThread: {
+#if defined(OPENSSL_THREADS)
+				// Thread support enabled
+				assert(0); //TODO implement it
+#else
+				// No thread support
+				assert(0);
+#endif
+			} break;
+			default:
+				assert(0);
+		}
 	}
 }
 
@@ -122,27 +163,25 @@ void SocketServer::SetForked(bool forked)
 BIO* SocketServer::AcceptIncoming()
 {
 	BIO* out;
-	do
-	{
-		if (BIO_do_accept(GetBIO()) <= 0) {
-			throw_SSL("BIO_do_accept failed");
-		}
 
-		out = BIO_pop(GetBIO());
-		if (out == NULL) {
-			throw_SSL("BIO_pop failed");
-		}
+	// Sit and wait on our accept channel
+	if (SSLWrap::BIO_do_accept_(GetBIO()) <= 0) {
+		throw_SSL("BIO_do_accept failed");
+	}
 
-		if (itsSecurityServer->DoHandshake(out)) {
-			return out;
-		}
-
-		BIO_vfree(out);
-		DBG << "DoHandshake failed, waiting for another client ("
-			<< ERR_error_string(ERR_get_error(), 0) << ")" << std::endl;
-
-	} while (1);
+	// Pop out incoming client from our accept channel
+	out = SSLWrap::BIO_pop(GetBIO());
+	if (out == NULL) {
+		throw_SSL("BIO_pop failed");
+	}
 
 	return out;
 }
+
+void SocketServer::ClientCleanup(BIO* client2cleanup)
+{
+	DBG << "Performing cleanup on a client's BIO chain:" << client2cleanup << std::endl;
+	SSLWrap::BIO_free_all(client2cleanup);
+}
+
 }

@@ -18,6 +18,10 @@
 */
 #include <defines.h>
 #include <Socket/SocketServerSSL.h>
+#include <Exception/Exception.h>
+#include <Utilities/SSLWrap.h>
+
+#include <boost/scoped_ptr.hpp>
 
 namespace osock
 {
@@ -28,7 +32,7 @@ SocketServerSSL::SocketServerSSL(	int port,
 						std::string password,
 						SecurityServerSSL::securityMode method,
 						serviceType type) :
-	SocketServer( new SecurityServerSSL(port, certFile, keyFile, trustFile, password, method),
+	SocketServer( itsSecurityServerSSL = new SecurityServerSSL(port, certFile, keyFile, trustFile, password, method),
 			type)
 {
 	DBG_CONSTRUCTOR;
@@ -38,4 +42,5 @@ SocketServerSSL::~SocketServerSSL()
 {
 	DBG_DESTRUCTOR;
 }
+
 }

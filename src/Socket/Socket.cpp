@@ -17,7 +17,7 @@
 	along with libsockets.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#define DEBUG_WANTED
+//#define DEBUG_WANTED
 
 #include <defines.h>
 #include <Socket/Socket.h>
@@ -34,6 +34,7 @@ Socket::Socket(BIO* bio) :
 	itsSD(-1),
 	itsSecurity(new Security(bio))
 {
+	BIO_get_fd(GetBIO(), &itsSD);
 	DBG_CONSTRUCTOR;
 }
 
@@ -42,6 +43,7 @@ Socket::Socket(Security* security) :
 	itsSecurity(security)
 {
 	assert(itsSecurity != NULL);
+	BIO_get_fd(GetBIO(), &itsSD);
 
 	DBG_CONSTRUCTOR;
 }
@@ -68,11 +70,6 @@ Socket::~Socket(void)
 BIO* Socket::GetBIO() const
 {
 	return itsSecurity->GetBIO();
-}
-
-void Socket::PreventBIOcleanup()
-{
-	itsSecurity->PreventBIOcleanup();
 }
 
 int  Socket::Send(Message& Msg, int Options) const

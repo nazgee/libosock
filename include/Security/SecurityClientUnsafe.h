@@ -29,9 +29,8 @@ class SecurityClientUnsafe: public SecurityClient
 public:
 	SecurityClientUnsafe(Address& serverAddress);
 	virtual ~SecurityClientUnsafe();
+	void ReleaseBIO();
 
-protected:
-	virtual BIO* PopulateBIO();
 };
 } //namespace osock
 

@@ -17,10 +17,11 @@
 	along with libsockets.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#define DEBUG_WANTED
+//#define DEBUG_WANTED
 
 #include <defines.h>
 #include <Security/Security.h>
+#include <Utilities/SSLWrap.h>
 
 #include <assert.h>
 
@@ -38,51 +39,27 @@ Security::Security(BIO* bio) :
 Security::~Security()
 {
 	DBG_DESTRUCTOR;
-	if (doNotCleanup) {
-		DBG << "closing itsBIO was surpressed!" << std::endl;
-		return;
-	}
-
-	if (GetSSL() != NULL) {
-		DBG << "closing SSL itsBIO=" << itsBIO << std::endl;
-		SSL_shutdown(GetSSL());
-		SSL_free(GetSSL());
-	} else {
-		DBG << "closing raw itsBIO="<< itsBIO << std::endl;
-		BIO_free_all(itsBIO);
-	}
 }
 
-BIO* Security::GetBIO()
+BIO* Security::GetBIO() const
 {
-	if (!itsBIO) {
-		SetBIO(PopulateBIO());
-	}
 	assert(itsBIO != NULL);
 	return itsBIO;
 }
 
-SSL* Security::GetSSL()
-{
-	SSL* ssl = NULL;
-	BIO_get_ssl(GetBIO(), &ssl);
-	return ssl;
-}
-
-void Security::PreventBIOcleanup()
+void Security::PreventCleanup()
 {
 	doNotCleanup = true;
+}
+
+bool Security::IsCleanupPrevented()
+{
+	return doNotCleanup;
 }
 
 void Security::SetBIO(BIO* bio)
 {
 	itsBIO = bio;
-}
-
-BIO* Security::PopulateBIO()
-{
-	assert(itsBIO != NULL);
-	return itsBIO;
 }
 
 void Security::libsslInit()

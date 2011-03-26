@@ -36,7 +36,6 @@ public:
 
 protected:
 	Address itsSrverAddress;
-	virtual BIO* PopulateBIO() = 0;
 };
 } //namespace osock
 

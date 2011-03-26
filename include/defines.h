@@ -52,9 +52,9 @@ namespace osock
 //#define DEBUG_FORCED_CONSTRUCTORS
 //#define DEBUG_FORCED_DESTRUCTORS
 
-#define DEBUG_SURPRESSED_PRINTOUTS
-#define DEBUG_SURPRESSED_CONSTRUCTORS
-#define DEBUG_SURPRESSED_DESTRUCTORS
+//#define DEBUG_SURPRESSED_PRINTOUTS
+//#define DEBUG_SURPRESSED_CONSTRUCTORS
+//#define DEBUG_SURPRESSED_DESTRUCTORS
 
 #define LOG_SEPARATOR	" | "
 
@@ -65,35 +65,40 @@ namespace osock
 #define LOGLINE_FUNC(outstream, header, separator) \
 	outstream << header << __func__ << " line:" << __LINE__ << separator
 
+#define LOGLINE_FUNC_NOLINE(outstream, header, separator) \
+	outstream << header << __func__ << separator
+
 //debugs logging
 #if (defined(DEBUG_WANTED) || defined(DEBUG_FORCED_PRINTOUTS)) && (!defined(DEBUG_SURPRESSED_PRINTOUTS))
-#define DBG 			LOGLINE_CLASS(Logger::Print(Logger::logDebug), "dbg   ", LOG_SEPARATOR)
-#define DBG_FUNC		LOGLINE_FUNC(Logger::Print(Logger::logDebug), "dbg   ", LOG_SEPARATOR)
+#define DBG 			LOGLINE_CLASS(osock::Logger::Print(osock::Logger::logDebug), "dbg   ", LOG_SEPARATOR)
+#define DBG_FUNC		LOGLINE_FUNC(osock::Logger::Print(osock::Logger::logDebug), "dbg   ", LOG_SEPARATOR)
+#define DBG_FUNC_NOLINE		LOGLINE_FUNC_NOLINE(osock::Logger::Print(osock::Logger::logDebug), "dbg   ", " ")
 #else
 extern struct osock::NullStream nullstream;
-#define DBG 			LOGLINE_CLASS(Logger::Print(Logger::logOff), "dbg   ", LOG_SEPARATOR)
-#define DBG_FUNC		LOGLINE_FUNC(Logger::Print(Logger::logOff), "dbg   ", LOG_SEPARATOR)
+#define DBG 			LOGLINE_CLASS(osock::Logger::Print(osock::Logger::logOff), "dbg   ", LOG_SEPARATOR)
+#define DBG_FUNC		LOGLINE_FUNC(osock::Logger::Print(osock::Logger::logOff), "dbg   ", LOG_SEPARATOR)
+#define DBG_FUNC_NOLINE		LOGLINE_FUNC_NOLINE(osock::Logger::Print(osock::Logger::logOff), "dbg   ", LOG_SEPARATOR)
 #endif
 #if (defined(DEBUG_WANTED) || defined(DEBUG_FORCED_CONSTRUCTORS)) && (!defined(DEBUG_SURPRESSED_PRINTOUTS))
-#define DBG_CONSTRUCTOR	LOGLINE_FUNC(Logger::Print(Logger::logDebug), "dbg  +", LOG_SEPARATOR) << this << std::endl
+#define DBG_CONSTRUCTOR	LOGLINE_FUNC(Logger::Print(osock::Logger::logDebug), "dbg  +", LOG_SEPARATOR) << this << std::endl
 #else
 extern struct osock::NullStream nullstream;
-#define DBG_CONSTRUCTOR	LOGLINE_FUNC(Logger::Print(Logger::logOff), "dbg  +", LOG_SEPARATOR) << this << std::endl
+#define DBG_CONSTRUCTOR	LOGLINE_FUNC(osock::Logger::Print(osock::Logger::logOff), "dbg  +", LOG_SEPARATOR) << this << std::endl
 #endif
 #if (defined(DEBUG_WANTED) || defined(DEBUG_FORCED_DESTRUCTORS)) && (!defined(DEBUG_SURPRESSED_PRINTOUTS))
-#define DBG_DESTRUCTOR	LOGLINE_FUNC(Logger::Print(Logger::logDebug), "dbg  ", LOG_SEPARATOR) << this << std::endl
+#define DBG_DESTRUCTOR	LOGLINE_FUNC(osock::Logger::Print(osock::Logger::logDebug), "dbg  ", LOG_SEPARATOR) << this << std::endl
 #else
 extern struct osock::NullStream nullstream;
-#define DBG_DESTRUCTOR	LOGLINE_FUNC(Logger::Print(Logger::logOff), "dbg  ", LOG_SEPARATOR) << this << std::endl
+#define DBG_DESTRUCTOR	LOGLINE_FUNC(osock::Logger::Print(osock::Logger::logOff), "dbg  ", LOG_SEPARATOR) << this << std::endl
 #endif
 
 //warnings logging
-#define WRN 			LOGLINE_CLASS(Logger::Print(Logger::logWarn), "wrn ? ", LOG_SEPARATOR)
-#define WRN_FUNC		LOGLINE_FUNC(Logger::Print(Logger::logWarn), "wrn ? ", LOG_SEPARATOR)
+#define WRN 			LOGLINE_CLASS(osock::Logger::Print(osock::Logger::logWarn), "wrn ? ", LOG_SEPARATOR)
+#define WRN_FUNC		LOGLINE_FUNC(osock::Logger::Print(osock::Logger::logWarn), "wrn ? ", LOG_SEPARATOR)
 
 //errors logging
-#define ERR 			LOGLINE_CLASS(Logger::Print(Logger::logError), "ERR ! ", LOG_SEPARATOR)
-#define ERR_FUNC		LOGLINE_FUNC(Logger::Print(Logger::logError), "ERR ! ", LOG_SEPARATOR)
+#define ERR 			LOGLINE_CLASS(osock::Logger::Print(osock::Logger::logError), "ERR ! ", LOG_SEPARATOR)
+#define ERR_FUNC		LOGLINE_FUNC(osock::Logger::Print(osock::Logger::logError), "ERR ! ", LOG_SEPARATOR)
 
 template <class T>
 inline std::string to_string (const T& t)

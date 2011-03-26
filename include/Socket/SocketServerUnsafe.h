@@ -24,11 +24,14 @@
 
 namespace osock
 {
+class SecurityServerUnsafe;
 class SocketServerUnsafe: public SocketServer
 {
 public:
 	SocketServerUnsafe(	int port, serviceType type = serviceCallback);
 	virtual ~SocketServerUnsafe();
+protected:
+	SecurityServerUnsafe* itsSecurityServerUnsafe;
 };
 } //namespace osock
 

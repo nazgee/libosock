@@ -20,29 +20,36 @@
 #include <defines.h>
 #include <Security/SecurityServerUnsafe.h>
 #include <Exception/Exception.h>
+#include <Utilities/SSLWrap.h>
 
 namespace osock
 {
 SecurityServerUnsafe::SecurityServerUnsafe(int listenPort) :
 	SecurityServer(listenPort)
 {
+	std::string port = to_string(itsListenPort);
+	BIO* bio = SSLWrap::BIO_new_accept(const_cast<char*>(port.c_str()));
+	if (bio == NULL) {
+		throw_SSL("BIO_new_accept failed");
+	}
+
+	DBG << "populated unsafe server BIO @port=" << itsListenPort << std::endl;
+	SetBIO(bio);
+
 	DBG_CONSTRUCTOR;
 }
 
 SecurityServerUnsafe::~SecurityServerUnsafe()
 {
 	DBG_DESTRUCTOR;
-}
-
-BIO* SecurityServerUnsafe::PopulateBIO()
-{
-	std::string port = to_string(itsListenPort);
-	BIO* bio = BIO_new_accept(const_cast<char*>(port.c_str()));
-	if (bio == NULL) {
-		throw_SSL("BIO_new_accept failed");
+	if (IsCleanupPrevented()) {
+		DBG << "NOT releasing acceptBIO(raw); "<< itsBIO << std::endl;
+		return;
 	}
 
-	DBG << "populated unsafe server BIO @port=" << itsListenPort << std::endl;
-	return bio;
+	DBG << "releasing acceptBIO(raw); "<< itsBIO << std::endl;
+	SSLWrap::BIO_free_all(itsBIO);
+	itsBIO = NULL;
 }
+
 }

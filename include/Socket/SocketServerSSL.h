@@ -36,6 +36,8 @@ public:
 				SecurityServerSSL::securityMode method = SecurityServerSSL::securitySSLv2,
 				serviceType type = serviceCallback);
 	virtual ~SocketServerSSL();
+private:
+	SecurityServerSSL* itsSecurityServerSSL;
 };
 } //namespace osock
 

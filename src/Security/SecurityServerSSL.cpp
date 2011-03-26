@@ -25,6 +25,7 @@
 #include <Security/Certificate/Certificate.h>
 #include <Security/Key/Key.h>
 #include <Security/Trust/Trust.h>
+#include <Utilities/SSLWrap.h>
 
 namespace osock
 {
@@ -35,6 +36,7 @@ SecurityServerSSL::SecurityServerSSL(int listenPort,
 		std::string password,
 		securityMode method) :
 	SecurityServer(listenPort),
+	itsSSL(NULL),
 	itsSecurityMode(method),
 	itsCertificate(new Certificate()), itsKey(new Key()), itsTrust(new Trust())
 {
@@ -43,6 +45,42 @@ SecurityServerSSL::SecurityServerSSL(int listenPort,
 	SetTrust(trustFile);
 	itsPassword = password;
 	libsslInit();
+
+	itsCTX = SSLWrap::SSL_CTX_new(GetMethod()); /* create new context from method */
+	if (itsCTX == NULL) {
+		throw_SSL("SSL_CTX_new failed");
+	}
+
+	//TODO move password related stuff to Certificate or Key class
+	SSLWrap::SSL_CTX_set_default_passwd_cb(itsCTX, passwordCallback);
+	if (itsPassword.length() >= 4)
+		SSLWrap::SSL_CTX_set_default_passwd_cb_userdata(itsCTX, this);
+
+	//TODO get rid of these- instead add CTX param to Apply()
+	itsCertificate->SetContext(itsCTX);
+	itsKey->SetContext(itsCTX);
+	itsTrust->SetContext(itsCTX);
+
+	itsCertificate->Apply();
+	itsKey->Apply();
+	itsTrust->Apply();
+
+	/* The port is represented as a string of the form "host:port", where
+	 * "host" is the interface to use and "port" is the port. Either or both
+	 * values can be "*" which is interpreted as meaning any interface or port
+	 * respectively. "port" has the same syntax as the port specified in
+	 * BIO_set_conn_port() for connect BIOs, that is it can be a numerical port
+	 * string or a string to lookup using getservbyname() and a string table. */
+	std::string port = to_string(itsListenPort);
+	BIO* accept_bio = SSLWrap::BIO_new_accept( const_cast<char *>(port.c_str()) );
+	if(accept_bio == NULL) {
+		throw_SSL("BIO_new_accept failed");
+	}
+
+	DBG << "populated safe server BIO @port=" << itsListenPort << std::endl;
+	//return accept_bio;
+	SetBIO(accept_bio);
+
 	DBG_CONSTRUCTOR;
 }
 
@@ -52,7 +90,23 @@ SecurityServerSSL::~SecurityServerSSL()
 	delete itsCertificate;
 	delete itsKey;
 	delete itsTrust;
-	SSL_CTX_free(itsCTX);
+	SSLWrap::SSL_CTX_free(itsCTX);
+
+	if (IsCleanupPrevented()) {
+		DBG << "NOT releasing acceptBIO(SSL); "<< itsBIO << std::endl;
+		return;
+	}
+
+	DBG << "releasing acceptBIO(SSL); "<< itsBIO << std::endl;
+	SSLWrap::BIO_free_all(GetBIO());
+	SetBIO(NULL);
+}
+
+SSL* SecurityServerSSL::GetSSL()
+{
+	SSL* ssl = NULL;
+	SSLWrap::BIO_get_ssl_(GetBIO(), &ssl);
+	return ssl;
 }
 
 void SecurityServerSSL::SetCertificate(std::string certFile)
@@ -71,84 +125,50 @@ void SecurityServerSSL::SetTrust(std::string trustFile)
 	itsTrust->SetVerify(Trust::trustRequire);
 }
 
-BIO* SecurityServerSSL::PopulateBIO()
+BIO* SecurityServerSSL::DoHandshake(BIO* clientToShake)
 {
-	itsCTX = SSL_CTX_new(GetMethod()); /* create new context from method */
-	if (itsCTX == NULL) {
-		throw_SSL("SSL_CTX_new failed");
-	}
-
-	//TODO move password related stuff to Certificate or Key class
-	SSL_CTX_set_default_passwd_cb(itsCTX, passwordCallback);
-	if (itsPassword.length() >= 4)
-		SSL_CTX_set_default_passwd_cb_userdata(itsCTX, this);
-
-	itsCertificate->SetContext(itsCTX);
-	itsKey->SetContext(itsCTX);
-	itsTrust->SetContext(itsCTX);
-
-	itsCertificate->Apply();
-	itsKey->Apply();
-	itsTrust->Apply();
-
-	//create new SSL BIO, basing on a configured context
-	BIO* ssl_bio = BIO_new_ssl(itsCTX, 0);
+	//create new SSL BIO, based on a configured context
+	BIO* ssl_bio = SSLWrap::BIO_new_ssl(itsCTX, 0);
 	if(ssl_bio == NULL) {
 		throw_SSL("BIO_new_ssl failed");
 	}
 
-	/* The port is represented as a string of the form "host:port", where
-	 * "host" is the interface to use and "port" is the port. Either or both
-	 * values can be "*" which is interpreted as meaning any interface or port
-	 * respectively. "port" has the same syntax as the port specified in
-	 * BIO_set_conn_port() for connect BIOs, that is it can be a numerical port
-	 * string or a string to lookup using getservbyname() and a string table. */
-	std::string port = to_string(itsListenPort);
-	BIO* accept_bio = BIO_new_accept( const_cast<char *>(port.c_str()) );
-	if(accept_bio == NULL) {
-		throw_SSL("BIO_new_accept failed");
-	}
-	BIO_set_accept_bios(accept_bio, ssl_bio);
+	SSLWrap::BIO_push(ssl_bio, clientToShake);
 
-	DBG << "populated safe server BIO @port=" << itsListenPort << std::endl;
-	return accept_bio;
-}
-
-bool SecurityServerSSL::DoHandshake(BIO* clientToShake)
-{
 	int ret;
 	do {
-		ret = BIO_do_handshake(clientToShake);
+		ret = SSLWrap::BIO_do_handshake_(ssl_bio);
 		if (ret <= 0) {
-			if (!BIO_should_retry(clientToShake)) {
+			if (!SSLWrap::BIO_should_retry_(ssl_bio)) {
 				//handshake failed, and there is no need to retry
-				WRN << "handhaking client failed ultimately" << std::endl;
-				return false;
+				WRN << "handshaking client failed" << std::endl;
+				SSLWrap::BIO_vfree(ssl_bio);
+				return NULL;
 			} else {
 				//handshake failed, but there is a chance it will succeed on retry
-				DBG << "failed, retrying as recommended by BIO_should_retry()" << std::endl;
+				DBG << "retrying handshake" << std::endl;
 			}
 		}
 	} while(ret <= 0);
 
 	DBG << "handshaking client succeeded" << std::endl;
-	return true;
+	return ssl_bio;
 }
 
 SSL_METHOD* SecurityServerSSL::GetMethod()
 {
 	switch (itsSecurityMode) {
 		case securityTLSv1: {
-			return TLSv1_server_method();
+			return SSLWrap::TLSv1_server_method();
 		} break;
 		case securitySSLv2: {
-			return SSLv2_server_method();
+			return SSLWrap::SSLv2_server_method();
 		} break;
 		case securitySSLv3: {
-			return SSLv3_server_method();
+			return SSLWrap::SSLv3_server_method();
 		} break;
 		case securitySSLv23: {
-			return SSLv23_server_method();
+			return SSLWrap::SSLv23_server_method();
 		} break;
 		default:
 			assert(0);

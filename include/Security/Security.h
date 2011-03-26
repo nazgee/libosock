@@ -21,7 +21,6 @@
 #define SECURITY_H_
 
 #include "../Address/Address.h"
-
 #include <openssl/ssl.h>
 #include <openssl/err.h>
 #include <openssl/bio.h>
@@ -35,9 +34,9 @@ public:
 	Security(BIO* bio = NULL);
 	virtual ~Security();
 
-	BIO* GetBIO();
-	SSL* GetSSL();
-	void PreventBIOcleanup();
+	BIO* GetBIO() const;
+	void PreventCleanup();
+	bool IsCleanupPrevented();
 
 protected:
 	static bool libsslReady;
@@ -46,7 +45,6 @@ protected:
 
 	void SetBIO(BIO* bio);
 	//!Populates new BIO with appropriate security
-	virtual BIO* PopulateBIO();
 	static void libsslInit();
 };
 } //namespace osock

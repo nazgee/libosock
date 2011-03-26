@@ -41,7 +41,6 @@ private:
 protected:
 	BIO* GetBIO() const;
 	int GetSD() { return itsSD; }
-	void PreventBIOcleanup();
 
 public:
 	Socket(BIO* bio);

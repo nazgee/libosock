@@ -45,11 +45,13 @@ public:
 						std::string password = "",
 						securityMode method = securitySSLv2);
 	virtual ~SecurityServerSSL();
-	virtual bool DoHandshake(BIO* clientToShake);
 
+	SSL* GetSSL();
 	void SetCertificate(std::string certFile);
 	void SetKey(std::string keyFile);
 	void SetTrust(std::string trustFile);
+
+	virtual BIO* DoHandshake(BIO* clientToShake);
 
 protected:
 	SSL_CTX* itsCTX;
@@ -60,7 +62,6 @@ protected:
 	Key* itsKey;
 	Trust* itsTrust;
 
-	virtual BIO* PopulateBIO();
 	SSL_METHOD* GetMethod();
 	static int passwordCallback(char *buf, int size, int rwflag, void *usrdata);
 };

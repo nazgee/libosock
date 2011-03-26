@@ -31,7 +31,6 @@ public:
 	virtual ~SecurityServerUnsafe();
 
 protected:
-	virtual BIO* PopulateBIO();
 };
 } //namespace osock
 

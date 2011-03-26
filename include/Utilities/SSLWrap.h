@@ -26,10 +26,13 @@ namespace SSLWrap
 {
 	SSL_CTX *SSL_CTX_new(SSL_METHOD *meth);
 	void	SSL_CTX_free(SSL_CTX *ctx);
+	SSL *SSL_new(SSL_CTX *ctx);
+	void SSL_set_bio(SSL *s, BIO *rbio, BIO *wbio);
 	void SSL_CTX_set_default_passwd_cb(SSL_CTX *ctx, pem_password_cb *cb);
 	void SSL_CTX_set_default_passwd_cb_userdata(SSL_CTX *ctx, void *u);
 	BIO *BIO_new_ssl(SSL_CTX *ctx,int client);
 	BIO *BIO_new_accept(char *host_port);
+	BIO *BIO_push(BIO *b,BIO *append);
 	BIO *BIO_pop(BIO *b);
 	long BIO_set_close_(BIO* b, int flags);
 	long BIO_do_handshake_(BIO* b);

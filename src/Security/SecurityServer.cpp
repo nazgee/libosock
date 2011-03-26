@@ -25,17 +25,16 @@ SecurityServer::SecurityServer(int port) :
 	Security(),
 	itsListenPort(port)
 {
-
+	DBG_CONSTRUCTOR;
 }
 
 SecurityServer::~SecurityServer()
 {
-
+	DBG_DESTRUCTOR;
 }
 
-bool SecurityServer::DoHandshake(BIO* clientToShake)
+BIO* SecurityServer::DoHandshake(BIO* clientToShake)
 {
-	UNUSED(clientToShake);
-	return true;
+	return clientToShake;
 }
 }

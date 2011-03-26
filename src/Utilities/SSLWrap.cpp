@@ -42,6 +42,19 @@ namespace SSLWrap
 		DBG_FUNC_NOLINE <<  "( ctx=" << (void*)ctx << " ) : void" << std::endl;
 	}
 
+	SSL *SSL_new(SSL_CTX *ctx)
+	{
+		SSL* ssl = ::SSL_new(ctx);
+		DBG_FUNC_NOLINE <<  "( ctx=" << (void*)ctx << " ) : " << ssl << std::endl;
+		return ssl;
+	}
+
+	void SSL_set_bio(SSL *s, BIO *rbio, BIO *wbio)
+	{
+		::SSL_set_bio(s, rbio, wbio);
+		DBG_FUNC_NOLINE <<  "( ssl=" << s << ", rbio=" << rbio << ", wbio=" << wbio <<" ) : void" << std::endl;
+	}
+
 	void SSL_CTX_set_default_passwd_cb(SSL_CTX *ctx, pem_password_cb *cb)
 	{
 		::SSL_CTX_set_default_passwd_cb(ctx, cb);
@@ -68,6 +81,14 @@ namespace SSLWrap
 		b = ::BIO_new_accept(host_port);
 		DBG_FUNC_NOLINE <<  "( host_port=" << host_port << " ) : " << (void*)b << std::endl;
 		return b;
+	}
+
+	BIO *BIO_push(BIO *b,BIO *append)
+	{
+		BIO* bret;
+		bret = ::BIO_push(b, append);
+		DBG_FUNC_NOLINE <<  "( b=" << b << ", app=" << append << " ) : " << (void*)bret << std::endl;
+		return bret;
 	}
 
 	BIO *BIO_pop(BIO *b)

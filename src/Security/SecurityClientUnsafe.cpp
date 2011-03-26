@@ -25,21 +25,28 @@ namespace osock
 SecurityClientUnsafe::SecurityClientUnsafe(Address& serverAddress) :
 	SecurityClient(serverAddress)
 {
+	BIO* bio = BIO_new_connect( const_cast<char *>(itsSrverAddress.GetHostAndPort().c_str()) );
+	if(bio == NULL) {
+		throw_SSL("BIO_new_connect failed");
+	}
+	DBG << "populated unsafe client BIO @host=" << itsSrverAddress.GetHostAndPort() << std::endl;
+	SetBIO(bio);
+
 	DBG_CONSTRUCTOR;
 }
 
 SecurityClientUnsafe::~SecurityClientUnsafe()
 {
 	DBG_DESTRUCTOR;
+
+	if (IsCleanupPrevented()) {
+		DBG << "NOT releasing clientBIO(raw); "<< itsBIO << std::endl;
+		return;
+	}
+
+	DBG << "releasing clientBIO(raw); "<< itsBIO << std::endl;
+	BIO_free_all(itsBIO);
+	itsBIO = NULL;
 }
 
-BIO* SecurityClientUnsafe::PopulateBIO()
-{
-	BIO* bio = BIO_new_connect( const_cast<char *>(itsSrverAddress.GetHostAndPort().c_str()) );
-	if(bio == NULL) {
-		throw_SSL("BIO_new_connect failed");
-	}
-	DBG << "populated unsafe client BIO @host=" << itsSrverAddress.GetHostAndPort() << std::endl;
-	return bio;
-}
 }
