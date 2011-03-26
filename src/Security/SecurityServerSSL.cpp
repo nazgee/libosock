@@ -91,10 +91,6 @@ SecurityServerSSL::~SecurityServerSSL()
 	delete itsKey;
 	delete itsTrust;
 	SSLWrap::SSL_CTX_free(itsCTX);
-
-	DBG << "releasing acceptBIO(SSL); "<< itsBIO << std::endl;
-	SSLWrap::BIO_free_all(GetBIO());
-	SetBIO(NULL);
 }
 
 SSL* SecurityServerSSL::GetSSL()

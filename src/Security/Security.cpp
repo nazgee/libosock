@@ -38,6 +38,9 @@ Security::Security(BIO* bio) :
 Security::~Security()
 {
 	DBG_DESTRUCTOR;
+
+	SSLWrap::BIO_free_all(itsBIO);
+	SetBIO(NULL);
 }
 
 BIO* Security::GetBIO() const

@@ -42,10 +42,6 @@ SecurityServerUnsafe::SecurityServerUnsafe(int listenPort) :
 SecurityServerUnsafe::~SecurityServerUnsafe()
 {
 	DBG_DESTRUCTOR;
-
-	DBG << "releasing acceptBIO(raw); "<< itsBIO << std::endl;
-	SSLWrap::BIO_free_all(itsBIO);
-	itsBIO = NULL;
 }
 
 }

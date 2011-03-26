@@ -39,10 +39,6 @@ SecurityClientUnsafe::SecurityClientUnsafe(Address& serverAddress) :
 SecurityClientUnsafe::~SecurityClientUnsafe()
 {
 	DBG_DESTRUCTOR;
-
-	DBG << "releasing clientBIO(raw); "<< itsBIO << std::endl;
-	BIO_free_all(itsBIO);
-	itsBIO = NULL;
 }
 
 }
