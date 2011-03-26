@@ -17,15 +17,29 @@
 	along with libsockets.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef LIBSOCKETS_H_
-#define LIBSOCKETS_H_
 
-#include "Socket/SocketServerSSL.h"
-#include "Socket/SocketServerUnsafe.h"
-#include "Socket/SocketClientSSL.h"
-#include "Socket/SocketClientUnsafe.h"
-#include "Exception/Exception.h"
-#include "Message/StringMessage.h"
-#include "Server/Server.h"
+#ifndef SERVER_H_
+#define SERVER_H_
 
-#endif /* LIBSOCKETS_H_ */
+#include "../Socket/Socket.h"
+#include "../Address/Address.h"
+
+namespace osock
+{
+class SocketServer;
+class Server
+{
+public:
+	Server(SocketServer* socketServer);
+	virtual ~Server();
+	void Run();
+
+	virtual bool ClientServed(Address& servedClient);
+	virtual void Handle(const Socket& Client);
+private:
+	SocketServer* itsSocketServer;
+};
+
+}
+
+#endif /* SERVER_H_ */

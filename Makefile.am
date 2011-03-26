@@ -48,7 +48,8 @@ libosock_@OSOCK_API_VERSION@_la_SOURCES = src/Message/Message.cpp \
 	src/Address/Address.cpp\
 	src/Exception/Exception.cpp \
 	src/Utilities/Logger.cpp \
-	src/Utilities/SSLWrap.cpp
+	src/Utilities/SSLWrap.cpp \
+	src/Server/Server.cpp
 
 ## Instruct libtool to include ABI version information in the generated shared
 ## library file (.so).  The library ABI version is defined in configure.ac, so

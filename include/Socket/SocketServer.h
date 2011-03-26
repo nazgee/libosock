@@ -25,6 +25,7 @@
 
 namespace osock
 {
+class Server;
 class SocketServer: public Socket
 {
 public:
@@ -35,7 +36,7 @@ public:
 	virtual ~SocketServer(void);
 
 	//! Accept client connection and call \a handler to deal with it; peer adress is stored in \a client
-	virtual void Accept(Address& client, clientsHandler handler);
+	virtual void Accept(Address& client, clientsHandler handler, Server* controller = NULL);
 	//! Checks whether this server instance is main- or forked-one.
 	bool IsMainInstance();
 

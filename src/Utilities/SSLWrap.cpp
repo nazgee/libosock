@@ -17,7 +17,7 @@
 	along with libsockets.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#define DEBUG_WANTED
+//#define DEBUG_WANTED
 
 #include <Utilities/SSLWrap.h>
 #include <Utilities/Logger.h>

@@ -26,6 +26,7 @@
 #include <Security/SecurityServerSSL.h>
 #include <Security/SecurityServerUnsafe.h>
 #include <Utilities/SSLWrap.h>
+#include <Server/Server.h>
 
 #include <assert.h>
 #include <arpa/inet.h>
@@ -49,7 +50,7 @@ SocketServer::~SocketServer(void)
 	DBG_DESTRUCTOR;
 }
 
-void SocketServer::Accept(Address& Addr, clientsHandler handler)
+void SocketServer::Accept(Address& Addr, clientsHandler handler, Server* controller)
 {
 	while (1) {
 		BIO* client = AcceptIncoming();
@@ -73,7 +74,10 @@ void SocketServer::Accept(Address& Addr, clientsHandler handler)
 				// auth BIO will be cleaned up when socket goes out of scope
 				Socket socket(auth);
 				// Call handler to serve client
-				handler(socket);
+				if (controller != NULL)
+					controller->Handle(socket);
+				else
+					handler(socket);
 
 				DBG << "Client: " << Addr << " served" << std::endl;
 				return;
@@ -103,7 +107,10 @@ void SocketServer::Accept(Address& Addr, clientsHandler handler)
 					// auth BIO will be cleaned up when socket goes out of scope
 					Socket socket(auth);
 					// Call handler to serve client
-					handler(socket);
+					if (controller != NULL)
+						controller->Handle(socket);
+					else
+						handler(socket);
 
 					DBG << "Client: " << Addr << " served" << std::endl;
 					return;
