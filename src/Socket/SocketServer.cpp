@@ -65,23 +65,16 @@ void SocketServer::Accept(Address& Addr, clientsHandler handler)
 				if (auth == NULL) {
 					DBG << "Handshake with " << Addr << " failed"
 							<< std::endl;
-					ClientCleanup(client);
+					SSLWrap::BIO_free_all(client);
 					// Let's wait for another client
 					break;
 				}
 
+				// auth BIO will be cleaned up when socket goes out of scope
+				Socket socket(auth);
 				// Call handler to serve client
-				try {
-					Socket socket(auth);
-					handler(socket);
-				} catch (std::exception &e) {
-					WRN << "Handler threw " << e.what() << std::endl;
-					ClientCleanup(auth);
-					throw;
-				}
+				handler(socket);
 
-				//perform some cleanup
-				ClientCleanup(auth);
 				DBG << "Client: " << Addr << " served" << std::endl;
 				return;
 			} break;
@@ -102,24 +95,17 @@ void SocketServer::Accept(Address& Addr, clientsHandler handler)
 					if (auth == NULL) {
 						DBG << "Handshake with " << Addr << " failed"
 								<< std::endl;
-						ClientCleanup(client);
+						SSLWrap::BIO_free_all(client);
 						// Let's wait for another client
 						break;
 					}
 
+					// auth BIO will be cleaned up when socket goes out of scope
+					Socket socket(auth);
 					// Call handler to serve client
-					try {
-						Socket socket(auth);
-						handler(socket);
-					} catch (std::exception &e) {
-						WRN << "Handler threw " << e.what() << std::endl;
-						ClientCleanup(auth);
-						throw;
-					}
+					handler(socket);
 
-					// Perform some cleanup
 					DBG << "Client: " << Addr << " served" << std::endl;
-					ClientCleanup(auth);
 					return;
 				} else {
 					// We have to make sure that child's BIO will not be closed
@@ -127,9 +113,8 @@ void SocketServer::Accept(Address& Addr, clientsHandler handler)
 					if (SSLWrap::BIO_set_close_(client, BIO_NOCLOSE) != 1)
 						throw_SSL("BIO_set_close failed!");
 
-					// Perform some cleanup
 					DBG << "Getting back to accepting clients" << std::endl;
-					ClientCleanup(client);
+					SSLWrap::BIO_free_all(client);
 					return;
 				}
 			} break;
@@ -176,12 +161,6 @@ BIO* SocketServer::AcceptIncoming()
 	}
 
 	return out;
-}
-
-void SocketServer::ClientCleanup(BIO* client2cleanup)
-{
-	DBG << "Performing cleanup on a client's BIO chain:" << client2cleanup << std::endl;
-	SSLWrap::BIO_free_all(client2cleanup);
 }
 
 }

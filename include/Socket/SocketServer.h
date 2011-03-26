@@ -48,8 +48,6 @@ protected:
 	void SetForked(bool forked);
 	//! Waits for client to connect \return BIO* of the connected client
 	BIO* AcceptIncoming();
-	//! Performs cleanup on a given client
-	virtual void ClientCleanup(BIO* bio2cleaup);
 };
 } //namespace osock
 
