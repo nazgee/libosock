@@ -37,7 +37,7 @@ void Address::GetAddrInfo(char* host, char* port, struct addrinfo **ai)
 	if (error != 0) {
 		std::string errorstring = "error in getaddrinfo:";
 		errorstring += gai_strerror(error);
-		throw NetException(errorstring);
+		throw Exception(errorstring);
 	}
 
 //	DBG << "host=" << host << " port=" << port << " ai=" << (void*) *ai
@@ -52,7 +52,7 @@ void Address::GetNameInfo(struct addrinfo *ai, char* hbuffer, int hbuff_size,
 	if (error != 0) {
 		std::string errorstring = "error in getnameinfo:";
 		errorstring += gai_strerror(error);
-		throw NetException(errorstring);
+		throw Exception(errorstring);
 	}
 
 //	DBG << " ai=" << (void*) ai << " hbuffer=" << hbuffer << " hbuff_size="
@@ -73,7 +73,7 @@ Address::Address(const char* Name) :
 		*itsPortname = 0;
 		itsPortname++;
 	} else {
-		throw Exception("Host name should be in format \"host:port\"", EINVAL);
+		throw Exception("Host name should be in format \"host:port\"");
 	}
 
 	//prepare addrinfo structure- we will use it during this object lifetime
@@ -96,7 +96,7 @@ Address::Address(BIO* bio) :
 	struct sockaddr peer;
 	socklen_t peer_len = sizeof(peer);
 	if (getpeername(sock, &peer, &peer_len) == -1) {
-		throw NetException("getpeername failed");
+		throw StdException("getpeername failed");
 	}
 
 	char hbuff[256];
@@ -106,7 +106,7 @@ Address::Address(BIO* bio) :
 	if (error != 0) {
 		std::string errorstring = "error in getnameinfo:";
 		errorstring += gai_strerror(error);
-		throw NetException(errorstring);
+		throw Exception(errorstring);
 	}
 
 	itsBufferSize = strlen(hbuff) + strlen(pbuff) + 2; //"host:port"
@@ -124,7 +124,7 @@ Address::Address(BIO* bio) :
 		*itsPortname = 0;
 		itsPortname++;
 	} else {
-		throw Exception("Host name should be in format \"host:port\"", EINVAL);
+		throw Exception("Host name should be in format \"host:port\"");
 	}
 
 	//prepare addrinfo structure- we will use it during this object lifetime

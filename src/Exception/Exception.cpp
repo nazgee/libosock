@@ -24,19 +24,20 @@
 
 namespace osock
 {
-Exception::Exception(const std::string& msg, int error) :
-	itsMessage(msg), itsError(error)
-{
-	DBG_DESTRUCTOR;
-	WRN << itsMessage << std::endl;
-}
-Exception::~Exception(void)
+Exception::Exception(const std::string& msg) :
+	itsMessage(msg)
 {
 	DBG_CONSTRUCTOR;
+	DBG << itsMessage << std::endl;
+}
+Exception::~Exception(void) throw()
+{
+	DBG_DESTRUCTOR;
 }
 
-void Exception::Print(void) const
+const char* Exception::what() const throw()
 {
-	std::cerr << itsMessage << itsError << std::endl;
+	return itsMessage.c_str();
 }
+
 }

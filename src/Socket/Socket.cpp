@@ -54,7 +54,7 @@ Socket::Socket(Socket& sock)
 	socklen_t size=sizeof(err);
 
 	if ( getsockopt(itsSD, SOL_SOCKET, SO_ERROR, &err, &size) != 0 )
-		throw NetException("Socket error");
+		throw StdException("Socket error");
 	if ( (itsSD = dup(sock.itsSD)) < 0 )
 		throw StdException("Can't copy socket");
 

@@ -21,26 +21,21 @@
 #define EXCEPTIONS_H_
 
 #include <openssl/err.h>
+#include <string.h>	//strerror()
 #include <errno.h>
 #include <iostream>
 
 namespace osock
 {
-class Exception
+class Exception : public std::exception
 {
 private:
 	std::string itsMessage;
-	int itsError;
 
 public:
-	Exception(const std::string& msg, int error = 0);
-	virtual ~Exception(void);
-
-	int GetError(void) const
-	{
-		return itsError;
-	}
-	virtual void Print(void) const;
+	Exception(const std::string& msg);
+	virtual ~Exception(void) throw();
+	const char* what() const throw();
 };
 
 #define throw_SSL(msg) do {std::string s(__PRETTY_FUNCTION__); s = s + "; " + msg + "; "; throw SSLException(s); } while(0)
@@ -49,10 +44,10 @@ class SSLException: public Exception
 {
 public:
 	SSLException(const std::string& msg) :
-		Exception(msg + " SSL err: " + ERR_error_string(ERR_get_error(), 0), 0)
+		Exception(msg + " SSL err: " + ERR_error_string(ERR_get_error(), 0))
 	{
 	}
-	virtual ~SSLException(void)
+	virtual ~SSLException(void) throw()
 	{
 	}
 };
@@ -60,26 +55,21 @@ public:
 class StdException: public Exception
 {
 public:
-	StdException(const std::string& msg) :
-		Exception(msg, errno)
+	StdException(const std::string& msg, int error_number) :
+		Exception(msg +" STD err: "+ strerror(error_number))
 	{
 	}
-	virtual ~StdException(void)
+
+	StdException(const std::string& msg) :
+		Exception(msg +" STD err: "+ strerror(errno))
+	{
+	}
+
+	virtual ~StdException(void) throw()
 	{
 	}
 };
 
-class NetException: public Exception
-{
-public:
-	NetException(const std::string& M) :
-		Exception(M, errno)
-	{
-	}
-	virtual ~NetException(void)
-	{
-	}
-};
 } //namespace osock
 
 #endif /* EXCEPTIONS_H_ */
