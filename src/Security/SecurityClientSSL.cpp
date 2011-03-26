@@ -42,14 +42,14 @@ SecurityClientSSL::SecurityClientSSL(	Address& Address,
 	itsPassword = password;
 	libsslInit();
 
-	itsCTX = SSL_CTX_new(GetMethod()); /* create new context from method */
+	itsCTX = SSLWrap::SSL_CTX_new(GetMethod()); /* create new context from method */
 	if (itsCTX == NULL) {
 		throw_SSL("SSL_CTX_new failed");
 	}
 
-	SSL_CTX_set_default_passwd_cb(itsCTX, passwordCallback);
+	SSLWrap::SSL_CTX_set_default_passwd_cb(itsCTX, passwordCallback);
 	if (itsPassword.length() >= 4)
-		SSL_CTX_set_default_passwd_cb_userdata(itsCTX, this);
+		SSLWrap::SSL_CTX_set_default_passwd_cb_userdata(itsCTX, this);
 
 	itsCertificate->SetContext(itsCTX);
 	itsKey->SetContext(itsCTX);
@@ -60,7 +60,7 @@ SecurityClientSSL::SecurityClientSSL(	Address& Address,
 	itsTrust->Apply();
 
 	//create new SSL BIO, basing on a configured context
-	BIO* bio = BIO_new_ssl_connect(itsCTX);
+	BIO* bio = SSLWrap::BIO_new_ssl_connect(itsCTX);
 	if (bio == NULL) {
 		throw_SSL("BIO_new_ssl_connect failed");
 	}
@@ -73,12 +73,12 @@ SecurityClientSSL::SecurityClientSSL(	Address& Address,
 
 	/* With this option set, if the server suddenly wants a new handshake,
 	 * OpenSSL handles it in the background. */
-	SSL_set_mode(itsSSL, SSL_MODE_AUTO_RETRY);
+	SSLWrap::SSL_set_mode_(itsSSL, SSL_MODE_AUTO_RETRY);
 
 	/*The hostname can be an IP address. The hostname can also include the port
 	 * in the form hostname:port . It is also acceptable to use the form
 	 * "hostname/any/other/path" or "hostname:port/any/other/path".*/
-	BIO_set_conn_hostname(bio, itsSrverAddress.GetHostAndPort().c_str());
+	SSLWrap::BIO_set_conn_hostname_(bio, itsSrverAddress.GetHostAndPort().c_str());
 
 	DBG << "populated safe client BIO @host=" << itsSrverAddress.GetHostAndPort() << std::endl;
 	SetBIO(bio);
@@ -92,16 +92,10 @@ SecurityClientSSL::~SecurityClientSSL()
 	delete itsCertificate;
 	delete itsKey;
 	delete itsTrust;
-	SSL_CTX_free(itsCTX);
-
-	if (IsCleanupPrevented()) {
-		DBG << "NOT releasing clientBIO(SSL); "<< itsBIO << std::endl;
-		return;
-	}
+	SSLWrap::SSL_CTX_free(itsCTX);
 
 	DBG << "releasing clientBIO(SSL); " << itsBIO << std::endl;
-	SSL_shutdown(GetSSL());
-	SSL_free(GetSSL());
+	SSLWrap::BIO_free_all(GetBIO());
 	SetBIO(NULL);
 }
 

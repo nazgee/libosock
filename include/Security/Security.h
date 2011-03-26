@@ -35,16 +35,12 @@ public:
 	virtual ~Security();
 
 	BIO* GetBIO() const;
-	void PreventCleanup();
-	bool IsCleanupPrevented();
 
 protected:
 	static bool libsslReady;
 	BIO* itsBIO;
-	bool doNotCleanup;
 
 	void SetBIO(BIO* bio);
-	//!Populates new BIO with appropriate security
 	static void libsslInit();
 };
 } //namespace osock

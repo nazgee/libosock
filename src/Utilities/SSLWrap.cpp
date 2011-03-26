@@ -67,11 +67,33 @@ namespace SSLWrap
 		DBG_FUNC_NOLINE <<  "( ctx=" << (void*) ctx << ", u=" << u << " ) : void" << std::endl;
 	}
 
+	void SSL_set_mode_(SSL* ssl, int mode)
+	{
+		::SSL_set_mode(ssl, mode);
+		DBG_FUNC_NOLINE <<  "( ssl=" << ssl << ", mode=" << mode <<" ) : " << std::endl;
+	}
+
 	BIO *BIO_new_ssl(SSL_CTX *ctx,int client)
 	{
 		BIO* b;
 		b = ::BIO_new_ssl(ctx, client);
 		DBG_FUNC_NOLINE <<  "( ctx=" << (void*) ctx << ", client=" << client <<" ) : " << (void*)b << std::endl;
+		return b;
+	}
+
+	BIO *BIO_new_ssl_connect(SSL_CTX *ctx)
+	{
+		BIO* b;
+		b = ::BIO_new_ssl_connect(ctx);
+		DBG_FUNC_NOLINE <<  "( ctx=" << (void*) ctx <<" ) : " << (void*)b << std::endl;
+		return b;
+	}
+
+	BIO *BIO_new_connect(char *host)
+	{
+		BIO* b;
+		b = ::BIO_new_connect(host);
+		DBG_FUNC_NOLINE <<  "( host=" << host <<" ) : " << (void*)b << std::endl;
 		return b;
 	}
 
@@ -97,6 +119,12 @@ namespace SSLWrap
 		bret = ::BIO_pop(b);
 		DBG_FUNC_NOLINE <<  "( b=" << b << " ) : " << (void*)bret << std::endl;
 		return bret;
+	}
+
+	void BIO_set_conn_hostname_(BIO *b, const char* hostname)
+	{
+		::BIO_set_conn_hostname(b, hostname);
+		DBG_FUNC_NOLINE << "( b=" << b << ", host=" << hostname << " ) : " << std::endl;
 	}
 
 	long BIO_set_close_(BIO* b, int f)

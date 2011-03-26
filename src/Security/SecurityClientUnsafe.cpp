@@ -19,13 +19,14 @@
 #include <defines.h>
 #include <Security/SecurityClientUnsafe.h>
 #include <Exception/Exception.h>
+#include <Utilities/SSLWrap.h>
 
 namespace osock
 {
 SecurityClientUnsafe::SecurityClientUnsafe(Address& serverAddress) :
 	SecurityClient(serverAddress)
 {
-	BIO* bio = BIO_new_connect( const_cast<char *>(itsSrverAddress.GetHostAndPort().c_str()) );
+	BIO* bio = SSLWrap::BIO_new_connect( const_cast<char *>(itsSrverAddress.GetHostAndPort().c_str()) );
 	if(bio == NULL) {
 		throw_SSL("BIO_new_connect failed");
 	}
@@ -38,11 +39,6 @@ SecurityClientUnsafe::SecurityClientUnsafe(Address& serverAddress) :
 SecurityClientUnsafe::~SecurityClientUnsafe()
 {
 	DBG_DESTRUCTOR;
-
-	if (IsCleanupPrevented()) {
-		DBG << "NOT releasing clientBIO(raw); "<< itsBIO << std::endl;
-		return;
-	}
 
 	DBG << "releasing clientBIO(raw); "<< itsBIO << std::endl;
 	BIO_free_all(itsBIO);

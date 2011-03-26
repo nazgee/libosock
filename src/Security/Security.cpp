@@ -30,8 +30,7 @@ namespace osock
 bool Security::libsslReady = false;
 
 Security::Security(BIO* bio) :
-	itsBIO(bio),
-	doNotCleanup(false)
+	itsBIO(bio)
 {
 	DBG_CONSTRUCTOR;
 }
@@ -45,16 +44,6 @@ BIO* Security::GetBIO() const
 {
 	assert(itsBIO != NULL);
 	return itsBIO;
-}
-
-void Security::PreventCleanup()
-{
-	doNotCleanup = true;
-}
-
-bool Security::IsCleanupPrevented()
-{
-	return doNotCleanup;
 }
 
 void Security::SetBIO(BIO* bio)

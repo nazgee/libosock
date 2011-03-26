@@ -92,11 +92,6 @@ SecurityServerSSL::~SecurityServerSSL()
 	delete itsTrust;
 	SSLWrap::SSL_CTX_free(itsCTX);
 
-	if (IsCleanupPrevented()) {
-		DBG << "NOT releasing acceptBIO(SSL); "<< itsBIO << std::endl;
-		return;
-	}
-
 	DBG << "releasing acceptBIO(SSL); "<< itsBIO << std::endl;
 	SSLWrap::BIO_free_all(GetBIO());
 	SetBIO(NULL);

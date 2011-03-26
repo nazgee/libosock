@@ -30,10 +30,14 @@ namespace SSLWrap
 	void SSL_set_bio(SSL *s, BIO *rbio, BIO *wbio);
 	void SSL_CTX_set_default_passwd_cb(SSL_CTX *ctx, pem_password_cb *cb);
 	void SSL_CTX_set_default_passwd_cb_userdata(SSL_CTX *ctx, void *u);
+	void SSL_set_mode_(SSL* ssl, int mode);
 	BIO *BIO_new_ssl(SSL_CTX *ctx,int client);
+	BIO *BIO_new_ssl_connect(SSL_CTX *ctx);
+	BIO *BIO_new_connect(char *host);
 	BIO *BIO_new_accept(char *host_port);
 	BIO *BIO_push(BIO *b,BIO *append);
 	BIO *BIO_pop(BIO *b);
+	void BIO_set_conn_hostname_(BIO *b, const char* hostname);
 	long BIO_set_close_(BIO* b, int flags);
 	long BIO_do_handshake_(BIO* b);
 	long BIO_do_accept_(BIO* b);
