@@ -23,102 +23,39 @@
 
 namespace osock
 {
-StringMessage::StringMessage(unsigned short dataLen)
+StringMessage::StringMessage(unsigned short dataLen) :
+	std::string(dataLen, '\0')
 {
-	itsData = new char[dataLen];
-	itsFreeSize = itsDataSize = dataLen;
 	DBG_CONSTRUCTOR;
 }
 
-StringMessage::StringMessage(const char* data, int dataLen)
+StringMessage::StringMessage(const char* data) :
+	std::string(data)
 {
-	if (dataLen <= 0)
-		dataLen = strlen(data);
-
-	dataLen++; //we need extra for NULL-terminator
-
-	itsData = new char[dataLen];
-	strncpy(itsData, data, dataLen - 1);
-	itsFreeSize = itsDataSize = dataLen;
 	DBG_CONSTRUCTOR;
 }
 
 StringMessage::~StringMessage(void)
 {
-	delete[] itsData;
 	DBG_DESTRUCTOR;
 }
 
 char *StringMessage::Unpack(int& dataSize) const
 {
-	dataSize = itsDataSize;
-	char *data = new char[itsDataSize];
-	strcpy(data, itsData);
+	dataSize = this->length()+1;
+	char *data = new char[this->length()+1];
+	strcpy(data, this->c_str());
 	return data;
 }
 
 bool StringMessage::Pack(char *data, int dataLen, int chunkNumber)
 {
 	if (chunkNumber > 1)
-		ExpandData(data, dataLen);
+		*this += data;
 	else
-		SetData(data, dataLen);
+		*this = data;
+
 	return (data[dataLen - 1] == 0);
 }
 
-char* StringMessage::GetData(void) const
-{
-	return itsData;
-}
-
-int StringMessage::GetDataSize(void) const
-{
-	return itsDataSize;
-}
-
-void StringMessage::SetDataSize(int dataLen)
-{
-	itsDataSize = dataLen;
-}
-
-int StringMessage::GetFreeData(void) const
-{
-	return itsFreeSize;
-}
-
-StringMessage& StringMessage::operator =(const char* data)
-{
-	SetData(data);
-	return *this;
-}
-
-void StringMessage::SetData(const char* data, int dataLen)
-{
-	dataLen = strnlen(data, dataLen);
-
-	//make sure we can store all bytes from data + NULL-terminator
-	if (itsFreeSize <= dataLen) {
-		delete[] itsData;
-		itsData = new char[dataLen + 1];
-		itsFreeSize = dataLen + 1;
-	}
-	itsDataSize = dataLen + 1;
-	memcpy(itsData, data, dataLen);
-	itsData[dataLen] = 0;
-}
-
-void StringMessage::ExpandData(const char* data, int dataLen)
-{
-	dataLen = strnlen(data, dataLen);
-
-	if (itsDataSize + dataLen > itsFreeSize) {
-		char *temp = new char[itsDataSize + dataLen];
-		strcpy(temp, itsData);
-		delete[] itsData;
-		itsData = temp;
-		itsFreeSize = itsDataSize + dataLen;
-	}
-	itsDataSize += dataLen;
-	strncat(itsData, data, dataLen);
-}
 }
