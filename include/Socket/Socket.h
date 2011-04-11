@@ -49,8 +49,8 @@ public:
 	Socket(Socket& sock);
 	virtual ~Socket(void);
 
-	int Send(Message& Msg, int Options = 0) const;
-	int Receive(Message& Msg, int Options = 0) const;
+	int Send(Message& Msg) const;
+	int Receive(Message& Msg) const;
 
 	friend std::ostream& operator <<(std::ostream &os, const Socket &obj);
 	friend std::ostream& operator <<(std::ostream &os, const Socket *obj);

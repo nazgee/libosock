@@ -32,7 +32,8 @@ public:
 	virtual ~StringMessage(void);
 
 	virtual char* Unpack(int& data) const;
-	virtual bool Pack(char* data, int dataLen, int chunkNumber);
+	virtual data_chunk Pack(data_chunk& data);
+	virtual void Clear();
 };
 } //namespace osock
 

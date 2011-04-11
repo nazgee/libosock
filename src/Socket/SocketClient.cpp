@@ -36,9 +36,9 @@ SocketClient::SocketClient(SecurityClient* security):
 	}
 
 	if ( itsSecurityClient->IsServerVerified() ) {
-		WRN << "server verification succeeded" <<  std::endl;
+		DBG << "server verification succeeded" <<  std::endl;
 	} else {
-		DBG << "server verification failed" << std::endl;
+		WRN << "server verification failed" << std::endl;
 	}
 
 	DBG_CONSTRUCTOR;

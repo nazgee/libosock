@@ -17,7 +17,7 @@
 	along with libsockets.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-//#define DEBUG_WANTED
+#define DEBUG_WANTED
 
 #include <defines.h>
 #include <Socket/Socket.h>
@@ -72,10 +72,10 @@ BIO* Socket::GetBIO() const
 	return itsSecurity->GetBIO();
 }
 
-int  Socket::Send(Message& Msg, int Options) const
+int  Socket::Send(Message& message) const
 {
 	int bytes = 0;
-	boost::scoped_array<char> buf(Msg.Unpack(bytes));
+	boost::scoped_array<char> buf(message.Unpack(bytes));
 
 	int i, off = 0;
 	for (;;) {
@@ -99,36 +99,57 @@ int  Socket::Send(Message& Msg, int Options) const
 	return bytes;
 }
 
-int  Socket::Receive(Message& Msg, int Options) const
+int  Socket::Receive(Message& message) const
 {
-	DBG << "waiting for message" << std::endl;
-	bool done;
-	int bytes, cnt=0;
-	static const int bufsize = 8;	//TODO make it bigger or even modifiable
+	static const int chunkSize = 8;	//TODO make it bigger or even better: modifiable
+	int rxedNumber, chunkNumber = 0;
+	data_chunk tempData(0);
 
-	boost::scoped_array<char> buf(new char[bufsize]);
+	DBG << "waiting for message" << std::endl;
+
+	message.Clear();
+	message.SetComplete(false);
 
 	do {
-		bytes = BIO_read(GetBIO(), buf.get(), bufsize);
-		if (bytes == 0) {
+		//save all data that are still in buffer
+		rxedNumber = tempData.size();
+		//make sure we have room for at least new data chunk
+		tempData.reserve(tempData.size() + chunkSize);
+		DBG << "Using " << tempData.capacity() << " B buffer, filled with " << tempData.size() << "B so far" << std::endl;
+		tempData.resize(tempData.capacity());
+
+		rxedNumber = BIO_read(GetBIO(), &tempData[rxedNumber], tempData.capacity() - rxedNumber);
+		if (rxedNumber == 0) {
 			throw_SSL("BIO_read returned 0 - client disconnected");
 		}
 
-		if (bytes < 0) {
+		if (rxedNumber < 0) {
 			if (BIO_should_retry(GetBIO())) {
 				DBG << "sleeping before retrying read" << std::endl;
-				//XXX is sleeping here really needed?!
-				sleep(1);
+				sleep(1);	//XXX is sleeping here really needed?!
 				continue;
 			}
 			throw_SSL("BIO_read failed in unretryable way");
 		}
-		cnt++;
-		DBG << "received " << bytes << "B in chunk=" << cnt<< std::endl;
-		done = Msg.Pack(buf.get(), bytes, cnt);
-	} while ( !done );
 
-	return bytes;
+		//only bytes that were rxed should be assumed as valid
+		tempData.resize(rxedNumber);
+
+		chunkNumber++;
+		DBG << "received " << rxedNumber << "B in chunk=" << chunkNumber << std::endl;
+		//done = Msg.Pack(buf.get(), bytes, cnt);
+		tempData = message.Pack(tempData);
+
+		DBG << "Data was packed; " << tempData.size() << "B were discarded" << std::endl;
+
+		for (unsigned int i = 0; i < tempData.size(); i++) {
+			std::cout << (int)tempData[i] << ", ";
+		}
+		std::cout << std::endl;
+
+	} while ( !message.IsComplete() );
+
+	return rxedNumber;
 }
 
 std::ostream& operator <<(std::ostream &os,const Socket *obj)

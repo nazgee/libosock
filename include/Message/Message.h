@@ -20,17 +20,32 @@
 #ifndef MESSAGES_H_
 #define MESSAGES_H_
 
+#include <vector>
+
+
 namespace osock
 {
+
+typedef std::vector<char> data_chunk;
+
 class Message
 {
+private:
+	bool isComplete;
+protected:
+
 public:
+	Message();
 	virtual ~Message(void)
 	{
 	}
 
 	virtual char* Unpack(int& Bytes) const=0;
-	virtual bool Pack(char* data, int bytesNumber, int chunkNumber)=0;
+	virtual data_chunk Pack(data_chunk& data) = 0;
+	virtual void Clear() = 0;
+
+	void SetComplete(bool complete);
+	bool IsComplete();
 };
 } //namespace osock
 
