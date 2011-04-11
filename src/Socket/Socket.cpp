@@ -17,7 +17,7 @@
 	along with libsockets.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#define DEBUG_WANTED
+//#define DEBUG_WANTED
 
 #include <defines.h>
 #include <Socket/Socket.h>
@@ -102,23 +102,18 @@ int  Socket::Send(Message& message) const
 int  Socket::Receive(Message& message) const
 {
 	static const int chunkSize = 8;	//TODO make it bigger or even better: modifiable
-	int rxedNumber, chunkNumber = 0;
-	data_chunk tempData(0);
-
-	DBG << "waiting for message" << std::endl;
+	int rxedNumber = 0;
+	int discardedNumber = 0;
+	data_chunk tempData(chunkSize);
 
 	message.Clear();
 	message.SetComplete(false);
 
+	DBG << "waiting for message" << std::endl;
 	do {
-		//save all data that are still in buffer
-		rxedNumber = tempData.size();
-		//make sure we have room for at least new data chunk
-		tempData.reserve(tempData.size() + chunkSize);
-		DBG << "Using " << tempData.capacity() << " B buffer, filled with " << tempData.size() << "B so far" << std::endl;
 		tempData.resize(tempData.capacity());
 
-		rxedNumber = BIO_read(GetBIO(), &tempData[rxedNumber], tempData.capacity() - rxedNumber);
+		rxedNumber = BIO_read(GetBIO(), &tempData[discardedNumber], tempData.capacity() - discardedNumber);
 		if (rxedNumber == 0) {
 			throw_SSL("BIO_read returned 0 - client disconnected");
 		}
@@ -131,22 +126,18 @@ int  Socket::Receive(Message& message) const
 			}
 			throw_SSL("BIO_read failed in unretryable way");
 		}
-
 		//only bytes that were rxed should be assumed as valid
-		tempData.resize(rxedNumber);
-
-		chunkNumber++;
-		DBG << "received " << rxedNumber << "B in chunk=" << chunkNumber << std::endl;
-		//done = Msg.Pack(buf.get(), bytes, cnt);
+		tempData.resize(discardedNumber + rxedNumber);
+		//try to Pack() data that was just received
 		tempData = message.Pack(tempData);
+		//save all data that were discarded in message.Pack()
+		discardedNumber = tempData.size();
+		//make sure we have room for at least chunkSize bytes
+		tempData.reserve(tempData.size() + chunkSize);
 
-		DBG << "Data was packed; " << tempData.size() << "B were discarded" << std::endl;
-
-		for (unsigned int i = 0; i < tempData.size(); i++) {
-			std::cout << (int)tempData[i] << ", ";
-		}
-		std::cout << std::endl;
-
+		DBG << discardedNumber << " of " << rxedNumber << "B discarded."
+			<< "Temporary buffer has capacity of " << tempData.capacity() <<
+			"B, and contains " << tempData.size() << "B" << std::endl;
 	} while ( !message.IsComplete() );
 
 	return rxedNumber;

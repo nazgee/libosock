@@ -17,7 +17,7 @@
 	along with libsockets.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#define DEBUG_WANTED
+//#define DEBUG_WANTED
 
 #include <defines.h>
 #include <Message/StringMessage.h>
@@ -55,20 +55,23 @@ char *StringMessage::Unpack(int& dataSize) const
 
 data_chunk StringMessage::Pack(data_chunk& data)
 {
-	DBG << "Size of data to Pack() " << data.size() << "B, so far packed " << this->size() << "B" << std::endl;
-	//count non-NULL characters
+	// Count non-NULL characters
 	unsigned int chars = strnlen(&data[0], data.size());
-	DBG << "Found " << chars << " non-NULL characters" << std::endl;
 
-	//store all non-NULL characters- NULL is automatically added to end of std::string
+	// Store all non-NULL characters
+	// NULL is automatically added to end of std::string- no need to save it
 	this->append(&data[0], chars);
 
-	if (chars < data.size()) {	//NULL-char was found in data- message complete
+	if (chars < data.size()) {
+		// NULL-terminator was found in data- message complete
 		SetComplete(true);
-		DBG << "Completed string with " << this->size() << "B (" << chars << " non-NULL, 1 NULL-terminator)" << std::endl;
+		DBG << "Completed string with " << this->size()
+			<< "B (" << chars << " new non-NULL + 1 NULL)" << std::endl;
 		return data_chunk(data.begin()+ chars + 1, data.end());
-	} else { //NULL-char was NOT found in data YET
-		DBG << "Continuing with " << this->length() << "B so far" << std::endl;
+	} else {
+		// NULL-terminator was NOT found in data YET
+		DBG << "Continuing, " << this->size()
+			<< "B so far (" << chars << " new non-NULL)" << std::endl;
 		return data_chunk();
 	}
 }
