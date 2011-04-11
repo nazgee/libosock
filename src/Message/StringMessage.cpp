@@ -36,7 +36,6 @@ StringMessage::StringMessage(unsigned short dataLen) :
 StringMessage::StringMessage(const char* data) :
 	std::string(data)
 {
-	SetComplete(true);
 	DBG_CONSTRUCTOR;
 }
 
