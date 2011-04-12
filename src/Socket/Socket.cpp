@@ -74,9 +74,9 @@ BIO* Socket::GetBIO() const
 
 int  Socket::Send(Message& message) const
 {
-	int bytes = 0;
-	boost::scoped_array<char> buf(message.Unpack(bytes));
+	data_chunk buf( message.Unpack() );
 
+	int bytes = buf.size();
 	int i, off = 0;
 	for (;;) {
 		DBG << "sending " << bytes << "B" << std::endl;

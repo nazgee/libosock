@@ -40,7 +40,7 @@ public:
 	{
 	}
 
-	virtual char* Unpack(int& Bytes) const=0;
+	virtual data_chunk Unpack() const=0;
 	virtual data_chunk Pack(data_chunk& data) = 0;
 	virtual void Clear() = 0;
 

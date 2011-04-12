@@ -44,12 +44,9 @@ StringMessage::~StringMessage(void)
 	DBG_DESTRUCTOR;
 }
 
-char *StringMessage::Unpack(int& dataSize) const
+data_chunk StringMessage::Unpack() const
 {
-	dataSize = this->length()+1;
-	char *data = new char[this->length()+1];
-	strcpy(data, this->c_str());
-	return data;
+	return data_chunk(this->c_str(), this->c_str() + this->length() + 1);
 }
 
 data_chunk StringMessage::Pack(data_chunk& data)

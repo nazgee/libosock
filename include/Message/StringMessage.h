@@ -31,7 +31,7 @@ public:
 	StringMessage(const char *data);
 	virtual ~StringMessage(void);
 
-	virtual char* Unpack(int& data) const;
+	virtual data_chunk Unpack() const;
 	virtual data_chunk Pack(data_chunk& data);
 	virtual void Clear();
 };
