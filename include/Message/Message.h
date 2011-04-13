@@ -40,8 +40,9 @@ public:
 	{
 	}
 
+	virtual data_chunk Remains() const=0;
 	virtual data_chunk Unpack() const=0;
-	virtual data_chunk Pack(data_chunk& data) = 0;
+	virtual void Pack(data_chunk& data) = 0;
 	virtual void Clear() = 0;
 
 	void SetComplete(bool complete);

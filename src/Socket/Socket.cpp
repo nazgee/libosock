@@ -103,17 +103,16 @@ int  Socket::Receive(Message& message) const
 {
 	static const int chunkSize = 8;	//TODO make it bigger or even better: modifiable
 	int rxedNumber = 0;
-	int discardedNumber = 0;
 	data_chunk tempData(chunkSize);
+	static data_chunk remainingData;
 
 	message.Clear();
 	message.SetComplete(false);
+	message.Pack(remainingData);
 
 	DBG << "waiting for message" << std::endl;
-	do {
-		tempData.resize(tempData.capacity());
-
-		rxedNumber = BIO_read(GetBIO(), &tempData[discardedNumber], tempData.capacity() - discardedNumber);
+	while ( !message.IsComplete() ) {
+		rxedNumber = BIO_read(GetBIO(), &tempData[0], tempData.capacity());
 		if (rxedNumber == 0) {
 			throw_SSL("BIO_read returned 0 - client disconnected");
 		}
@@ -127,18 +126,14 @@ int  Socket::Receive(Message& message) const
 			throw_SSL("BIO_read failed in unretryable way");
 		}
 		//only bytes that were rxed should be assumed as valid
-		tempData.resize(discardedNumber + rxedNumber);
+		tempData.resize(rxedNumber);
 		//try to Pack() data that was just received
-		tempData = message.Pack(tempData);
-		//save all data that were discarded in message.Pack()
-		discardedNumber = tempData.size();
-		//make sure we have room for at least chunkSize bytes
-		tempData.reserve(tempData.size() + chunkSize);
+		message.Pack(tempData);
 
-		DBG << discardedNumber << " of " << rxedNumber << "B discarded."
-			<< "Temporary buffer has capacity of " << tempData.capacity() <<
-			"B, and contains " << tempData.size() << "B" << std::endl;
-	} while ( !message.IsComplete() );
+		DBG << "RXed and packed " << rxedNumber << "B" << std::endl;
+	}
+
+	remainingData = message.Remains();
 
 	return rxedNumber;
 }

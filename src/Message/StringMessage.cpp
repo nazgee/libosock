@@ -44,12 +44,17 @@ StringMessage::~StringMessage(void)
 	DBG_DESTRUCTOR;
 }
 
+data_chunk StringMessage::Remains() const
+{
+	return itsRemains;
+}
+
 data_chunk StringMessage::Unpack() const
 {
 	return data_chunk(this->c_str(), this->c_str() + this->length() + 1);
 }
 
-data_chunk StringMessage::Pack(data_chunk& data)
+void StringMessage::Pack(data_chunk& data)
 {
 	// Count non-NULL characters
 	unsigned int chars = strnlen(&data[0], data.size());
@@ -63,12 +68,13 @@ data_chunk StringMessage::Pack(data_chunk& data)
 		SetComplete(true);
 		DBG << "Completed string with " << this->size()
 			<< "B (" << chars << " new non-NULL + 1 NULL)" << std::endl;
-		return data_chunk(data.begin()+ chars + 1, data.end());
+		itsRemains.assign(data.begin()+ chars + 1, data.end());
+		return;
 	} else {
 		// NULL-terminator was NOT found in data YET
 		DBG << "Continuing, " << this->size()
 			<< "B so far (" << chars << " new non-NULL)" << std::endl;
-		return data_chunk();
+		return;
 	}
 }
 
@@ -76,6 +82,7 @@ void StringMessage::Clear()
 {
 	DBG << "Clearing buffer" << std::endl;
 	this->clear();
+	itsRemains.clear();
 }
 
 }
