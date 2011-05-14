@@ -32,7 +32,6 @@ class Message
 {
 private:
 	bool isComplete;
-protected:
 
 public:
 	Message();
@@ -42,11 +41,13 @@ public:
 
 	virtual data_chunk Remains() const=0;
 	virtual data_chunk Unpack() const=0;
-	virtual void Pack(data_chunk& data) = 0;
+	virtual bool Pack(data_chunk& data) = 0;
 	virtual void Clear() = 0;
 
-	void SetComplete(bool complete);
-	bool IsComplete();
+protected:
+    bool getIsComplete() const;
+    void setIsComplete(bool isComplete);
+
 };
 } //namespace osock
 

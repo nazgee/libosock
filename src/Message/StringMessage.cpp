@@ -54,8 +54,11 @@ data_chunk StringMessage::Unpack() const
 	return data_chunk(this->c_str(), this->c_str() + this->length() + 1);
 }
 
-void StringMessage::Pack(data_chunk& data)
+bool StringMessage::Pack(data_chunk& data)
 {
+	if (getIsComplete())
+		setIsComplete(false);
+
 	// Count non-NULL characters
 	unsigned int chars = strnlen(&data[0], data.size());
 
@@ -65,16 +68,16 @@ void StringMessage::Pack(data_chunk& data)
 
 	if (chars < data.size()) {
 		// NULL-terminator was found in data- message complete
-		SetComplete(true);
+		setIsComplete(true);
 		DBG << "Completed string with " << this->size()
 			<< "B (" << chars << " new non-NULL + 1 NULL)" << std::endl;
 		itsRemains.assign(data.begin()+ chars + 1, data.end());
-		return;
+		return true;
 	} else {
 		// NULL-terminator was NOT found in data YET
 		DBG << "Continuing, " << this->size()
 			<< "B so far (" << chars << " new non-NULL)" << std::endl;
-		return;
+		return false;
 	}
 }
 

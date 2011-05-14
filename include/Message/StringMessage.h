@@ -35,7 +35,7 @@ public:
 
 	virtual data_chunk Remains() const;
 	virtual data_chunk Unpack() const;
-	virtual void Pack(data_chunk& data);
+	virtual bool Pack(data_chunk& data);
 	virtual void Clear();
 };
 } //namespace osock

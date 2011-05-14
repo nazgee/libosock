@@ -18,19 +18,21 @@
  */
 
 #include <Message/Message.h>
-namespace osock {
+namespace osock
+{
 Message::Message() :
 	isComplete(false)
 {
 }
 
-void Message::SetComplete(bool complete)
-{
-	isComplete = complete;
-}
-
-bool Message::IsComplete()
+bool Message::getIsComplete() const
 {
 	return isComplete;
 }
+
+void Message::setIsComplete(bool isComplete)
+{
+	this->isComplete = isComplete;
+}
+
 }

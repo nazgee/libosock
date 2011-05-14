@@ -107,32 +107,33 @@ int  Socket::Receive(Message& message) const
 	static data_chunk remainingData;
 
 	message.Clear();
-	message.SetComplete(false);
-	message.Pack(remainingData);
-
 	DBG << "waiting for message" << std::endl;
-	while ( !message.IsComplete() ) {
-		rxedNumber = BIO_read(GetBIO(), &tempData[0], tempData.capacity());
-		if (rxedNumber == 0) {
-			throw_SSL("BIO_read returned 0 - client disconnected");
-		}
 
-		if (rxedNumber < 0) {
-			if (BIO_should_retry(GetBIO())) {
-				DBG << "sleeping before retrying read" << std::endl;
-				sleep(1);	//XXX is sleeping here really needed?!
-				continue;
+	if (!message.Pack(remainingData))
+	{
+		do {
+			rxedNumber = BIO_read(GetBIO(), &tempData[0], tempData.capacity());
+			if (rxedNumber == 0) {
+				throw_SSL("BIO_read returned 0 - client disconnected");
 			}
-			throw_SSL("BIO_read failed in unretryable way");
-		}
-		//only bytes that were rxed should be assumed as valid
-		tempData.resize(rxedNumber);
-		//try to Pack() data that was just received
-		message.Pack(tempData);
 
-		DBG << "RXed and packed " << rxedNumber << "B" << std::endl;
+			if (rxedNumber < 0) {
+				if (BIO_should_retry(GetBIO())) {
+					DBG << "sleeping before retrying read" << std::endl;
+					sleep(1);	//XXX is sleeping here really needed?!
+					continue;
+				}
+				throw_SSL("BIO_read failed in unretryable way");
+			}
+			//only bytes that were rxed should be assumed as valid
+			tempData.resize(rxedNumber);
+			DBG << "RXed and packed " << rxedNumber << "B" << std::endl;
+
+			//try to Pack() data that was just received
+		} while ( !message.Pack(tempData) );
 	}
 
+	// Store remainings for future use
 	remainingData = message.Remains();
 
 	return rxedNumber;
