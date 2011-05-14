@@ -1,4 +1,14 @@
-osocklib
+libosock
 ----------
 
-TODO: This project bla bla bla
+This project is an attempt to build simple to use, yet efficient Object/C++ Library for Sockets and SSL.
+
+In order to build this library you might need to:
+
+- get libraries that libosock is linked against:
+sudo apt-get install libssl-dev		TODO: make a check for it in autotools
+sudo apt-get install libboost-dev	TODO: make a check for it in autotools
+
+- get tools required to build the library
+sudo apt-get install automake
+sudo apt-get install libtool
