@@ -30,6 +30,11 @@ bool Message::getIsComplete() const
 	return isComplete;
 }
 
+data_chunk Message::getRemains() const
+{
+	return itsRemains;
+}
+
 void Message::setIsComplete(bool isComplete)
 {
 	this->isComplete = isComplete;

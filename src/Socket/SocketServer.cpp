@@ -75,7 +75,7 @@ void SocketServer::Accept(Address& Addr, clientsHandler handler, Server* control
 				Socket socket(auth);
 				// Call handler to serve client
 				if (controller != NULL)
-					controller->Handle(socket);
+					controller->Serve(socket);
 				else
 					handler(socket);
 
@@ -108,7 +108,7 @@ void SocketServer::Accept(Address& Addr, clientsHandler handler, Server* control
 					Socket socket(auth);
 					// Call handler to serve client
 					if (controller != NULL)
-						controller->Handle(socket);
+						controller->Serve(socket);
 					else
 						handler(socket);
 

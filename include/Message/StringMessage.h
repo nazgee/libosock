@@ -26,14 +26,11 @@ namespace osock
 {
 class StringMessage: public Message, public std::string
 {
-private:
-	data_chunk itsRemains;
 public:
 	StringMessage(unsigned short dataLen);
 	StringMessage(const char *data);
 	virtual ~StringMessage(void);
 
-	virtual data_chunk Remains() const;
 	virtual data_chunk Unpack() const;
 	virtual bool Pack(data_chunk& data);
 	virtual void Clear();

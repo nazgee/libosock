@@ -38,13 +38,13 @@ Server::~Server()
 	delete itsSocketServer;
 }
 
-bool Server::ClientServed(Address& servedClient)
+bool Server::onServed(Address& servedClient)
 {
 	DBG << "Serving " << servedClient << " done! Waiting for next client." << std::endl;
 	return true;
 }
 
-void Server::Handle(const Socket& Client)
+void Server::Serve(Socket& Client)
 {
 	WRN << "Default handler for client=" << Client << ", doing nothing!"
 			<< std::endl;
@@ -55,7 +55,7 @@ void Server::Run()
 	Address client;
 	do {
 		itsSocketServer->Accept(client, NULL, this);
-	} while (itsSocketServer->IsMainInstance() && ClientServed(client));
+	} while (itsSocketServer->IsMainInstance() && onServed(client));
 
 	if (!itsSocketServer->IsMainInstance()) {
 		delete itsSocketServer;

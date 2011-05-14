@@ -34,8 +34,8 @@ public:
 	virtual ~Server();
 	void Run();
 
-	virtual bool ClientServed(Address& servedClient);
-	virtual void Handle(const Socket& Client);
+	virtual bool onServed(Address& servedClient);
+	virtual void Serve(Socket& Client);
 private:
 	SocketServer* itsSocketServer;
 };

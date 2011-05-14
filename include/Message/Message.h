@@ -32,6 +32,8 @@ class Message
 {
 private:
 	bool isComplete;
+protected:
+	data_chunk itsRemains;
 
 public:
 	Message();
@@ -39,13 +41,13 @@ public:
 	{
 	}
 
-	virtual data_chunk Remains() const=0;
 	virtual data_chunk Unpack() const=0;
 	virtual bool Pack(data_chunk& data) = 0;
 	virtual void Clear() = 0;
+    bool getIsComplete() const;
+    data_chunk getRemains() const;
 
 protected:
-    bool getIsComplete() const;
     void setIsComplete(bool isComplete);
 
 };

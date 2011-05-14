@@ -133,7 +133,7 @@ int  Socket::Receive(Message& message)
 	}
 
 	// Store remainings for future use
-	itsRemainsOfData = message.Remains();
+	itsRemainsOfData = message.getRemains();
 
 	return rxedNumber;
 }
