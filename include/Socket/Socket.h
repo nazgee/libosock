@@ -37,6 +37,7 @@ class Socket
 private:
 	int itsSD;
 	Security* itsSecurity;
+	data_chunk itsRemainsOfData;
 
 protected:
 	BIO* GetBIO() const;
@@ -50,7 +51,7 @@ public:
 	virtual ~Socket(void);
 
 	int Send(Message& Msg) const;
-	int Receive(Message& Msg) const;
+	int Receive(Message& Msg);
 
 	friend std::ostream& operator <<(std::ostream &os, const Socket &obj);
 	friend std::ostream& operator <<(std::ostream &os, const Socket *obj);

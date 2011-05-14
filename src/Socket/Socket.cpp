@@ -99,17 +99,16 @@ int  Socket::Send(Message& message) const
 	return bytes;
 }
 
-int  Socket::Receive(Message& message) const
+int  Socket::Receive(Message& message)
 {
 	static const int chunkSize = 8;	//TODO make it bigger or even better: modifiable
 	int rxedNumber = 0;
 	data_chunk tempData(chunkSize);
-	static data_chunk remainingData;
 
 	message.Clear();
 	DBG << "waiting for message" << std::endl;
 
-	if (!message.Pack(remainingData))
+	if (!message.Pack(itsRemainsOfData))
 	{
 		do {
 			rxedNumber = BIO_read(GetBIO(), &tempData[0], tempData.capacity());
@@ -134,7 +133,7 @@ int  Socket::Receive(Message& message) const
 	}
 
 	// Store remainings for future use
-	remainingData = message.Remains();
+	itsRemainsOfData = message.Remains();
 
 	return rxedNumber;
 }
