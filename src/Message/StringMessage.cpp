@@ -17,7 +17,7 @@
 	along with libsockets.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-//#define DEBUG_WANTED
+#define DEBUG_WANTED
 
 #include <defines.h>
 #include <Message/StringMessage.h>
@@ -26,7 +26,7 @@
 
 namespace osock
 {
-StringMessage::StringMessage(unsigned short dataLen, std::string terminator) :
+StringMessage::StringMessage(unsigned short dataLen, const std::string& terminator) :
 	std::string(dataLen, 'X'),
 	itsTerminator(terminator)
 {
@@ -34,9 +34,25 @@ StringMessage::StringMessage(unsigned short dataLen, std::string terminator) :
 	DBG_CONSTRUCTOR;
 }
 
-StringMessage::StringMessage(const char* data, std::string terminator) :
+StringMessage::StringMessage(const std::string& data, const std::string& terminator) :
 	std::string(data),
 	itsTerminator(terminator)
+{
+	//TODO: throw, when data does not match given terminator
+	DBG_CONSTRUCTOR;
+}
+
+StringMessage::StringMessage(unsigned short dataLen) :
+	std::string(dataLen, 'X'),
+	itsTerminator("\0", 1)
+{
+	this->clear();
+	DBG_CONSTRUCTOR;
+}
+
+StringMessage::StringMessage(const std::string& data) :
+	std::string(data),
+	itsTerminator("\0", 1)
 {
 	DBG_CONSTRUCTOR;
 }
@@ -48,28 +64,26 @@ StringMessage::~StringMessage(void)
 
 data_chunk StringMessage::Unpack() const
 {
-	return data_chunk(this->c_str(), this->c_str() + this->length() + 1);
+	return data_chunk(this->data(), this->data() + this->size());
 }
 
 void StringMessage::doFeed(data_chunk& data)
 {
-	// Count non-NULL characters
-	unsigned int chars = strnlen(&data[0], data.size());
+	this->append(data.begin(), data.end());
+	size_t found = this->find(itsTerminator);
 
-	// Store all non-NULL characters
-	// NULL is automatically added to end of std::string- no need to save it
-	this->append(&data[0], chars);
+	if (std::string::npos != found) {
+		// Terminator was found in data
+		size_t remains_pos = found + itsTerminator.size();
+		itsRemains.assign(this->begin() + remains_pos, this->end());
+		this->erase(this->begin() + remains_pos, this->end());
 
-	if (chars < data.size()) {
-		// NULL-terminator was found in data- message complete
 		setIsComplete(true);
 		DBG << "Completed string with " << this->size()
-			<< "B (" << chars << " new non-NULL + 1 NULL)" << std::endl;
-		itsRemains.assign(data.begin()+ chars + 1, data.end());
+			<< "B (" << found << " + " << itsTerminator.size() << ")" << std::endl;
 	} else {
-		// NULL-terminator was NOT found in data YET
-		DBG << "Continuing, " << this->size()
-			<< "B so far (" << chars << " new non-NULL)" << std::endl;
+		// Terminator was not found in data
+		DBG << "Continuing, " << this->size() << "B so far" << std::endl;
 	}
 }
 

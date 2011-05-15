@@ -30,8 +30,10 @@ private:
 	std::string itsTerminator;
 
 public:
-	StringMessage(unsigned short dataLen, std::string terminator = "\0");
-	StringMessage(const char *data, std::string terminator = "\0");
+	StringMessage(unsigned short dataLen, const std::string& terminator);
+	StringMessage(const std::string& data, const std::string& terminator);
+	StringMessage(unsigned short dataLen);
+	StringMessage(const std::string& data);
 	virtual ~StringMessage(void);
 
 	virtual data_chunk Unpack() const;
