@@ -42,13 +42,15 @@ public:
 	}
 
 	virtual data_chunk Unpack() const=0;
-	virtual bool Pack(data_chunk& data) = 0;
-	virtual void Clear() = 0;
+	bool Pack(data_chunk& data);
+	void Clear();
     bool getIsComplete() const;
     data_chunk getRemains() const;
 
 protected:
     void setIsComplete(bool isComplete);
+    virtual void doFeed(data_chunk& data) = 0;
+    virtual void doClear() = 0;
 
 };
 } //namespace osock

@@ -25,6 +25,21 @@ Message::Message() :
 {
 }
 
+bool Message::Pack(data_chunk& data)
+{
+	if (getIsComplete())
+		Clear();
+	doFeed(data);
+	return getIsComplete();
+}
+
+void Message::Clear()
+{
+	doClear();
+	itsRemains.clear();
+	setIsComplete(false);
+}
+
 bool Message::getIsComplete() const
 {
 	return isComplete;

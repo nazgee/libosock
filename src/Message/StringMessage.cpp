@@ -26,15 +26,17 @@
 
 namespace osock
 {
-StringMessage::StringMessage(unsigned short dataLen) :
-	std::string(dataLen, 'X')
+StringMessage::StringMessage(unsigned short dataLen, std::string terminator) :
+	std::string(dataLen, 'X'),
+	itsTerminator(terminator)
 {
 	this->clear();
 	DBG_CONSTRUCTOR;
 }
 
-StringMessage::StringMessage(const char* data) :
-	std::string(data)
+StringMessage::StringMessage(const char* data, std::string terminator) :
+	std::string(data),
+	itsTerminator(terminator)
 {
 	DBG_CONSTRUCTOR;
 }
@@ -49,11 +51,8 @@ data_chunk StringMessage::Unpack() const
 	return data_chunk(this->c_str(), this->c_str() + this->length() + 1);
 }
 
-bool StringMessage::Pack(data_chunk& data)
+void StringMessage::doFeed(data_chunk& data)
 {
-	if (getIsComplete())
-		setIsComplete(false);
-
 	// Count non-NULL characters
 	unsigned int chars = strnlen(&data[0], data.size());
 
@@ -72,15 +71,12 @@ bool StringMessage::Pack(data_chunk& data)
 		DBG << "Continuing, " << this->size()
 			<< "B so far (" << chars << " new non-NULL)" << std::endl;
 	}
-
-	return getIsComplete();
 }
 
-void StringMessage::Clear()
+void StringMessage::doClear()
 {
 	DBG << "Clearing buffer" << std::endl;
 	this->clear();
-	itsRemains.clear();
 }
 
 }
