@@ -27,25 +27,26 @@ lib_LTLIBRARIES = libosock-@OSOCK_API_VERSION@.la
 ## from each source file.  Note that it is not necessary to list header files
 ## which are already listed elsewhere in a _HEADERS variable assignment.
 libosock_@OSOCK_API_VERSION@_la_SOURCES = src/Message/Message.cpp \
-	src/Message/StringMessage.cpp\
-	src/Security/SecurityServerUnsafe.cpp\
-	src/Security/Trust/Trust.cpp\
-	src/Security/SecurityServer.cpp\
-	src/Security/SecurityClientSSL.cpp\
-	src/Security/Key/Key.cpp\
-	src/Security/SecurityServerSSL.cpp\
-	src/Security/Security.cpp\
-	src/Security/Certificate/Certificate.cpp\
-	src/Security/SecurityClientUnsafe.cpp\
-	src/Security/SecurityClient.cpp\
-	src/Socket/SocketClient.cpp\
-	src/Socket/SocketClientSSL.cpp\
-	src/Socket/SocketServer.cpp\
-	src/Socket/SocketClientUnsafe.cpp\
-	src/Socket/SocketServerSSL.cpp\
-	src/Socket/SocketServerUnsafe.cpp\
-	src/Socket/Socket.cpp\
-	src/Address/Address.cpp\
+	src/Message/StringMessage.cpp \
+	src/Message/ChainedMessage.cpp \
+	src/Security/SecurityServerUnsafe.cpp \
+	src/Security/Trust/Trust.cpp \
+	src/Security/SecurityServer.cpp \
+	src/Security/SecurityClientSSL.cpp \
+	src/Security/Key/Key.cpp \
+	src/Security/SecurityServerSSL.cpp \
+	src/Security/Security.cpp \
+	src/Security/Certificate/Certificate.cpp \
+	src/Security/SecurityClientUnsafe.cpp \
+	src/Security/SecurityClient.cpp \
+	src/Socket/SocketClient.cpp \
+	src/Socket/SocketClientSSL.cpp \
+	src/Socket/SocketServer.cpp \
+	src/Socket/SocketClientUnsafe.cpp \
+	src/Socket/SocketServerSSL.cpp \
+	src/Socket/SocketServerUnsafe.cpp \
+	src/Socket/Socket.cpp \
+	src/Address/Address.cpp \
 	src/Exception/Exception.cpp \
 	src/Utilities/Logger.cpp \
 	src/Utilities/SSLWrap.cpp \
@@ -70,6 +71,7 @@ osock_includedir = $(includedir)/osock-$(OSOCK_API_VERSION)
 
 osockmessage_includedir = $(osock_includedir)/Message
 osockmessage_include_HEADERS = include/Message/StringMessage.h \
+	src/Message/ChainedMessage.h \
 	include/Message/Message.h
 	
 osocksecurity_includedir = $(osock_includedir)/Security
