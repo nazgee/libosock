@@ -22,19 +22,4 @@ Protocole::~Protocole()
 	DBG_DESTRUCTOR;
 }
 
-data_chunk Protocole::doUnpack() const
-{
-
-}
-
-void Protocole::doFeed(data_chunk& data)
-{
-
-}
-
-void Protocole::doClear()
-{
-
-}
-
 }

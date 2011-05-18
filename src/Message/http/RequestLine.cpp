@@ -4,6 +4,7 @@
  *  Created on: May 18, 2011
  *      Author: nazgee
  */
+#define DEBUG_WANTED
 
 #include <defines.h>
 #include "Message/http/RequestLine.h"
@@ -14,13 +15,13 @@ namespace osock
 RequestLine::RequestLine(std::string request, std::string path,
 		std::string protocole)
 {
-	itsRequest = new Request("dupa");
+	itsRequest = new Request(request);
 	itsChain.AddLink(itsRequest);
 
-	itsPath = new Path("dupa");
+	itsPath = new Path(path);
 	itsChain.AddLink(itsPath);
 
-	itsProtocole = new Protocole("dupa");
+	itsProtocole = new Protocole(protocole);
 	itsChain.AddLink(itsProtocole);
 
 	DBG_CONSTRUCTOR;
@@ -41,7 +42,11 @@ void RequestLine::doFeed(data_chunk& data)
 {
 	DBG << "Got " << data.size() << "B to pack" << std::endl;
 	setIsComplete(itsChain.Pack(data));
-	DBG << "IsComplete = " << getIsComplete() << std::endl;
+
+	if (getIsComplete())
+		DBG << "requ=" << itsRequest->getValue()
+			<< "; path=" << itsPath->getValue()
+			<< "; prot=" << itsProtocole->getValue() << ";" << std::endl;
 }
 
 void RequestLine::doClear()

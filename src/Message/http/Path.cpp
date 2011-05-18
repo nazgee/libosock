@@ -22,19 +22,4 @@ Path::~Path()
 	DBG_DESTRUCTOR;
 }
 
-data_chunk Path::doUnpack() const
-{
-
-}
-
-void Path::doFeed(data_chunk& data)
-{
-
-}
-
-void Path::doClear()
-{
-
-}
-
 }

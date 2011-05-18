@@ -27,6 +27,7 @@
 #include "Exception/Exception.h"
 #include "Message/StringMessage.h"
 #include "Message/ChainedMessage.h"
+#include "Message/http/RequestLine.h"
 #include "Server/Server.h"
 
 #endif /* LIBSOCKETS_H_ */

@@ -8,21 +8,16 @@
 #ifndef PROTOCOLE_H_
 #define PROTOCOLE_H_
 
-#include "include/Message/StringMessage.h"
+#include "Message/StringMessage.h"
 
 namespace osock
 {
 
-class Protocole : public osock::StringMessage
+class Protocole : public StringMessage
 {
 public:
 	Protocole(std::string protocole, std::string terminator = "\r\n");
 	virtual ~Protocole();
-
-protected:
-	virtual data_chunk doUnpack() const;
-	virtual void doFeed(data_chunk& data);
-	virtual void doClear();
 
 };
 

@@ -17,7 +17,7 @@
 namespace osock
 {
 
-class RequestLine: public osock::Message
+class RequestLine: public Message
 {
 	Request* itsRequest;
 	Path* itsPath;

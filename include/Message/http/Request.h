@@ -8,21 +8,18 @@
 #ifndef REQUEST_H_
 #define REQUEST_H_
 
-#include "include/Message/StringMessage.h"
+#include "Message/StringMessage.h"
 
 namespace osock
 {
 
-class Request: public osock::StringMessage
+class Request: public StringMessage
 {
 public:
 	Request(std::string request, std::string terminator = " ");
 	virtual ~Request();
 
 protected:
-	virtual data_chunk doUnpack() const;
-	virtual void doFeed(data_chunk& data);
-	virtual void doClear();
 
 };
 

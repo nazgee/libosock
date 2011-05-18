@@ -22,19 +22,4 @@ Request::~Request()
 	DBG_DESTRUCTOR;
 }
 
-data_chunk Request::doUnpack() const
-{
-
-}
-
-void Request::doFeed(data_chunk& data)
-{
-
-}
-
-void Request::doClear()
-{
-
-}
-
 }

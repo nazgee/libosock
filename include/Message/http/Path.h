@@ -8,21 +8,16 @@
 #ifndef PATH_H_
 #define PATH_H_
 
-#include "include/Message/StringMessage.h"
+#include "Message/StringMessage.h"
 
 namespace osock
 {
 
-class Path : public osock::StringMessage
+class Path : public StringMessage
 {
 public:
 	Path(std::string path, std::string terminator = " ");
 	virtual ~Path();
-
-protected:
-	virtual data_chunk doUnpack() const;
-	virtual void doFeed(data_chunk& data);
-	virtual void doClear();
 
 };
 

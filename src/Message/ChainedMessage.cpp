@@ -5,6 +5,8 @@
  *      Author: nazgee
  */
 
+//#define DEBUG_WANTED
+
 #include <defines.h>
 #include <Message/ChainedMessage.h>
 
@@ -40,14 +42,15 @@ osock::data_chunk ChainedMessage::doUnpack() const
 
 void ChainedMessage::doFeed(osock::data_chunk& data)
 {
+	DBG << "Got " << data.size() << "B to pack" << std::endl;
 	// Concatenate new data to old remainings
 	itsRemains.insert(itsRemains.end(), data.begin(), data.end());
 
 	// Feed as much links as possible with new data
 	for (unsigned int i = 0; i < itsLinks.size(); ++i) {
-		bool complete = false;
+		bool complete = itsLinks[i].getIsComplete();
 
-		if (!itsLinks[i].getIsComplete()) {
+		if (!complete) {
 			complete = itsLinks[i].Pack(itsRemains);
 			itsRemains = itsLinks[i].getRemains();
 		}
@@ -63,10 +66,10 @@ void ChainedMessage::doFeed(osock::data_chunk& data)
 
 void ChainedMessage::doClear()
 {
-	//DBG << "Clearing links" << std::endl;
 	for (unsigned int i = 0; i < itsLinks.size(); ++i) {
 		itsLinks[i].Clear();
 	}
+	DBG << "Cleared chain links" << std::endl;
 }
 
 }
