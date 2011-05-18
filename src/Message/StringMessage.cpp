@@ -21,16 +21,18 @@
 
 #include <defines.h>
 #include <Message/StringMessage.h>
+#include <Exception/Exception.h>
 
 #include <string.h>
 
 namespace osock
 {
 StringMessage::StringMessage(unsigned short dataLen, const std::string& terminator) :
-	std::string(dataLen, 'X'),
 	itsTerminator(terminator)
 {
-	this->clear();
+	this->reserve(dataLen);
+	this->append(itsTerminator);
+	setIsComplete(true);
 	DBG_CONSTRUCTOR;
 }
 
@@ -38,15 +40,17 @@ StringMessage::StringMessage(const std::string& data, const std::string& termina
 	std::string(data),
 	itsTerminator(terminator)
 {
-	//TODO: throw, when data does not match given terminator
+	this->append(itsTerminator);
+	setIsComplete(true);
 	DBG_CONSTRUCTOR;
 }
 
 StringMessage::StringMessage(unsigned short dataLen) :
-	std::string(dataLen, 'X'),
 	itsTerminator("\0", 1)
 {
-	this->clear();
+	this->reserve(dataLen);
+	this->append(itsTerminator);
+	setIsComplete(true);
 	DBG_CONSTRUCTOR;
 }
 
@@ -54,6 +58,8 @@ StringMessage::StringMessage(const std::string& data) :
 	std::string(data),
 	itsTerminator("\0", 1)
 {
+	setIsComplete(true);
+	this->append(itsTerminator);
 	DBG_CONSTRUCTOR;
 }
 
@@ -62,8 +68,30 @@ StringMessage::~StringMessage(void)
 	DBG_DESTRUCTOR;
 }
 
-data_chunk StringMessage::Unpack() const
+std::string StringMessage::getTerminator()
 {
+	return itsTerminator;
+}
+
+std::string StringMessage::setTerminator(std::string terminator)
+{
+	Clear();
+	itsTerminator = terminator;
+}
+
+std::string StringMessage::getValue()
+{
+	if (!getIsComplete())
+		throw Exception("getValue() called on incomplete Message!");
+
+	return this->substr(0, this->length() - itsTerminator.length());
+}
+
+data_chunk StringMessage::doUnpack() const
+{
+	if (!getIsComplete())
+		throw Exception("doUnpack() called on incomplete Message!");
+
 	return data_chunk(this->data(), this->data() + this->size());
 }
 
@@ -89,7 +117,7 @@ void StringMessage::doFeed(data_chunk& data)
 
 void StringMessage::doClear()
 {
-	DBG << "Clearing buffer" << std::endl;
+	DBG << "Clearing StringMessage" << std::endl;
 	this->clear();
 }
 

@@ -41,7 +41,7 @@ public:
 	{
 	}
 
-	virtual data_chunk Unpack() const=0;
+	data_chunk Unpack() const;
 	bool Pack(data_chunk& data);
 	void Clear();
     bool getIsComplete() const;
@@ -49,6 +49,7 @@ public:
 
 protected:
     void setIsComplete(bool isComplete);
+    virtual data_chunk doUnpack() const=0;
     virtual void doFeed(data_chunk& data) = 0;
     virtual void doClear() = 0;
 

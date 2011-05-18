@@ -29,6 +29,10 @@ lib_LTLIBRARIES = libosock-@OSOCK_API_VERSION@.la
 libosock_@OSOCK_API_VERSION@_la_SOURCES = src/Message/Message.cpp \
 	src/Message/StringMessage.cpp \
 	src/Message/ChainedMessage.cpp \
+	src/Message/http/Path.cpp \
+	src/Message/http/Request.cpp \
+	src/Message/http/Protocole.cpp \
+	src/Message/http/RequestLine.cpp \
 	src/Security/SecurityServerUnsafe.cpp \
 	src/Security/Trust/Trust.cpp \
 	src/Security/SecurityServer.cpp \
@@ -71,7 +75,11 @@ osock_includedir = $(includedir)/osock-$(OSOCK_API_VERSION)
 
 osockmessage_includedir = $(osock_includedir)/Message
 osockmessage_include_HEADERS = include/Message/StringMessage.h \
-	src/Message/ChainedMessage.h \
+	include/Message/ChainedMessage.h \
+	include/Message/http/Path.h \
+	include/Message/http/Request.h \
+	include/Message/http/Protocole.h \
+	include/Message/http/RequestLine.h \
 	include/Message/Message.h
 	
 osocksecurity_includedir = $(osock_includedir)/Security

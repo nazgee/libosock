@@ -26,6 +26,7 @@
 #include "Socket/SocketClientUnsafe.h"
 #include "Exception/Exception.h"
 #include "Message/StringMessage.h"
+#include "Message/ChainedMessage.h"
 #include "Server/Server.h"
 
 #endif /* LIBSOCKETS_H_ */

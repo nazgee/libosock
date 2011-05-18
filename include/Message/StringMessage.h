@@ -36,7 +36,12 @@ public:
 	StringMessage(const std::string& data);
 	virtual ~StringMessage(void);
 
-	virtual data_chunk Unpack() const;
+	std::string getTerminator();
+	std::string setTerminator(std::string terminator);
+	std::string getValue();
+
+protected:
+	virtual data_chunk doUnpack() const;
 	virtual void doFeed(data_chunk& data);
 	virtual void doClear();
 };

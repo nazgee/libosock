@@ -26,7 +26,7 @@ void ChainedMessage::AddLink(Message* mgs2add)
 	itsLinks.push_back(mgs2add);
 }
 
-osock::data_chunk ChainedMessage::Unpack()
+osock::data_chunk ChainedMessage::doUnpack() const
 {
 	osock::data_chunk ret;
 

@@ -24,7 +24,9 @@ public:
 	ChainedMessage();
 	~ChainedMessage();
 	void AddLink(Message* mgs2add);
-	virtual osock::data_chunk Unpack();
+
+protected:
+	virtual osock::data_chunk doUnpack() const;
 	virtual void doFeed(osock::data_chunk& data);
 	void virtual doClear();
 };

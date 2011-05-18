@@ -25,6 +25,11 @@ Message::Message() :
 {
 }
 
+data_chunk Message::Unpack() const
+{
+	return doUnpack();
+}
+
 bool Message::Pack(data_chunk& data)
 {
 	if (getIsComplete())
