@@ -73,16 +73,16 @@ std::string StringMessage::getTerminator()
 	return itsTerminator;
 }
 
-std::string StringMessage::setTerminator(std::string terminator)
+void StringMessage::setTerminator(std::string terminator)
 {
 	Clear();
 	itsTerminator = terminator;
 }
 
-std::string StringMessage::getValue()
+std::string StringMessage::getString()
 {
 	if (!getIsComplete())
-		throw Exception("getValue() called on incomplete Message!");
+		throw Exception("getValue() called on incomplete StringMessage!");
 
 	return this->substr(0, this->length() - itsTerminator.length());
 }
@@ -90,7 +90,7 @@ std::string StringMessage::getValue()
 data_chunk StringMessage::doUnpack() const
 {
 	if (!getIsComplete())
-		throw Exception("doUnpack() called on incomplete Message!");
+		throw Exception("doUnpack() called on incomplete StringMessage!");
 
 	return data_chunk(this->data(), this->data() + this->size());
 }

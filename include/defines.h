@@ -30,6 +30,12 @@
 
 namespace osock
 {
+
+namespace http
+{
+#define 	NEWLINE 	"\r\n"
+}
+
 #define UNUSED(x) (void)x
 
 #undef DEBUG_FORCED_PRINTOUTS

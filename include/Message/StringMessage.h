@@ -26,7 +26,7 @@ namespace osock
 {
 class StringMessage: public Message, public std::string
 {
-private:
+protected:
 	std::string itsTerminator;
 
 public:
@@ -37,8 +37,8 @@ public:
 	virtual ~StringMessage(void);
 
 	std::string getTerminator();
-	std::string setTerminator(std::string terminator);
-	std::string getValue();
+	void setTerminator(std::string terminator);
+	std::string getString();
 
 protected:
 	virtual data_chunk doUnpack() const;

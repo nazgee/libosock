@@ -44,9 +44,9 @@ void RequestLine::doFeed(data_chunk& data)
 	setIsComplete(itsChain.Pack(data));
 
 	if (getIsComplete())
-		DBG << "requ=" << itsRequest->getValue()
-			<< "; path=" << itsPath->getValue()
-			<< "; prot=" << itsProtocole->getValue() << ";" << std::endl;
+		DBG << "requ=" << itsRequest->getString()
+			<< "; path=" << itsPath->getString()
+			<< "; prot=" << itsProtocole->getString() << ";" << std::endl;
 }
 
 void RequestLine::doClear()
