@@ -17,9 +17,8 @@
 	along with libsockets.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-//#define DEBUG_WANTED
-
 #include <defines.h>
+#include <Utilities/Logger.h>
 #include <Security/SecurityServerSSL.h>
 #include <Exception/Exception.h>
 #include <Security/Certificate/Certificate.h>

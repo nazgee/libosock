@@ -17,15 +17,16 @@
 	along with libsockets.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-//#define DEBUG_WANTED
+//
 
 #include <Utilities/SSLWrap.h>
 #include <Utilities/Logger.h>
-#include <defines.h>
+#include <Utilities/Logger.h>
 
 #include <openssl/ssl.h>
 #include <openssl/bio.h>
-
+namespace osock
+{
 namespace SSLWrap
 {
 	SSL_CTX *SSL_CTX_new(SSL_METHOD *meth)
@@ -230,5 +231,5 @@ namespace SSLWrap
 		::SSL_free(ssl);
 		DBG_FUNC_NOLINE << "( ssl=" << ssl << " ) : void" << std::endl;
 	}
-
-} //namespace SSL
+} //namespace SSLWrap
+} //namespace osock

@@ -5,7 +5,7 @@
  *      Author: nazgee
  */
 
-#include <defines.h>
+#include <Utilities/Logger.h>
 #include <Message/http/Protocole.h>
 
 namespace osock

@@ -4,9 +4,8 @@
  *  Created on: May 18, 2011
  *      Author: nazgee
  */
-#define DEBUG_WANTED
 
-#include <defines.h>
+#include <Utilities/Logger.h>
 #include "Message/http/RequestLine.h"
 
 namespace osock

@@ -19,11 +19,12 @@
 #ifndef LOGGER_H_
 #define LOGGER_H_
 
+#include <typeinfo>
 #include <iostream>
 
 namespace osock
 {
-
+//=============================================================================
 /* Sole purpose of this class is to discard all that goes into it */
 struct NullStream: std::ostream
 {
@@ -39,19 +40,110 @@ struct NullStream: std::ostream
 	{
 	}
 };
-
+//=============================================================================
 class Logger
 {
 private:
 	Logger();
 public:
-	typedef enum { logOff, logDebug, logWarn, logError } logLevel;
+	typedef enum { logOff, logDebug, logInfo, logWarn, logError } logLevel;
 
 	static NullStream nullingstream;
 	static logLevel printLoglevel;
 	static std::ostream& Print(logLevel loglevel);
 	virtual ~Logger();
 };
+//=============================================================================
+#undef LOGLEVEL
+#undef DBG_FORCED_CONSTRUCTORS
+#undef DBG_FORCED_DESTRUCTORS
+#undef DBG_SURPRESSED_CONSTRUCTORS
+#undef DBG_SURPRESSED_DESTRUCTORS
+
+#define LOGLEVEL_DBG	4
+#define LOGLEVEL_NFO	3
+#define LOGLEVEL_WRN	2
+#define LOGLEVEL_ERR	1
+
+#define LOGLEVEL_SURPRESS	LOGLEVEL_DBG
+#define LOGLEVEL_FORCE		LOGLEVEL_WRN
+#define LOGLEVEL 			LOGLEVEL_NFO
+
+#define LOG_HEAD_DBG_CON "dbg  +"
+#define LOG_HEAD_DBG_DES "dbg  "
+#define LOG_HEAD_DBG "dbg   "
+#define LOG_HEAD_NFO "nfo . "
+#define LOG_HEAD_WRN "wrn ? "
+#define LOG_HEAD_ERR "ERR ! "
+
+#define LOGLEVEL_DBG_VAL	Logger::logDebug
+#define LOGLEVEL_NFO_VAL	Logger::logInfo
+#define LOGLEVEL_WRN_VAL	Logger::logWarn
+#define LOGLEVEL_ERR_VAL	Logger::logError
+#define LOGLEVEL_OFF_VAL	Logger::logOff
+#define LOG_PRINT			Logger::Print
+
+#define LOG_SEPARATOR	" | "
+
+//TODO demangle class name from typeid
+#define LOGLINE_CLASS(outstream, header, separator) \
+	outstream << header << typeid(*this).name() << "::" <<__func__ << " line:" << __LINE__ << separator
+#define LOGLINE_FUNC(outstream, header, separator) \
+	outstream << header << __func__ << " line:" << __LINE__ << separator
+#define LOGLINE_FUNC_NOLINE(outstream, header, separator) \
+	outstream << header << __func__ << separator
+#define LOGLEVEL_PASSED(value, level) (((value >= level) || (LOGLEVEL_FORCE >= level)) && (LOGLEVEL_SURPRESS >= level ))
+//========================= debug logs =========================================
+#if (LOGLEVEL_PASSED(LOGLEVEL, LOGLEVEL_DBG))
+#define DBG 			LOGLINE_CLASS(LOG_PRINT(LOGLEVEL_DBG_VAL), LOG_HEAD_DBG, LOG_SEPARATOR)
+#define DBG_FUNC		LOGLINE_FUNC(LOG_PRINT(LOGLEVEL_DBG_VAL), LOG_HEAD_DBG, LOG_SEPARATOR)
+#define DBG_FUNC_NOLINE	LOGLINE_FUNC_NOLINE(LOG_PRINT(LOGLEVEL_DBG_VAL), LOG_HEAD_DBG, " ")
+#else
+#define DBG 			LOGLINE_CLASS(LOG_PRINT(LOGLEVEL_OFF_VAL), LOG_HEAD_DBG, LOG_SEPARATOR)
+#define DBG_FUNC		LOGLINE_FUNC(LOG_PRINT(LOGLEVEL_OFF_VAL), LOG_HEAD_DBG, LOG_SEPARATOR)
+#define DBG_FUNC_NOLINE	LOGLINE_FUNC_NOLINE(LOG_PRINT(LOGLEVEL_OFF_VAL), LOG_HEAD_DBG, LOG_SEPARATOR)
+//constructors and destructors have one last chance to still be printed
+#if (defined(DBG_FORCED_CONSTRUCTORS))
+#define DBG_CONSTRUCTOR	LOGLINE_FUNC(LOG_PRINT(LOGLEVEL_DBG_VAL), LOG_HEAD_DBG_CON, LOG_SEPARATOR) << this << std::endl
+#else
+#define DBG_CONSTRUCTOR	LOGLINE_FUNC(LOG_PRINT(LOGLEVEL_OFF_VAL), LOG_HEAD_DBG_CON, LOG_SEPARATOR) << this << std::endl
+#endif
+#if (defined(DBG_FORCED_DESTRUCTORS))
+#define DBG_DESTRUCTOR	LOGLINE_FUNC(LOG_PRINT(LOGLEVEL_DBG_VAL), LOG_HEAD_DBG_DES, LOG_SEPARATOR) << this << std::endl
+#else
+#define DBG_DESTRUCTOR	LOGLINE_FUNC(LOG_PRINT(LOGLEVEL_OFF_VAL), LOG_HEAD_DBG_DES, LOG_SEPARATOR) << this << std::endl
+#endif
+#endif
+//========================= info logs ==========================================
+#if (LOGLEVEL_PASSED(LOGLEVEL, LOGLEVEL_NFO))
+#define NFO 			LOGLINE_CLASS(LOG_PRINT(LOGLEVEL_NFO_VAL), LOG_HEAD_NFO, LOG_SEPARATOR)
+#define NFO_FUNC		LOGLINE_FUNC(LOG_PRINT(LOGLEVEL_NFO_VAL), LOG_HEAD_NFO, LOG_SEPARATOR)
+#define NFO_FUNC_NOLINE	LOGLINE_FUNC_NOLINE(LOG_PRINT(LOGLEVEL_NFO_VAL), LOG_HEAD_NFO, " ")
+#else
+#define NFO 			LOGLINE_CLASS(LOG_PRINT(LOGLEVEL_OFF_VAL), LOG_HEAD_NFO, LOG_SEPARATOR)
+#define NFO_FUNC		LOGLINE_FUNC(LOG_PRINT(LOGLEVEL_OFF_VAL), LOG_HEAD_NFO, LOG_SEPARATOR)
+#define NFO_FUNC_NOLINE	LOGLINE_FUNC_NOLINE(LOG_PRINT(LOGLEVEL_OFF_VAL), LOG_HEAD_NFO, LOG_SEPARATOR)
+#endif
+//========================= warning logs =======================================
+#if (LOGLEVEL_PASSED(LOGLEVEL, LOGLEVEL_WRN))
+#define WRN 			LOGLINE_CLASS(LOG_PRINT(LOGLEVEL_WRN_VAL), LOG_HEAD_WRN, LOG_SEPARATOR)
+#define WRN_FUNC		LOGLINE_FUNC(LOG_PRINT(LOGLEVEL_WRN_VAL), LOG_HEAD_WRN, LOG_SEPARATOR)
+#define WRN_FUNC_NOLINE	LOGLINE_FUNC_NOLINE(LOG_PRINT(LOGLEVEL_WRN_VAL), LOG_HEAD_WRN, " ")
+#else
+#define WRN 			LOGLINE_CLASS(LOG_PRINT(LOGLEVEL_OFF_VAL), LOG_HEAD_WRN, LOG_SEPARATOR)
+#define WRN_FUNC		LOGLINE_FUNC(LOG_PRINT(LOGLEVEL_OFF_VAL), LOG_HEAD_WRN, LOG_SEPARATOR)
+#define WRN_FUNC_NOLINE	LOGLINE_FUNC_NOLINE(LOG_PRINT(LOGLEVEL_OFF_VAL), LOG_HEAD_WRN, LOG_SEPARATOR)
+#endif
+//========================= error logs =========================================
+#if (LOGLEVEL_PASSED(LOGLEVEL, LOGLEVEL_ERR))
+#define ERR 			LOGLINE_CLASS(LOG_PRINT(LOGLEVEL_ERR_VAL), LOG_HEAD_ERR, LOG_SEPARATOR)
+#define ERR_FUNC		LOGLINE_FUNC(LOG_PRINT(LOGLEVEL_ERR_VAL), LOG_HEAD_ERR, LOG_SEPARATOR)
+#define ERR_FUNC_NOLINE	LOGLINE_FUNC_NOLINE(LOG_PRINT(LOGLEVEL_ERR_VAL), LOG_HEAD_ERR, " ")
+#else
+#define ERR 			LOGLINE_CLASS(LOG_PRINT(LOGLEVEL_OFF_VAL), LOG_HEAD_ERR, LOG_SEPARATOR)
+#define ERR_FUNC		LOGLINE_FUNC(LOG_PRINT(LOGLEVEL_OFF_VAL), LOG_HEAD_ERR, LOG_SEPARATOR)
+#define ERR_FUNC_NOLINE	LOGLINE_FUNC_NOLINE(LOG_PRINT(LOGLEVEL_OFF_VAL), LOG_HEAD_ERR, LOG_SEPARATOR)
+#endif
 
 }	//namespace osock
 

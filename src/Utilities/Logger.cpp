@@ -42,10 +42,10 @@ std::ostream& Logger::Print(logLevel loglevel)
 	if(loglevel <= printLoglevel) {
 		return nullingstream;
 	} else {
-		if (loglevel <= logDebug)
-			return std::cout << getpid() << ">";
+		if (loglevel <= logInfo)
+			return std::cout << getpid() << " ";
 		else
-			return std::cerr << getpid() << ">";
+			return std::cerr << getpid() << " ";
 	}
 }
 }

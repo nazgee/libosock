@@ -22,6 +22,8 @@
 
 #include <openssl/ssl.h>
 
+namespace osock
+{
 namespace SSLWrap
 {
 	SSL_CTX *SSL_CTX_new(SSL_METHOD *meth);
@@ -53,5 +55,6 @@ namespace SSLWrap
 	void BIO_vfree(BIO *b);
 	void SSL_free(SSL *ssl);
 
-} //namespace SSL
+} //namespace SSLWrap
+} //namespace osock
 #endif /* SSLWRAP_H_ */

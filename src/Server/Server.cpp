@@ -21,7 +21,7 @@
 #include <Socket/SocketServer.h>
 #include <Server/Server.h>
 #include <Utilities/Logger.h>
-#include <defines.h>
+#include <Utilities/Logger.h>
 
 namespace osock
 {

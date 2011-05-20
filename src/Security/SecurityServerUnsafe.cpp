@@ -18,6 +18,7 @@
 */
 
 #include <defines.h>
+#include <Utilities/Logger.h>
 #include <Security/SecurityServerUnsafe.h>
 #include <Exception/Exception.h>
 #include <Utilities/SSLWrap.h>

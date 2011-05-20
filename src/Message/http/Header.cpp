@@ -5,9 +5,10 @@
  *      Author: nazgee
  */
 
-#define DEBUG_WANTED
+
 
 #include <defines.h>
+#include <Utilities/Logger.h>
 #include <Message/http/Header.h>
 #include <Exception/Exception.h>
 
@@ -37,16 +38,27 @@ void Header::doFeed(data_chunk& data)
 {
 	StringMessage::doFeed(data);
 	if (getIsComplete()) {
-		size_t separator_pos = this->find(separator);
-		if (separator_pos == std::string::npos) {
-			throw Exception("Header does not contain '" + separator + "'");
+		if (getString().length() == 0) {
+			setHeadName("");
+			setHeadValue("");
+		} else {
+			size_t separator_pos = this->find(separator);
+
+			if (separator_pos == std::string::npos) {
+				throw Exception("Header does not contain '" + separator + "'");
+			}
+
+			itsName = this->substr(0, separator_pos);
+			size_t value_pos = itsName.length() + separator.length();
+			itsValue = this->substr(value_pos, this->length() - value_pos);
+
+			if ((itsName.length() == 0) || (itsValue.length() == 0)){
+				throw Exception("Header's name or value not given");
+			}
 		}
-		itsName = this->substr(0, separator_pos);
 
-		size_t value_pos = itsName.length() + separator.length();
-		itsValue = this->substr(value_pos,	this->length() - value_pos);
-
-		DBG << "name=" << getHeadName() << " value=" << getHeadValue() << std::endl;
+		NFO << "name=" << getHeadName() << " value=" << getHeadValue()
+				<< std::endl;
 	}
 }
 

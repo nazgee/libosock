@@ -5,9 +5,8 @@
  *      Author: nazgee
  */
 
-//#define DEBUG_WANTED
 
-#include <defines.h>
+#include <Utilities/Logger.h>
 #include <Message/ChainedMessage.h>
 
 namespace osock

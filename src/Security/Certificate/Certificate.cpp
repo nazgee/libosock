@@ -17,7 +17,7 @@
 	along with libsockets.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <defines.h>
+#include <Utilities/Logger.h>
 #include <Security/Certificate/Certificate.h>
 #include <Exception/Exception.h>
 
