@@ -14,7 +14,6 @@
 
 namespace osock
 {
-
 namespace http
 {
 
@@ -105,9 +104,8 @@ void Header::setHeadValue(std::string value)
     this->itsValue = value;
 }
 
-}
-
-}
+}	//namespace http
+}	//namespace osock
 
 
 

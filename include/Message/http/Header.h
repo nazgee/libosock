@@ -12,7 +12,6 @@
 
 namespace osock
 {
-
 namespace http
 {
 
@@ -38,8 +37,6 @@ public:
     void setHeadValue(std::string value);
 };
 
-}
-
-}
-
+}	//namespace http
+}	//namespace osock
 #endif /* HEADER_H_ */

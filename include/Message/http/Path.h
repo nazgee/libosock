@@ -12,6 +12,8 @@
 
 namespace osock
 {
+namespace http
+{
 
 class Path : public StringMessage
 {
@@ -21,6 +23,7 @@ public:
 
 };
 
-}
+}	//namespace http
+}	//namespace osock
 
 #endif /* PATH_H_ */

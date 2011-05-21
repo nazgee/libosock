@@ -10,6 +10,8 @@
 
 namespace osock
 {
+namespace http
+{
 
 Protocole::Protocole(std::string protocole, std::string terminator) :
 		StringMessage(protocole, terminator)
@@ -22,4 +24,5 @@ Protocole::~Protocole()
 	DBG_DESTRUCTOR;
 }
 
-}
+}	//namespace http
+}	//namespace osock
