@@ -29,6 +29,7 @@ protected:
 	virtual osock::data_chunk doUnpack() const;
 	virtual void doFeed(osock::data_chunk& data);
 	void virtual doClear();
+	std::string getStringInfo();
 };
 
 }

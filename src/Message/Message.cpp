@@ -16,7 +16,7 @@
  You should have received a copy of the GNU Lesser General Public License
  along with libsockets.  If not, see <http://www.gnu.org/licenses/>.
  */
-
+#include <Utilities/Logger.h>
 #include <Message/Message.h>
 namespace osock
 {
@@ -34,7 +34,16 @@ bool Message::Pack(data_chunk& data)
 {
 	if (getIsComplete())
 		Clear();
+
 	doFeed(data);
+
+	if (isComplete) {
+		std::string s = getStringInfo();
+		if (s.length())
+			NFO << "Packed; " << s << std::endl;
+		else
+			DBG << "Packed; " << s << std::endl;
+	}
 	return getIsComplete();
 }
 
@@ -60,4 +69,8 @@ void Message::setIsComplete(bool isComplete)
 	this->isComplete = isComplete;
 }
 
+std::string Message::getStringInfo()
+{
+	return "";
+}
 }

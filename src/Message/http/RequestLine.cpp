@@ -41,16 +41,21 @@ void RequestLine::doFeed(data_chunk& data)
 {
 	DBG << "Got " << data.size() << "B to pack" << std::endl;
 	setIsComplete(itsChain.Pack(data));
-
-	if (getIsComplete())
-		DBG << "requ=" << itsRequest->getString()
-			<< "; path=" << itsPath->getString()
-			<< "; prot=" << itsProtocole->getString() << ";" << std::endl;
+	itsRemains = itsChain.getRemains();
 }
 
 void RequestLine::doClear()
 {
 	itsChain.Clear();
+}
+
+std::string RequestLine::getStringInfo()
+{
+	std::string s;
+	s = "requ=" + itsRequest->getString()
+		+ "; path=" + itsPath->getString()
+		+ "; prot=" + itsProtocole->getString() + ";";
+	return s;
 }
 
 }

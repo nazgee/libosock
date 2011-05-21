@@ -21,7 +21,7 @@
 #define MESSAGES_H_
 
 #include <vector>
-
+#include <string>
 
 namespace osock
 {
@@ -52,6 +52,7 @@ protected:
     virtual data_chunk doUnpack() const=0;
     virtual void doFeed(data_chunk& data) = 0;
     virtual void doClear() = 0;
+    virtual std::string getStringInfo();
 
 };
 } //namespace osock

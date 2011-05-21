@@ -56,9 +56,6 @@ void Header::doFeed(data_chunk& data)
 				throw Exception("Header's name or value not given");
 			}
 		}
-
-		NFO << "name=" << getHeadName() << " value=" << getHeadValue()
-				<< std::endl;
 	}
 }
 
@@ -73,6 +70,13 @@ data_chunk Header::doUnpack() const
 	d.insert(d.end(), itsValue.begin(), itsValue.end());
 	d.insert(d.end(), itsTerminator.begin(), itsTerminator.end());
 	return d;
+}
+
+std::string Header::getStringInfo()
+{
+	std::string s;
+	s ="name=" + getHeadName() + "; value=" + getHeadValue() + ";";
+	return s;
 }
 
 std::string Header::getHeadName() const

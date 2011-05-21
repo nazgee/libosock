@@ -5,7 +5,7 @@
  *      Author: nazgee
  */
 
-
+#include <defines.h>
 #include <Utilities/Logger.h>
 #include <Message/ChainedMessage.h>
 
@@ -56,9 +56,11 @@ void ChainedMessage::doFeed(osock::data_chunk& data)
 
 		if (!complete) {
 			break;
-		} else {
-			// Chain is complete, when the last link is complete
-			setIsComplete((i + 1) == itsLinks.size());
+		}
+
+		if ( (i + 1) == itsLinks.size()) {
+			setIsComplete(true);
+			itsRemains = itsLinks[i].getRemains();
 		}
 	}
 }
@@ -69,6 +71,13 @@ void ChainedMessage::doClear()
 		itsLinks[i].Clear();
 	}
 	DBG << "Cleared chain links" << std::endl;
+}
+
+std::string ChainedMessage::getStringInfo()
+{
+	std::string s;
+	s = "links complete=" + to_string(itsLinks.size());
+	return s;
 }
 
 }
