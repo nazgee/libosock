@@ -18,6 +18,8 @@
  */
 #include <Utilities/Logger.h>
 #include <Message/Message.h>
+#include <Exception/Exception.h>
+
 namespace osock
 {
 Message::Message() :
@@ -27,6 +29,9 @@ Message::Message() :
 
 data_chunk Message::Unpack() const
 {
+	if (!getIsComplete())
+		throw Exception("Unpack() called on incomplete Message!");
+
 	return doUnpack();
 }
 

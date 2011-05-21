@@ -49,7 +49,7 @@ public:
 
 protected:
     void setIsComplete(bool isComplete);
-    virtual data_chunk doUnpack() const=0;
+    virtual data_chunk doUnpack() const = 0;
     virtual void doFeed(const data_chunk& data) = 0;
     virtual void doClear() = 0;
     virtual std::string getStringInfo();

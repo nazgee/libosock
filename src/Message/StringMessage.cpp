@@ -88,9 +88,6 @@ std::string StringMessage::getString()
 
 data_chunk StringMessage::doUnpack() const
 {
-	if (!getIsComplete())
-		throw Exception("doUnpack() called on incomplete StringMessage!");
-
 	return data_chunk(this->data(), this->data() + this->size());
 }
 

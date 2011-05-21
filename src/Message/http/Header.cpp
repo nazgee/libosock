@@ -60,9 +60,6 @@ void Header::doFeed(const data_chunk& data)
 
 data_chunk Header::doUnpack() const
 {
-	if (!getIsComplete())
-		throw Exception("doUnpack() called on incomplete StringMessage!");
-
 	data_chunk d;
 	d.insert(d.end(), itsName.begin(), itsName.end());
 	d.insert(d.end(), separator.begin(), separator.end());
