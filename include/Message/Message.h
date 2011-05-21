@@ -42,15 +42,15 @@ public:
 	}
 
 	data_chunk Unpack() const;
-	bool Pack(data_chunk& data);
+	bool Pack(const data_chunk& data);
 	void Clear();
     bool getIsComplete() const;
-    data_chunk getRemains() const;
+    const data_chunk& getRemains() const;
 
 protected:
     void setIsComplete(bool isComplete);
     virtual data_chunk doUnpack() const=0;
-    virtual void doFeed(data_chunk& data) = 0;
+    virtual void doFeed(const data_chunk& data) = 0;
     virtual void doClear() = 0;
     virtual std::string getStringInfo();
 

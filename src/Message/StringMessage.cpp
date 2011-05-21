@@ -94,7 +94,7 @@ data_chunk StringMessage::doUnpack() const
 	return data_chunk(this->data(), this->data() + this->size());
 }
 
-void StringMessage::doFeed(data_chunk& data)
+void StringMessage::doFeed(const data_chunk& data)
 {
 	this->append(data.begin(), data.end());
 	size_t found = this->find(itsTerminator);

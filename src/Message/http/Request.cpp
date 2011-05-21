@@ -39,7 +39,7 @@ data_chunk Request::doUnpack() const
 	return itsChain.Unpack();
 }
 
-void Request::doFeed(data_chunk& data)
+void Request::doFeed(const data_chunk& data)
 {
 	DBG << "Got " << data.size() << "B to pack" << std::endl;
 	setIsComplete(itsChain.Pack(data));

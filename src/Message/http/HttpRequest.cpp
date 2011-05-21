@@ -25,9 +25,13 @@ data_chunk HttpRequest::doUnpack() const
 
 }
 
-void HttpRequest::doFeed(data_chunk& data)
+void HttpRequest::doFeed(const data_chunk& data)
 {
-
+	if (!itsRequest.getIsComplete() && itsRequest.Pack(data)) {
+		itsHeaders.Pack(itsRequest.getRemains());
+	} else {
+		setIsComplete(itsHeaders.Pack(data));
+	}
 }
 
 void HttpRequest::doClear()

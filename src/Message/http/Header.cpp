@@ -33,7 +33,7 @@ Header::~Header()
 	DBG_DESTRUCTOR;
 }
 
-void Header::doFeed(data_chunk& data)
+void Header::doFeed(const data_chunk& data)
 {
 	StringMessage::doFeed(data);
 	if (getIsComplete()) {

@@ -39,7 +39,7 @@ osock::data_chunk ChainedMessage::doUnpack() const
 	return ret;
 }
 
-void ChainedMessage::doFeed(osock::data_chunk& data)
+void ChainedMessage::doFeed(const osock::data_chunk& data)
 {
 	DBG << "Got " << data.size() << "B to pack" << std::endl;
 	// Concatenate new data to old remainings

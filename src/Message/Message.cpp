@@ -30,7 +30,7 @@ data_chunk Message::Unpack() const
 	return doUnpack();
 }
 
-bool Message::Pack(data_chunk& data)
+bool Message::Pack(const data_chunk& data)
 {
 	if (getIsComplete())
 		Clear();
@@ -59,7 +59,7 @@ bool Message::getIsComplete() const
 	return isComplete;
 }
 
-data_chunk Message::getRemains() const
+const data_chunk& Message::getRemains() const
 {
 	return itsRemains;
 }
