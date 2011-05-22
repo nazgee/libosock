@@ -30,6 +30,10 @@ public:
 			std::string protocole = "HTTP/1.0");
 	virtual ~Request();
 
+	const Command& getCommand();
+	const Path& getPath();
+	const Protocole& getProtocole();
+
 protected:
 	virtual data_chunk doUnpack() const;
 	virtual void doFeed(const data_chunk& data);

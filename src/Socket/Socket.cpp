@@ -17,8 +17,8 @@
 	along with libsockets.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-//
-
+#include <defines.h>
+//#define LOGLEVEL LOGLEVEL_DBG
 #include <Utilities/Logger.h>
 #include <Socket/Socket.h>
 #include <Exception/Exception.h>
@@ -99,19 +99,29 @@ int  Socket::Send(Message& message) const
 	return bytes;
 }
 
+std::string Socket::DataToString(const data_chunk& chunk)
+{
+	std::string s(chunk.data(), chunk.size());
+	return "[" + to_string(chunk.size()) + "]={" + s + "}";
+}
+
 int  Socket::Receive(Message& message)
 {
 	static const int chunkSize = 8;	//TODO make it bigger or even better: modifiable
 	int rxedNumber = 0;
 	data_chunk tempData(chunkSize);
 
+	DBG << "Clearing message" << std::endl;
 	message.Clear();
-	DBG << "waiting for message" << std::endl;
+	DBG << "Remains from previous read:" << DataToString(itsRemainsOfData) << std::endl;
 
 	if (!message.Pack(itsRemainsOfData))
 	{
+		DBG << "Waiting for message" << std::endl;
 		do {
-			rxedNumber = BIO_read(GetBIO(), &tempData[0], tempData.capacity());
+			//XXX: optimize this loop
+			tempData.resize(chunkSize);
+			rxedNumber = BIO_read(GetBIO(), &tempData[0], chunkSize);
 			if (rxedNumber == 0) {
 				throw_SSL("BIO_read returned 0 - client disconnected");
 			}
@@ -126,7 +136,7 @@ int  Socket::Receive(Message& message)
 			}
 			//only bytes that were rxed should be assumed as valid
 			tempData.resize(rxedNumber);
-			DBG << "RXed and packed " << rxedNumber << "B" << std::endl;
+			DBG << "data_RX" << DataToString(tempData) << std::endl;
 
 			//try to Pack() data that was just received
 		} while ( !message.Pack(tempData) );
@@ -134,6 +144,7 @@ int  Socket::Receive(Message& message)
 
 	// Store remainings for future use
 	itsRemainsOfData = message.getRemains();
+	DBG << "DONE! Remains from current read:" << DataToString(itsRemainsOfData) << std::endl;
 
 	return rxedNumber;
 }

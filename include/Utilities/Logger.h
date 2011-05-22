@@ -21,6 +21,7 @@
 
 #include <typeinfo>
 #include <iostream>
+#include <defines.h>
 
 namespace osock
 {
@@ -54,20 +55,12 @@ public:
 	virtual ~Logger();
 };
 //=============================================================================
-#undef LOGLEVEL
-#undef DBG_FORCED_CONSTRUCTORS
-#undef DBG_FORCED_DESTRUCTORS
-#undef DBG_SURPRESSED_CONSTRUCTORS
-#undef DBG_SURPRESSED_DESTRUCTORS
-
-#define LOGLEVEL_DBG	4
-#define LOGLEVEL_NFO	3
-#define LOGLEVEL_WRN	2
-#define LOGLEVEL_ERR	1
 
 #define LOGLEVEL_SURPRESS	LOGLEVEL_DBG
 #define LOGLEVEL_FORCE		LOGLEVEL_WRN
+#ifndef LOGLEVEL
 #define LOGLEVEL 			LOGLEVEL_NFO
+#endif
 
 #define LOG_HEAD_DBG_CON "dbg  +"
 #define LOG_HEAD_DBG_DES "dbg  "
@@ -84,20 +77,23 @@ public:
 #define LOG_PRINT			Logger::Print
 
 #define LOG_SEPARATOR	" | "
+#define LOG_PRETTY_FUNC std::string(__PRETTY_FUNCTION__).erase(std::string(__PRETTY_FUNCTION__).find('('))
 
 //TODO demangle class name from typeid
 #define LOGLINE_CLASS(outstream, header, separator) \
-	outstream << header << typeid(*this).name() << "::" <<__func__ << " line:" << __LINE__ << separator
+	outstream << header << LOG_PRETTY_FUNC << " line:" << __LINE__ << separator
 #define LOGLINE_FUNC(outstream, header, separator) \
-	outstream << header << __func__ << " line:" << __LINE__ << separator
+	outstream << header << __FUNCTION__ << " line:" << __LINE__ << separator
 #define LOGLINE_FUNC_NOLINE(outstream, header, separator) \
-	outstream << header << __func__ << separator
+	outstream << header << __FUNCTION__ << separator
 #define LOGLEVEL_PASSED(value, level) (((value >= level) || (LOGLEVEL_FORCE >= level)) && (LOGLEVEL_SURPRESS >= level ))
 //========================= debug logs =========================================
 #if (LOGLEVEL_PASSED(LOGLEVEL, LOGLEVEL_DBG))
 #define DBG 			LOGLINE_CLASS(LOG_PRINT(LOGLEVEL_DBG_VAL), LOG_HEAD_DBG, LOG_SEPARATOR)
 #define DBG_FUNC		LOGLINE_FUNC(LOG_PRINT(LOGLEVEL_DBG_VAL), LOG_HEAD_DBG, LOG_SEPARATOR)
 #define DBG_FUNC_NOLINE	LOGLINE_FUNC_NOLINE(LOG_PRINT(LOGLEVEL_DBG_VAL), LOG_HEAD_DBG, " ")
+#define DBG_CONSTRUCTOR	LOGLINE_FUNC(LOG_PRINT(LOGLEVEL_DBG_VAL), LOG_HEAD_DBG_CON, LOG_SEPARATOR) << this << std::endl
+#define DBG_DESTRUCTOR	LOGLINE_FUNC(LOG_PRINT(LOGLEVEL_DBG_VAL), LOG_HEAD_DBG_DES, LOG_SEPARATOR) << this << std::endl
 #else
 #define DBG 			LOGLINE_CLASS(LOG_PRINT(LOGLEVEL_OFF_VAL), LOG_HEAD_DBG, LOG_SEPARATOR)
 #define DBG_FUNC		LOGLINE_FUNC(LOG_PRINT(LOGLEVEL_OFF_VAL), LOG_HEAD_DBG, LOG_SEPARATOR)

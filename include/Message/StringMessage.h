@@ -38,7 +38,7 @@ public:
 
 	std::string getTerminator();
 	void setTerminator(std::string terminator);
-	std::string getString();
+	std::string getString() const;
 
 protected:
 	virtual data_chunk doUnpack() const;

@@ -28,11 +28,12 @@ protected:
 	virtual std::string getStringInfo();
 
 public:
-	Header(std::string name = "name", std::string value = "value");
+	Header(std::string name = "", std::string value = "");
 	virtual ~Header();
 
     std::string getHeadName() const;
     std::string getHeadValue() const;
+    bool IsHeadEmpty() const;
     void setHeadName(std::string name);
     void setHeadValue(std::string value);
 };

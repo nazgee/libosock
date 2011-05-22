@@ -16,6 +16,8 @@
  You should have received a copy of the GNU Lesser General Public License
  along with libsockets.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include <defines.h>
+//#define LOGLEVEL LOGLEVEL_DBG
 #include <Utilities/Logger.h>
 #include <Message/Message.h>
 #include <Exception/Exception.h>
@@ -37,8 +39,13 @@ data_chunk Message::Unpack() const
 
 bool Message::Pack(const data_chunk& data)
 {
-	if (getIsComplete())
+	if (data.size() == 0) {
+		return false;
+	}
+
+	if (getIsComplete()) {
 		Clear();
+	}
 
 	doFeed(data);
 

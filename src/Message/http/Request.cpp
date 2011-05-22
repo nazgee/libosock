@@ -33,6 +33,21 @@ Request::~Request()
 	DBG_DESTRUCTOR;
 }
 
+const Command& Request::getCommand()
+{
+	return *itsCommand;
+}
+
+const Path& Request::getPath()
+{
+	return *itsPath;
+}
+
+const Protocole& Request::getProtocole()
+{
+	return *itsProtocole;
+}
+
 data_chunk Request::doUnpack() const
 {
 	// it will throw, if called when not complete

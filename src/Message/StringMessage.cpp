@@ -78,7 +78,7 @@ void StringMessage::setTerminator(std::string terminator)
 	itsTerminator = terminator;
 }
 
-std::string StringMessage::getString()
+std::string StringMessage::getString() const
 {
 	if (!getIsComplete())
 		throw Exception("getValue() called on incomplete StringMessage!");

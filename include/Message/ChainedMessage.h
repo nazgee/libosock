@@ -19,11 +19,14 @@ class ChainedMessage: public osock::Message
 {
 private:
 	boost::ptr_vector<Message> itsLinks;
-
+	int itsCurrentLink;
 public:
 	ChainedMessage();
 	~ChainedMessage();
 	void AddLink(Message* mgs2add);
+	const Message& getLastLink() const;
+	const int getLinksNumber() const;
+	void DeleteAllLinks();
 
 protected:
 	virtual osock::data_chunk doUnpack() const;

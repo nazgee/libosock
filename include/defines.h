@@ -31,6 +31,11 @@
 namespace osock
 {
 
+#define LOGLEVEL_DBG	4
+#define LOGLEVEL_NFO	3
+#define LOGLEVEL_WRN	2
+#define LOGLEVEL_ERR	1
+
 namespace http
 {
 #define 	NEWLINE 	"\r\n"

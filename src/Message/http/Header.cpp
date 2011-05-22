@@ -6,11 +6,13 @@
  */
 
 
-
 #include <defines.h>
+#define LOGLEVEL LOGLEVEL_DBG
 #include <Utilities/Logger.h>
 #include <Message/http/Header.h>
 #include <Exception/Exception.h>
+
+
 
 namespace osock
 {
@@ -40,7 +42,10 @@ void Header::doFeed(const data_chunk& data)
 		if (getString().length() == 0) {
 			setHeadName("");
 			setHeadValue("");
+			DBG << "Decoded empty Header" << std::endl;
 		} else {
+			DBG << "Decoding: " << StringMessage::getString() << std::endl;
+
 			size_t separator_pos = this->find(separator);
 
 			if (separator_pos == std::string::npos) {
@@ -49,7 +54,7 @@ void Header::doFeed(const data_chunk& data)
 
 			itsName = this->substr(0, separator_pos);
 			size_t value_pos = itsName.length() + separator.length();
-			itsValue = this->substr(value_pos, this->length() - value_pos);
+			itsValue = this->substr(value_pos, getString().length() - value_pos);
 
 			if ((itsName.length() == 0) || (itsValue.length() == 0)){
 				throw Exception("Header's name or value not given");
@@ -71,7 +76,8 @@ data_chunk Header::doUnpack() const
 std::string Header::getStringInfo()
 {
 	std::string s;
-	s ="name=" + getHeadName() + "; value=" + getHeadValue() + ";";
+	s ="name[" + to_string(itsName.length()) + "]=" + itsName +
+		"; value[" + to_string(itsValue.length()) + "]=" + itsValue + ";";
 	return s;
 }
 
@@ -89,6 +95,11 @@ std::string Header::getHeadValue() const
 		throw Exception("getValue() called on incomplete Header!");
 
     return itsValue;
+}
+
+bool Header::IsHeadEmpty() const
+{
+	return ((getHeadName() == "" ) && (getHeadValue() == ""));
 }
 
 void Header::setHeadName(std::string name)
