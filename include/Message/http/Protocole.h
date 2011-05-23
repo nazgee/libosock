@@ -20,6 +20,7 @@ class Protocole : public StringMessage
 public:
 	Protocole(std::string protocole, std::string terminator = "\r\n");
 	virtual ~Protocole();
+	virtual std::string getStringInfo();
 
 };
 

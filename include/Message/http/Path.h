@@ -20,6 +20,7 @@ class Path : public StringMessage
 public:
 	Path(std::string path, std::string terminator = " ");
 	virtual ~Path();
+	virtual std::string getStringInfo();
 
 };
 

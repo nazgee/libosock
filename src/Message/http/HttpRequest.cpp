@@ -6,7 +6,7 @@
  */
 
 #include <defines.h>
-#define LOGLEVEL LOGLEVEL_DBG
+//#define LOGLEVEL LOGLEVEL_DBG
 #include <Utilities/Logger.h>
 #include <Message/http/HttpRequest.h>
 #include <Message/http/Header.h>
@@ -22,6 +22,21 @@ HttpRequest::HttpRequest()
 HttpRequest::~HttpRequest()
 {
 	DBG_CONSTRUCTOR;
+}
+
+std::string HttpRequest::getCommand()
+{
+	return itsRequest.getCommand().getString();
+}
+
+std::string HttpRequest::getPath()
+{
+	return itsRequest.getPath().getString();
+}
+
+std::string HttpRequest::getProtocole()
+{
+	return itsRequest.getProtocole().getString();
 }
 
 data_chunk HttpRequest::doUnpack() const
@@ -51,13 +66,13 @@ void HttpRequest::doFeedHeaders(const data_chunk& data)
 				dynamic_cast<const http::Header&> (itsHeaders.getLastLink());
 
 		if (h.IsHeadEmpty()) {
-			setIsComplete(true);
-			itsRemains = itsHeaders.getRemains();
+			CompleteMessage(itsHeaders.getRemains());
 		} else {
 			http::Header *hptr = new http::Header();
 			hptr->Clear();
 			itsHeaders.AddLink(hptr);
 			DBG << "Got non empty header, waiting for another" << std::endl;
+			doFeedHeaders(itsHeaders.getRemains());
 		}
 	}
 }
@@ -72,7 +87,7 @@ void HttpRequest::doClear()
 std::string HttpRequest::getStringInfo()
 {
 	std::string s;
-	s += "request=" + itsRequest.getCommand().getString() + " links_n="
+	s += "request=" + itsRequest.getCommand().getString() + " headers_n="
 			+ to_string(itsHeaders.getLinksNumber());
 
 	return s;

@@ -6,7 +6,7 @@
  */
 
 #include <defines.h>
-#define LOGLEVEL LOGLEVEL_DBG
+//#define LOGLEVEL LOGLEVEL_DBG
 #include <Utilities/Logger.h>
 #include <Message/ChainedMessage.h>
 #include <Exception/Exception.h>
@@ -28,11 +28,8 @@ ChainedMessage::~ChainedMessage()
 void ChainedMessage::AddLink(Message* mgs2add)
 {
 	DBG << "Added new link, while chain's getIsComplete()=" << getIsComplete() << std::endl;
-	if (!mgs2add->getIsComplete()) {
-		DBG << "Marking chain as incomplete, because of new, incomplete chain" << std::endl;
-		setIsComplete(false);
-	}
 	itsLinks.push_back(mgs2add);
+	KeepPacking();
 }
 
 const Message& ChainedMessage::getLastLink() const
@@ -68,34 +65,29 @@ osock::data_chunk ChainedMessage::doUnpack() const
 
 void ChainedMessage::doFeed(const osock::data_chunk& data)
 {
-	DBG << "Got " << data.size() << "B to pack" << std::endl;
-	itsRemains.insert(itsRemains.end(), data.begin(), data.end());
+	itsBuffer = data;
 
 	if (itsCurrentLink < 0) {
 		itsCurrentLink = 0;
 		itsLinks[0].Clear();
 	}
 
-	while (itsLinks.at(itsCurrentLink).Pack(itsRemains)) {
-		itsRemains = itsLinks.at(itsCurrentLink).getRemains();
+	while (itsLinks.at(itsCurrentLink).Pack(itsBuffer)) {
+		itsBuffer = itsLinks.at(itsCurrentLink).getRemains();
 
 		DBG << "Link " << to_string(itsCurrentLink) << " is complete"
 				<< std::endl;
 
 		itsCurrentLink++;
 		if (itsCurrentLink >= static_cast<int> (itsLinks.size())) {
-			setIsComplete(true);
+			CompleteMessage(itsBuffer);
 			break;
 		} else {
 			// Make sure next link is Cleared
 			itsLinks.at(itsCurrentLink).Clear();
 		}
 	}
-
-	// Just to be sure, that keep remains only when we are done
-	if (!getIsComplete()) {
-		itsRemains.clear();
-	}
+	itsBuffer.clear();
 }
 
 void ChainedMessage::doClear()

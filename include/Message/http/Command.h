@@ -20,6 +20,7 @@ class Command: public StringMessage
 public:
 	Command(std::string command, std::string terminator = " ");
 	virtual ~Command();
+	virtual std::string getStringInfo();
 
 protected:
 

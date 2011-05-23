@@ -31,7 +31,6 @@ StringMessage::StringMessage(unsigned short dataLen, const std::string& terminat
 {
 	this->reserve(dataLen);
 	this->append(itsTerminator);
-	setIsComplete(true);
 	DBG_CONSTRUCTOR;
 }
 
@@ -40,7 +39,6 @@ StringMessage::StringMessage(const std::string& data, const std::string& termina
 	itsTerminator(terminator)
 {
 	this->append(itsTerminator);
-	setIsComplete(true);
 	DBG_CONSTRUCTOR;
 }
 
@@ -49,7 +47,6 @@ StringMessage::StringMessage(unsigned short dataLen) :
 {
 	this->reserve(dataLen);
 	this->append(itsTerminator);
-	setIsComplete(true);
 	DBG_CONSTRUCTOR;
 }
 
@@ -57,7 +54,6 @@ StringMessage::StringMessage(const std::string& data) :
 	std::string(data),
 	itsTerminator("\0", 1)
 {
-	setIsComplete(true);
 	this->append(itsTerminator);
 	DBG_CONSTRUCTOR;
 }
@@ -99,10 +95,9 @@ void StringMessage::doFeed(const data_chunk& data)
 	if (std::string::npos != found) {
 		// Terminator was found in data
 		size_t remains_pos = found + itsTerminator.size();
-		itsRemains.assign(this->begin() + remains_pos, this->end());
+		data_chunk remains(this->begin() + remains_pos, this->end());
 		this->erase(this->begin() + remains_pos, this->end());
-
-		setIsComplete(true);
+		CompleteMessage(remains);
 		DBG << "Completed string with " << this->size()
 			<< "B (" << found << " + " << itsTerminator.size() << ")" << std::endl;
 	} else {

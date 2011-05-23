@@ -24,5 +24,12 @@ Protocole::~Protocole()
 	DBG_DESTRUCTOR;
 }
 
+std::string Protocole::getStringInfo()
+{
+	std::string s;
+	s += "protocole=" + this->getString();
+	return s;
+}
+
 }	//namespace http
 }	//namespace osock

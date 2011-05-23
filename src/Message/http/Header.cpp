@@ -7,7 +7,7 @@
 
 
 #include <defines.h>
-#define LOGLEVEL LOGLEVEL_DBG
+//#define LOGLEVEL LOGLEVEL_DBG
 #include <Utilities/Logger.h>
 #include <Message/http/Header.h>
 #include <Exception/Exception.h>
@@ -26,7 +26,6 @@ Header::Header(std::string name, std::string value) :
 	itsName(name),
 	itsValue(value)
 {
-	setIsComplete(true);
 	DBG_CONSTRUCTOR;
 }
 

@@ -38,7 +38,6 @@ private:
 	int itsSD;
 	Security* itsSecurity;
 	data_chunk itsRemainsOfData;
-	std::string DataToString(const data_chunk& chunk);
 
 protected:
 	BIO* GetBIO() const;

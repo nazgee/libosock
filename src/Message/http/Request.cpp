@@ -57,8 +57,9 @@ data_chunk Request::doUnpack() const
 void Request::doFeed(const data_chunk& data)
 {
 	DBG << "Got " << data.size() << "B to pack" << std::endl;
-	setIsComplete(itsChain.Pack(data));
-	itsRemains = itsChain.getRemains();
+	if (itsChain.Pack(data)) {
+		CompleteMessage(itsChain.getRemains());
+	}
 }
 
 void Request::doClear()

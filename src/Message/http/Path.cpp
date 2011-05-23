@@ -24,5 +24,12 @@ Path::~Path()
 	DBG_DESTRUCTOR;
 }
 
+std::string Path::getStringInfo()
+{
+	std::string s;
+	s += "path=" + this->getString();
+	return s;
+}
+
 }	//namespace http
 }	//namespace osock

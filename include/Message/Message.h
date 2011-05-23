@@ -31,9 +31,23 @@ typedef std::vector<char> data_chunk;
 class Message
 {
 private:
-	bool isComplete;
-protected:
+	enum msg_state {
+		MSG_ALLOWED_PACK = 0x1,
+		MSG_ALLOWED_UNPACK = 0x2,
+		MSG_ALLOWED_REMAINS = 0x4,
+		MSG_ALLOWED_PACK_AND_UNPACK = MSG_ALLOWED_PACK | MSG_ALLOWED_UNPACK
+	};
+	//! Set to true by default- all messages should be Unpackable from the start
 	data_chunk itsRemains;
+	msg_state itsState;
+
+	bool isAllowed(msg_state flag) const { return ((itsState & flag) == flag); }
+	void setAllowed(msg_state flag) { int s = itsState; s |= static_cast<int>(flag); itsState = static_cast<msg_state>(s);}
+	void clearAllowed(msg_state flag) { int s = itsState; s &= ~static_cast<int>(flag); itsState = static_cast<msg_state>(s);}
+
+protected:
+	//! Can be used freely- it's sole purpose is Derived classes convenience
+	data_chunk itsBuffer;
 
 public:
 	Message();
@@ -45,9 +59,12 @@ public:
 	bool Pack(const data_chunk& data);
 	void Clear();
 	bool getIsComplete() const;
-	const data_chunk& getRemains() const;
+	const data_chunk& getRemains();
 
 protected:
+	void CompleteMessage(const data_chunk& remains);
+	void KeepPacking();
+	virtual std::string getStringInfo();
 	/**
 	 * @brief Called to retrieve data_chunk representing message
 	 *
@@ -93,8 +110,6 @@ protected:
 	 * is called from Clear().
 	 */
 	virtual void doClear() = 0;
-	void setIsComplete(bool isComplete);
-	virtual std::string getStringInfo();
 
 };
 } //namespace osock

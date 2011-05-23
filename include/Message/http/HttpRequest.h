@@ -26,6 +26,9 @@ private:
 public:
 	HttpRequest();
 	virtual ~HttpRequest();
+	std::string getCommand();
+	std::string getPath();
+	std::string getProtocole();
 
 protected:
 	virtual data_chunk doUnpack() const;

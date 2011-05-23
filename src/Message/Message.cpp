@@ -18,6 +18,7 @@
  */
 #include <defines.h>
 //#define LOGLEVEL LOGLEVEL_DBG
+#include <Utilities/Utils.h>
 #include <Utilities/Logger.h>
 #include <Message/Message.h>
 #include <Exception/Exception.h>
@@ -25,13 +26,13 @@
 namespace osock
 {
 Message::Message() :
-	isComplete(false)
+	itsState(MSG_ALLOWED_PACK_AND_UNPACK)
 {
 }
 
 data_chunk Message::Unpack() const
 {
-	if (!getIsComplete())
+	if (!isAllowed(MSG_ALLOWED_UNPACK))
 		throw Exception("Unpack() called on incomplete Message!");
 
 	return doUnpack();
@@ -39,9 +40,14 @@ data_chunk Message::Unpack() const
 
 bool Message::Pack(const data_chunk& data)
 {
+	if (!isAllowed(MSG_ALLOWED_PACK))
+		throw Exception("Pack() called when not allowed!");
+
 	if (data.size() == 0) {
 		return false;
 	}
+
+	clearAllowed(MSG_ALLOWED_UNPACK);
 
 	if (getIsComplete()) {
 		Clear();
@@ -49,13 +55,12 @@ bool Message::Pack(const data_chunk& data)
 
 	doFeed(data);
 
-	if (isComplete) {
-		std::string s = getStringInfo();
-		if (s.length())
-			NFO << "Packed; " << s << std::endl;
-		else
-			DBG << "Packed; " << s << std::endl;
+	if (getIsComplete()) {
+		NFO << "Packed!"
+						<< "; REST" << Utils::DataToString(itsRemains)
+						<< "; INFO: " << getStringInfo() << std::endl;
 	}
+
 	return getIsComplete();
 }
 
@@ -63,26 +68,49 @@ void Message::Clear()
 {
 	doClear();
 	itsRemains.clear();
-	setIsComplete(false);
+	clearAllowed(MSG_ALLOWED_UNPACK);
 }
 
-bool Message::getIsComplete() const
+void Message::CompleteMessage(const data_chunk& remains)
 {
-	return isComplete;
+	itsRemains = remains;
+	setAllowed(MSG_ALLOWED_UNPACK);
+	setAllowed(MSG_ALLOWED_REMAINS);
 }
 
-const data_chunk& Message::getRemains() const
+void Message::KeepPacking()
 {
-	return itsRemains;
-}
+	if (isAllowed(MSG_ALLOWED_REMAINS)) {
+		DBG << "Pack() allowed, but prepend new data with Remains!" << std::endl;
+		clearAllowed(MSG_ALLOWED_PACK);
+	}
 
-void Message::setIsComplete(bool isComplete)
-{
-	this->isComplete = isComplete;
+	clearAllowed(MSG_ALLOWED_UNPACK);
 }
 
 std::string Message::getStringInfo()
 {
-	return "";
+	return "?";
 }
+
+bool Message::getIsComplete() const
+{
+	return isAllowed(MSG_ALLOWED_UNPACK);
+}
+
+const data_chunk& Message::getRemains()
+{
+	if (!isAllowed(MSG_ALLOWED_REMAINS)) {
+		WRN << "Why are you trying to read Remains (again)?" << std::endl;
+		itsRemains.clear();
+	}
+	else {
+		DBG << "You can now Pack() again!" << std::endl;
+		setAllowed(MSG_ALLOWED_PACK);
+		clearAllowed(MSG_ALLOWED_REMAINS);
+	}
+
+	return itsRemains;
+}
+
 }

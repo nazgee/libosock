@@ -24,5 +24,12 @@ Command::~Command()
 	DBG_DESTRUCTOR;
 }
 
+std::string Command::getStringInfo()
+{
+	std::string s;
+	s += "cmd=" + this->getString();
+	return s;
+}
+
 }	//namespace http
 }	//namespace osock
