@@ -105,8 +105,8 @@ int Socket::Receive(Message& message)
 	int rxedNumber = 0;
 	data_chunk tempData(chunkSize);
 
-	DBG << "Clearing message" << std::endl;
-	message.Clear();
+	DBG << "Getting message ready for Pack()" << std::endl;
+	message.RestartPacking();
 	DBG << "Remains from previous read:" << Utils::DataToString(itsRemainsOfData)
 			<< std::endl;
 

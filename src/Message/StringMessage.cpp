@@ -65,12 +65,12 @@ StringMessage::~StringMessage(void)
 
 std::string StringMessage::getTerminator()
 {
+	RestartPacking();
 	return itsTerminator;
 }
 
 void StringMessage::setTerminator(std::string terminator)
 {
-	Clear();
 	itsTerminator = terminator;
 }
 
@@ -97,7 +97,7 @@ void StringMessage::doFeed(const data_chunk& data)
 		size_t remains_pos = found + itsTerminator.size();
 		data_chunk remains(this->begin() + remains_pos, this->end());
 		this->erase(this->begin() + remains_pos, this->end());
-		CompleteMessage(remains);
+		ClosePacking(remains);
 		DBG << "Completed string with " << this->size()
 			<< "B (" << found << " + " << itsTerminator.size() << ")" << std::endl;
 	} else {
@@ -106,7 +106,7 @@ void StringMessage::doFeed(const data_chunk& data)
 	}
 }
 
-void StringMessage::doClear()
+void StringMessage::doRestartPacking()
 {
 	DBG << "Clearing StringMessage" << std::endl;
 	this->clear();

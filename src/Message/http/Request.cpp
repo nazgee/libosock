@@ -58,13 +58,13 @@ void Request::doFeed(const data_chunk& data)
 {
 	DBG << "Got " << data.size() << "B to pack" << std::endl;
 	if (itsChain.Pack(data)) {
-		CompleteMessage(itsChain.getRemains());
+		ClosePacking(itsChain.getRemains());
 	}
 }
 
-void Request::doClear()
+void Request::doRestartPacking()
 {
-	itsChain.Clear();
+	itsChain.RestartPacking();
 }
 
 std::string Request::getStringInfo()

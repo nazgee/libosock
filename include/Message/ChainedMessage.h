@@ -31,7 +31,7 @@ public:
 protected:
 	virtual osock::data_chunk doUnpack() const;
 	virtual void doFeed(const osock::data_chunk& data);
-	void virtual doClear();
+	void virtual doRestartPacking();
 	std::string getStringInfo();
 };
 

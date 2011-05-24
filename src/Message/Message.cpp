@@ -50,7 +50,7 @@ bool Message::Pack(const data_chunk& data)
 	clearAllowed(MSG_ALLOWED_UNPACK);
 
 	if (getIsComplete()) {
-		Clear();
+		RestartPacking();
 	}
 
 	doFeed(data);
@@ -64,21 +64,21 @@ bool Message::Pack(const data_chunk& data)
 	return getIsComplete();
 }
 
-void Message::Clear()
+void Message::RestartPacking()
 {
-	doClear();
+	doRestartPacking();
 	itsRemains.clear();
 	clearAllowed(MSG_ALLOWED_UNPACK);
 }
 
-void Message::CompleteMessage(const data_chunk& remains)
+void Message::ClosePacking(const data_chunk& remains)
 {
 	itsRemains = remains;
 	setAllowed(MSG_ALLOWED_UNPACK);
 	setAllowed(MSG_ALLOWED_REMAINS);
 }
 
-void Message::KeepPacking()
+void Message::ExtendPacking()
 {
 	if (isAllowed(MSG_ALLOWED_REMAINS)) {
 		DBG << "Pack() allowed, but prepend new data with Remains!" << std::endl;

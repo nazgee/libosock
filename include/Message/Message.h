@@ -57,13 +57,13 @@ public:
 
 	data_chunk Unpack() const;
 	bool Pack(const data_chunk& data);
-	void Clear();
+	void RestartPacking();
 	bool getIsComplete() const;
 	const data_chunk& getRemains();
 
 protected:
-	void CompleteMessage(const data_chunk& remains);
-	void KeepPacking();
+	void ClosePacking(const data_chunk& remains);
+	void ExtendPacking();
 	virtual std::string getStringInfo();
 	/**
 	 * @brief Called to retrieve data_chunk representing message
@@ -105,11 +105,10 @@ protected:
 	/**
 	 * @brief Called when internal state of the message should be cleared
 	 *
-	 * doClear() should result in restart of deserialization process- doUnpack()
-	 * should treat given data_chunk as a beginning of a message(). This method
-	 * is called from Clear().
+	 * doRestartPacking() should result in restart of deserialization process-
+	 * doUnpack() should treat consecutive data_chunk as a start of a message().
 	 */
-	virtual void doClear() = 0;
+	virtual void doRestartPacking() = 0;
 
 };
 } //namespace osock

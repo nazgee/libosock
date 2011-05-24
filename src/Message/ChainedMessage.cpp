@@ -29,7 +29,7 @@ void ChainedMessage::AddLink(Message* mgs2add)
 {
 	DBG << "Added new link, while chain's getIsComplete()=" << getIsComplete() << std::endl;
 	itsLinks.push_back(mgs2add);
-	KeepPacking();
+	ExtendPacking();
 }
 
 const Message& ChainedMessage::getLastLink() const
@@ -69,7 +69,7 @@ void ChainedMessage::doFeed(const osock::data_chunk& data)
 
 	if (itsCurrentLink < 0) {
 		itsCurrentLink = 0;
-		itsLinks[0].Clear();
+		itsLinks.at(0).RestartPacking();
 	}
 
 	while (itsLinks.at(itsCurrentLink).Pack(itsBuffer)) {
@@ -80,21 +80,21 @@ void ChainedMessage::doFeed(const osock::data_chunk& data)
 
 		itsCurrentLink++;
 		if (itsCurrentLink >= static_cast<int> (itsLinks.size())) {
-			CompleteMessage(itsBuffer);
+			ClosePacking(itsBuffer);
 			break;
 		} else {
-			// Make sure next link is Cleared
-			itsLinks.at(itsCurrentLink).Clear();
+			// Make sure next link is ready to be packed
+			itsLinks.at(itsCurrentLink).RestartPacking();
 		}
 	}
 	itsBuffer.clear();
 }
 
-void ChainedMessage::doClear()
+void ChainedMessage::doRestartPacking()
 {
 	itsCurrentLink = -1;
 	for (unsigned int i = 0; i < itsLinks.size(); ++i) {
-		itsLinks[i].Clear();
+		itsLinks.at(i).RestartPacking();
 	}
 	DBG << "Cleared chain links" << std::endl;
 }

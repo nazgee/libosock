@@ -66,10 +66,10 @@ void HttpRequest::doFeedHeaders(const data_chunk& data)
 				dynamic_cast<const http::Header&> (itsHeaders.getLastLink());
 
 		if (h.IsHeadEmpty()) {
-			CompleteMessage(itsHeaders.getRemains());
+			ClosePacking(itsHeaders.getRemains());
 		} else {
 			http::Header *hptr = new http::Header();
-			hptr->Clear();
+			hptr->RestartPacking();
 			itsHeaders.AddLink(hptr);
 			DBG << "Got non empty header, waiting for another" << std::endl;
 			doFeedHeaders(itsHeaders.getRemains());
@@ -77,11 +77,11 @@ void HttpRequest::doFeedHeaders(const data_chunk& data)
 	}
 }
 
-void HttpRequest::doClear()
+void HttpRequest::doRestartPacking()
 {
-	itsRequest.Clear();
+	itsRequest.RestartPacking();
 	itsHeaders.DeleteAllLinks();
-	itsHeaders.Clear();
+	itsHeaders.RestartPacking();
 }
 
 std::string HttpRequest::getStringInfo()

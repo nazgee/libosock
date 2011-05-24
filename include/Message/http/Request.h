@@ -37,7 +37,7 @@ public:
 protected:
 	virtual data_chunk doUnpack() const;
 	virtual void doFeed(const data_chunk& data);
-	virtual void doClear();
+	virtual void doRestartPacking();
 	std::string getStringInfo();
 
 };
