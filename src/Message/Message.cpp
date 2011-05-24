@@ -51,8 +51,6 @@ bool Message::Pack(const data_chunk& data)
 		return false;
 	}
 
-	clearAllowed(MSG_ALLOWED_UNPACK);
-
 	if (getIsComplete()) {
 		RestartPacking();
 	}
