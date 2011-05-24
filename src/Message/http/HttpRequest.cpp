@@ -69,7 +69,6 @@ void HttpRequest::doFeedHeaders(const data_chunk& data)
 			ClosePacking(itsHeaders.getRemains());
 		} else {
 			http::Header *hptr = new http::Header();
-			hptr->RestartPacking();
 			itsHeaders.AddLink(hptr);
 			DBG << "Got non empty header, waiting for another" << std::endl;
 			doFeedHeaders(itsHeaders.getRemains());

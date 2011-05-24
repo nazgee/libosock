@@ -28,6 +28,7 @@ ChainedMessage::~ChainedMessage()
 void ChainedMessage::AddLink(Message* mgs2add)
 {
 	DBG << "Added new link, while chain's getIsComplete()=" << getIsComplete() << std::endl;
+	mgs2add->RestartPacking();
 	itsLinks.push_back(mgs2add);
 	ExtendPacking();
 }
