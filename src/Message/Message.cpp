@@ -30,6 +30,10 @@ Message::Message() :
 {
 }
 
+Message::~Message()
+{
+}
+
 data_chunk Message::Unpack() const
 {
 	if (!isAllowed(MSG_ALLOWED_UNPACK))

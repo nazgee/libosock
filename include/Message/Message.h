@@ -51,9 +51,7 @@ protected:
 
 public:
 	Message();
-	virtual ~Message(void)
-	{
-	}
+	virtual ~Message(void);
 
 	data_chunk Unpack() const;
 	bool Pack(const data_chunk& data);
