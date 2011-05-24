@@ -29,6 +29,7 @@ namespace SSLWrap
 	SSL_CTX *SSL_CTX_new(SSL_METHOD *meth);
 	void	SSL_CTX_free(SSL_CTX *ctx);
 	SSL *SSL_new(SSL_CTX *ctx);
+	void BIO_set_read_tmo(BIO *b, int timeout_ms);
 	void SSL_set_bio(SSL *s, BIO *rbio, BIO *wbio);
 	void SSL_CTX_set_default_passwd_cb(SSL_CTX *ctx, pem_password_cb *cb);
 	void SSL_CTX_set_default_passwd_cb_userdata(SSL_CTX *ctx, void *u);

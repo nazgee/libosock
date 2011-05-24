@@ -22,6 +22,7 @@
 #include <Utilities/SSLWrap.h>
 #include <Utilities/Logger.h>
 #include <Utilities/Logger.h>
+#include <Exception/Exception.h>
 
 #include <openssl/ssl.h>
 #include <openssl/bio.h>
@@ -49,6 +50,18 @@ namespace SSLWrap
 		DBG_FUNC_NOLINE <<  "( ctx=" << (void*)ctx << " ) : " << ssl << std::endl;
 		return ssl;
 	}
+
+	void BIO_set_read_tmo(BIO *b, int timeout_ms)
+	{
+		struct timeval tv;
+		tv.tv_sec = timeout_ms / 1000;
+		tv.tv_usec = (timeout_ms - tv.tv_sec * 1000) / 1000;
+
+		if( setsockopt(BIO_get_fd(b, NULL), SOL_SOCKET, SO_RCVTIMEO, (char *)&tv,sizeof(struct timeval)))
+			throw StdException("setsockopt failed!");
+	}
+
+
 
 	void SSL_set_bio(SSL *s, BIO *rbio, BIO *wbio)
 	{

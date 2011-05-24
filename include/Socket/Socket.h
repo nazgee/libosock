@@ -51,7 +51,7 @@ public:
 	virtual ~Socket(void);
 
 	int Send(Message& Msg) const;
-	int Receive(Message& Msg);
+	int Receive(Message& Msg, int timeout_ms = 5000);
 
 	friend std::ostream& operator <<(std::ostream &os, const Socket &obj);
 	friend std::ostream& operator <<(std::ostream &os, const Socket *obj);

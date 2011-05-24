@@ -24,7 +24,9 @@
 #include <Socket/Socket.h>
 #include <Exception/Exception.h>
 #include <Security/Security.h>
+#include <Utilities/SSLWrap.h>
 
+#include <errno.h>
 #include <assert.h>
 #include <arpa/inet.h>
 #include <boost/scoped_array.hpp>
@@ -99,7 +101,7 @@ int Socket::Send(Message& message) const
 	return bytes;
 }
 
-int Socket::Receive(Message& message)
+int Socket::Receive(Message& message, int timeout_ms)
 {
 	static const int chunkSize = 16; //TODO make it bigger or even better: modifiable
 	int rxedNumber = 0;
@@ -110,6 +112,7 @@ int Socket::Receive(Message& message)
 	DBG << "Remains from previous read:" << Utils::DataToString(itsRemainsOfData)
 			<< std::endl;
 
+	SSLWrap::BIO_set_read_tmo(GetBIO(), timeout_ms);
 	if (!message.Pack(itsRemainsOfData)) {
 		DBG << "Waiting for message" << std::endl;
 		do {
@@ -122,8 +125,15 @@ int Socket::Receive(Message& message)
 
 			if (rxedNumber < 0) {
 				if (BIO_should_retry(GetBIO())) {
-					DBG << "sleeping before retrying read" << std::endl;
+					if ((errno == EAGAIN) || (errno == EWOULDBLOCK)) {
+						throw Exception("Read timeout!");
+					}
+
+					NFO << "Sleeping before retrying; ret="
+							<< to_string(rxedNumber) << "errno="
+							<< to_string(errno) << std::endl;
 					sleep(1); //XXX is sleeping here really needed?!
+					tempData.clear();
 					continue;
 				}
 				throw_SSL("BIO_read failed in unretryable way");
