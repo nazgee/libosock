@@ -21,12 +21,13 @@ private:
 	boost::ptr_vector<Message> itsLinks;
 	int itsCurrentLink;
 public:
-	ChainedMessage();
+	ChainedMessage(std::string name = "ChainedMessage");
 	~ChainedMessage();
 	void AddLink(Message* mgs2add);
 	const Message& getLastLink() const;
 	const int getLinksNumber() const;
 	void DeleteAllLinks();
+	virtual std::string UnpackAsTag(std::string tag, std::string attr, std::string tail = "");
 
 protected:
 	virtual osock::data_chunk doUnpack() const;

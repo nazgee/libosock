@@ -30,10 +30,8 @@ protected:
 	std::string itsTerminator;
 
 public:
-	StringMessage(unsigned short dataLen, const std::string& terminator);
-	StringMessage(const std::string& data, const std::string& terminator);
-	StringMessage(unsigned short dataLen);
-	StringMessage(const std::string& data);
+	StringMessage(unsigned short dataLen, const std::string& terminator, std::string name = "StringMessage");
+	StringMessage(const std::string& data, const std::string& terminator, std::string name = "StringMessage");
 	virtual ~StringMessage(void);
 
 	std::string getTerminator();

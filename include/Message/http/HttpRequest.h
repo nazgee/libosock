@@ -29,6 +29,7 @@ public:
 	std::string getCommand();
 	std::string getPath();
 	std::string getProtocole();
+	virtual std::string UnpackAsTag(std::string tag, std::string attr, std::string tail = "");
 
 protected:
 	virtual data_chunk doUnpack() const;

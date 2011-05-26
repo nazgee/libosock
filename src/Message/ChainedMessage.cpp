@@ -14,7 +14,8 @@
 namespace osock
 {
 
-ChainedMessage::ChainedMessage() :
+ChainedMessage::ChainedMessage(std::string name) :
+	Message(name),
 	itsCurrentLink(-1)
 {
 	DBG_CONSTRUCTOR;
@@ -50,6 +51,15 @@ const int ChainedMessage::getLinksNumber() const
 void ChainedMessage::DeleteAllLinks()
 {
 	itsLinks.clear();
+}
+
+std::string ChainedMessage::UnpackAsTag(std::string tag, std::string attr, std::string tail)
+{
+	for (unsigned int i = 0; i < itsLinks.size(); ++i) {
+		tail += itsLinks.at(i).UnpackAsTag(tag, attr);
+	}
+
+	return Message::UnpackAsTag(tag, attr, tail);
 }
 
 osock::data_chunk ChainedMessage::doUnpack() const

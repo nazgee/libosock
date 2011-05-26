@@ -39,6 +39,12 @@ std::string HttpRequest::getProtocole()
 	return itsRequest.getProtocole().getString();
 }
 
+std::string HttpRequest::UnpackAsTag(std::string tag, std::string attr, std::string tail)
+{
+	return Message::UnpackAsTag(tag, attr, tail + itsRequest.UnpackAsTag(tag, attr)
+		+ itsHeaders.UnpackAsTag(tag, attr));
+}
+
 data_chunk HttpRequest::doUnpack() const
 {
 	data_chunk ret(itsRequest.Unpack());

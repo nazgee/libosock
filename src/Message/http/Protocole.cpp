@@ -13,8 +13,8 @@ namespace osock
 namespace http
 {
 
-Protocole::Protocole(std::string protocole, std::string terminator) :
-		StringMessage(protocole, terminator)
+Protocole::Protocole(std::string protocole, std::string terminator, std::string name) :
+		StringMessage(protocole, terminator, name)
 {
 	DBG_CONSTRUCTOR;
 }

@@ -18,7 +18,7 @@ namespace http
 class Header: public osock::StringMessage
 {
 private:
-	std::string itsName;
+	std::string itsKey;
 	std::string itsValue;
 	static const std::string separator;
 
@@ -28,13 +28,13 @@ protected:
 	virtual std::string getStringInfo();
 
 public:
-	Header(std::string name = "", std::string value = "");
+	Header(std::string key = "", std::string value = "", std::string name = "Header");
 	virtual ~Header();
 
-    std::string getHeadName() const;
+    std::string getHeadKey() const;
     std::string getHeadValue() const;
     bool IsHeadEmpty() const;
-    void setHeadName(std::string name);
+    void setHeadKey(std::string name);
     void setHeadValue(std::string value);
 };
 

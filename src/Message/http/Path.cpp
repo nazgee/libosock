@@ -13,8 +13,8 @@ namespace osock
 namespace http
 {
 
-Path::Path(std::string path, std::string terminator) :
-	StringMessage(path, terminator)
+Path::Path(std::string path, std::string terminator, std::string name) :
+	StringMessage(path, terminator, name)
 {
 	DBG_CONSTRUCTOR;
 }

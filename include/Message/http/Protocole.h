@@ -18,7 +18,7 @@ namespace http
 class Protocole : public StringMessage
 {
 public:
-	Protocole(std::string protocole, std::string terminator = "\r\n");
+	Protocole(std::string protocole, std::string terminator = "\r\n", std::string name = "Protocole");
 	virtual ~Protocole();
 	virtual std::string getStringInfo();
 

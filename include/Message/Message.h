@@ -40,6 +40,7 @@ private:
 	//! Set to true by default- all messages should be Unpackable from the start
 	data_chunk itsRemains;
 	msg_state itsState;
+	std::string itsMessageName;
 
 	bool isAllowed(msg_state flag) const { return ((itsState & flag) == flag); }
 	void setAllowed(msg_state flag) { int s = itsState; s |= static_cast<int>(flag); itsState = static_cast<msg_state>(s);}
@@ -50,10 +51,11 @@ protected:
 	data_chunk itsBuffer;
 
 public:
-	Message();
+	Message(std::string name = "Message");
 	virtual ~Message(void);
 
 	data_chunk Unpack() const;
+	virtual std::string UnpackAsTag(std::string tag, std::string attr, std::string tail = "");
 	bool Pack(const data_chunk& data);
 	void RestartPacking();
 	bool getIsComplete() const;
@@ -62,6 +64,7 @@ public:
 protected:
 	void ClosePacking(const data_chunk& remains);
 	void ExtendPacking();
+	std::string getMessageName() { return itsMessageName; }
 	virtual std::string getStringInfo();
 	/**
 	 * @brief Called to retrieve data_chunk representing message

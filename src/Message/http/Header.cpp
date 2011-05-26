@@ -21,9 +21,9 @@ namespace http
 
 const std::string Header::separator = ": ";
 
-Header::Header(std::string name, std::string value) :
-	StringMessage(name + separator + value, NEWLINE),
-	itsName(name),
+Header::Header(std::string key, std::string value, std::string name) :
+	StringMessage(key + separator + value, NEWLINE, name),
+	itsKey(name),
 	itsValue(value)
 {
 	DBG_CONSTRUCTOR;
@@ -39,7 +39,7 @@ void Header::doFeed(const data_chunk& data)
 	StringMessage::doFeed(data);
 	if (getIsComplete()) {
 		if (getString().length() == 0) {
-			setHeadName("");
+			setHeadKey("");
 			setHeadValue("");
 			DBG << "Decoded empty Header" << std::endl;
 		} else {
@@ -51,11 +51,11 @@ void Header::doFeed(const data_chunk& data)
 				throw Exception("Header does not contain '" + separator + "'");
 			}
 
-			itsName = this->substr(0, separator_pos);
-			size_t value_pos = itsName.length() + separator.length();
+			itsKey = this->substr(0, separator_pos);
+			size_t value_pos = itsKey.length() + separator.length();
 			itsValue = this->substr(value_pos, getString().length() - value_pos);
 
-			if ((itsName.length() == 0) || (itsValue.length() == 0)){
+			if ((itsKey.length() == 0) || (itsValue.length() == 0)){
 				throw Exception("Header's name or value not given");
 			}
 		}
@@ -65,7 +65,7 @@ void Header::doFeed(const data_chunk& data)
 data_chunk Header::doUnpack() const
 {
 	data_chunk d;
-	d.insert(d.end(), itsName.begin(), itsName.end());
+	d.insert(d.end(), itsKey.begin(), itsKey.end());
 	d.insert(d.end(), separator.begin(), separator.end());
 	d.insert(d.end(), itsValue.begin(), itsValue.end());
 	d.insert(d.end(), itsTerminator.begin(), itsTerminator.end());
@@ -75,17 +75,17 @@ data_chunk Header::doUnpack() const
 std::string Header::getStringInfo()
 {
 	std::string s;
-	s ="name[" + to_string(itsName.length()) + "]=" + itsName +
+	s ="key[" + to_string(itsKey.length()) + "]=" + itsKey +
 		"; value[" + to_string(itsValue.length()) + "]=" + itsValue + ";";
 	return s;
 }
 
-std::string Header::getHeadName() const
+std::string Header::getHeadKey() const
 {
 	if (!getIsComplete())
 		throw Exception("getName() called on incomplete Header!");
 
-    return itsName;
+    return itsKey;
 }
 
 std::string Header::getHeadValue() const
@@ -98,12 +98,12 @@ std::string Header::getHeadValue() const
 
 bool Header::IsHeadEmpty() const
 {
-	return ((getHeadName() == "" ) && (getHeadValue() == ""));
+	return ((getHeadKey() == "" ) && (getHeadValue() == ""));
 }
 
-void Header::setHeadName(std::string name)
+void Header::setHeadKey(std::string key)
 {
-    this->itsName = name;
+    this->itsKey = key;
 }
 
 void Header::setHeadValue(std::string value)

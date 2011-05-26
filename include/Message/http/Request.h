@@ -27,12 +27,14 @@ class Request: public Message
 	ChainedMessage itsChain;
 public:
 	Request(std::string request = "GET", std::string path = "/",
-			std::string protocole = "HTTP/1.0");
+			std::string protocole = "HTTP/1.0", std::string name = "Request");
 	virtual ~Request();
 
 	const Command& getCommand();
 	const Path& getPath();
 	const Protocole& getProtocole();
+
+	virtual std::string UnpackAsTag(std::string tag, std::string attr, std::string tail = "");
 
 protected:
 	virtual data_chunk doUnpack() const;

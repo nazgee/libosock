@@ -1,7 +1,8 @@
 /*
  Copyright 2011, Michal Stawinski <michal.stawinski@gmail.com>
 
- This file is part of libsockets- C++ wrapper over OpenSSL and raw sockets.
+ This file is part of libsockets- C++ wrapper over OpenSSL and raw
+ sockets.
 
  libsockets is free software: you can redistribute it and/or modify
  it under the terms of the GNU Lesser General Public License as published by
@@ -23,10 +24,13 @@
 #include <Message/Message.h>
 #include <Exception/Exception.h>
 
+#include <typeinfo>
+
 namespace osock
 {
-Message::Message() :
-	itsState(MSG_ALLOWED_PACK_AND_UNPACK)
+Message::Message(std::string name) :
+	itsState(MSG_ALLOWED_PACK_AND_UNPACK),
+	itsMessageName(name)
 {
 }
 
@@ -40,6 +44,18 @@ data_chunk Message::Unpack() const
 		throw Exception("Unpack() called on incomplete Message!");
 
 	return doUnpack();
+}
+
+std::string Message::UnpackAsTag(std::string tag, std::string attr, std::string tail)
+{
+	std::string retval("<" + tag + " " + attr + ">" +
+//		typeid(this).name()
+		getMessageName() + ";<br>"
+		+ getStringInfo() + ";<br>"
+		"data=" + Utils::DataToString(Unpack()) + "; tail=" + tail +
+		";</" + tag + ">");
+
+	return retval;
 }
 
 bool Message::Pack(const data_chunk& data)

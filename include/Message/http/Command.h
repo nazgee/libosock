@@ -18,7 +18,8 @@ namespace http
 class Command: public StringMessage
 {
 public:
-	Command(std::string command, std::string terminator = " ");
+	Command(std::string command, std::string terminator = " ",
+			std::string name = "Command");
 	virtual ~Command();
 	virtual std::string getStringInfo();
 

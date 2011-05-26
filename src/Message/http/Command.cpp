@@ -13,8 +13,8 @@ namespace osock
 namespace http
 {
 
-Command::Command(std::string command, std::string terminator) :
-	StringMessage(command, terminator)
+Command::Command(std::string command, std::string terminator, std::string name) :
+	StringMessage(command, terminator, name)
 {
 	DBG_CONSTRUCTOR;
 }

@@ -14,7 +14,8 @@ namespace http
 {
 
 Request::Request(std::string request, std::string path,
-		std::string protocole)
+		std::string protocole, std::string name) :
+		Message(name)
 {
 	itsCommand = new Command(request);
 	itsChain.AddLink(itsCommand);
@@ -46,6 +47,11 @@ const Path& Request::getPath()
 const Protocole& Request::getProtocole()
 {
 	return *itsProtocole;
+}
+
+std::string Request::UnpackAsTag(std::string tag, std::string attr, std::string tail)
+{
+	return Message::UnpackAsTag(tag, attr,	tail + itsChain.UnpackAsTag(tag, attr));
 }
 
 data_chunk Request::doUnpack() const

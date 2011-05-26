@@ -26,7 +26,9 @@
 
 namespace osock
 {
-StringMessage::StringMessage(unsigned short dataLen, const std::string& terminator) :
+StringMessage::StringMessage(unsigned short dataLen,
+		const std::string& terminator, std::string name) :
+		Message(name),
 	itsTerminator(terminator)
 {
 	this->reserve(dataLen);
@@ -34,25 +36,11 @@ StringMessage::StringMessage(unsigned short dataLen, const std::string& terminat
 	DBG_CONSTRUCTOR;
 }
 
-StringMessage::StringMessage(const std::string& data, const std::string& terminator) :
-	std::string(data),
-	itsTerminator(terminator)
-{
-	this->append(itsTerminator);
-	DBG_CONSTRUCTOR;
-}
-
-StringMessage::StringMessage(unsigned short dataLen) :
-	itsTerminator("\0", 1)
-{
-	this->reserve(dataLen);
-	this->append(itsTerminator);
-	DBG_CONSTRUCTOR;
-}
-
-StringMessage::StringMessage(const std::string& data) :
-	std::string(data),
-	itsTerminator("\0", 1)
+StringMessage::StringMessage(const std::string& data,
+		const std::string& terminator, std::string name) :
+		Message(name),
+		std::string(data),
+		itsTerminator(terminator)
 {
 	this->append(itsTerminator);
 	DBG_CONSTRUCTOR;
