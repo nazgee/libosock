@@ -48,14 +48,13 @@ data_chunk Message::Unpack() const
 
 std::string Message::UnpackAsTag(std::string tag, std::string attr, std::string tail)
 {
-	std::string retval("<" + tag + " " + attr + ">" +
-//		typeid(this).name()
-		getMessageName() + ";<br>"
-		+ getStringInfo() + ";<br>"
-		"data=" + Utils::DataToString(Unpack()) + "; tail=" + tail +
-		";</" + tag + ">");
+	std::string value;
+	value += getAsTag(getMessageName(), "h4");
+	value += getAsTag(getStringInfo(), "b");
+	value += getAsTag(Utils::DataToString(Unpack()), "i");
+	value += getAsTag(tail);
 
-	return retval;
+	return getAsTag(value, tag, attr);
 }
 
 bool Message::Pack(const data_chunk& data)
@@ -104,6 +103,20 @@ void Message::ExtendPacking()
 	}
 
 	clearAllowed(MSG_ALLOWED_UNPACK);
+}
+
+std::string Message::getMessageName()
+{
+	return itsMessageName;
+}
+
+std::string Message::getAsTag(std::string value, std::string tag, std::string attr)
+{
+	if (tag.length()) {
+		return std::string("<" + tag + " " + attr + ">" + value + "</" + tag + ">" );
+	} else {
+		return value;
+	}
 }
 
 std::string Message::getStringInfo()

@@ -64,7 +64,8 @@ public:
 protected:
 	void ClosePacking(const data_chunk& remains);
 	void ExtendPacking();
-	std::string getMessageName() { return itsMessageName; }
+	std::string getMessageName();
+	static std::string getAsTag(std::string value, std::string tag = "", std::string attr = "");
 	virtual std::string getStringInfo();
 	/**
 	 * @brief Called to retrieve data_chunk representing message
