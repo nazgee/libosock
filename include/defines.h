@@ -38,7 +38,7 @@ namespace osock
 
 namespace http
 {
-#define 	NEWLINE 	"\r\n"
+static const std::string NEWLINE = "\r\n";
 }
 
 #define UNUSED(x) (void)x
