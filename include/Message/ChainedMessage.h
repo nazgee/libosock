@@ -27,6 +27,7 @@ public:
 	const Message& getLastLink() const;
 	const int getLinksNumber() const;
 	void DeleteAllLinks();
+	void LinksClose();
 	virtual std::string UnpackAsTag(std::string tag, std::string attr, std::string tail = "");
 
 protected:

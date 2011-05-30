@@ -30,6 +30,7 @@
 #include "Message/http/Request.h"
 #include "Message/http/Header.h"
 #include "Message/http/HttpRequest.h"
+#include "Message/http/HttpResponse.h"
 #include "Server/Server.h"
 
 #endif /* LIBSOCKETS_H_ */

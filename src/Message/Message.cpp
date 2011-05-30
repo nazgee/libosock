@@ -49,10 +49,10 @@ data_chunk Message::Unpack() const
 std::string Message::UnpackAsTag(std::string tag, std::string attr, std::string tail)
 {
 	std::string value;
-	value += getAsTag(getMessageName(), "h4");
-	value += getAsTag(getStringInfo(), "b");
-	value += getAsTag(Utils::DataToString(Unpack()), "i");
-	value += getAsTag(tail);
+	value += getAsTag(getMessageName(), "span", "class=msgname");
+	value += getAsTag(getStringInfo(), "span", "class=msginfo");
+	value += getAsTag(Utils::DataToString(Unpack()), "span", "class=msgdata");
+	value += getAsTag(tail,"span", "class=msgtail");
 
 	return getAsTag(value, tag, attr);
 }
@@ -105,7 +105,7 @@ void Message::ExtendPacking()
 	clearAllowed(MSG_ALLOWED_UNPACK);
 }
 
-std::string Message::getMessageName()
+const std::string& Message::getMessageName() const
 {
 	return itsMessageName;
 }
@@ -113,7 +113,7 @@ std::string Message::getMessageName()
 std::string Message::getAsTag(std::string value, std::string tag, std::string attr)
 {
 	if (tag.length()) {
-		return std::string("<" + tag + " " + attr + ">" + value + "</" + tag + ">" );
+		return std::string("<" + tag + " " + attr + ">" + value + "</" + tag + ">" + http::NEWLINE );
 	} else {
 		return value;
 	}

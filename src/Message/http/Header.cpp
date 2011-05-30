@@ -23,7 +23,7 @@ const std::string Header::separator = ": ";
 
 Header::Header(std::string key, std::string value, std::string name) :
 	StringMessage(key + separator + value, NEWLINE, name),
-	itsKey(name),
+	itsKey(key),
 	itsValue(value)
 {
 	DBG_CONSTRUCTOR;
@@ -65,9 +65,11 @@ void Header::doFeed(const data_chunk& data)
 data_chunk Header::doUnpack() const
 {
 	data_chunk d;
-	d.insert(d.end(), itsKey.begin(), itsKey.end());
-	d.insert(d.end(), separator.begin(), separator.end());
-	d.insert(d.end(), itsValue.begin(), itsValue.end());
+	if (itsKey.length()) {
+		d.insert(d.end(), itsKey.begin(), itsKey.end());
+		d.insert(d.end(), separator.begin(), separator.end());
+		d.insert(d.end(), itsValue.begin(), itsValue.end());
+	}
 	d.insert(d.end(), itsTerminator.begin(), itsTerminator.end());
 	return d;
 }

@@ -60,11 +60,11 @@ public:
 	void RestartPacking();
 	bool getIsComplete() const;
 	const data_chunk& getRemains();
+	const std::string& getMessageName() const;
 
 protected:
 	void ClosePacking(const data_chunk& remains);
 	void ExtendPacking();
-	std::string getMessageName();
 	static std::string getAsTag(std::string value, std::string tag = "", std::string attr = "");
 	virtual std::string getStringInfo();
 	/**

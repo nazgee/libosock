@@ -24,6 +24,7 @@
 #include <string.h>	//strerror()
 #include <errno.h>
 #include <iostream>
+#include <stdexcept>
 
 namespace osock
 {

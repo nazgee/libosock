@@ -29,7 +29,8 @@ ChainedMessage::~ChainedMessage()
 void ChainedMessage::AddLink(Message* mgs2add)
 {
 	DBG << "Added new link, while chain's getIsComplete()=" << getIsComplete() << std::endl;
-	mgs2add->RestartPacking();
+	//XXX: can this be safely removed?
+//	mgs2add->RestartPacking();
 	itsLinks.push_back(mgs2add);
 	ExtendPacking();
 }
@@ -51,6 +52,19 @@ const int ChainedMessage::getLinksNumber() const
 void ChainedMessage::DeleteAllLinks()
 {
 	itsLinks.clear();
+}
+
+void ChainedMessage::LinksClose()
+{
+	for (unsigned int i = 0; i < itsLinks.size(); ++i) {
+		if (!itsLinks.at(i).getIsComplete()) {
+			std::string name = itsLinks.at(i).getMessageName();
+			WRN << "link(" << to_string(i) << ")=" << name << " is not complete!" << std::endl;
+			throw Exception("Chain has incomplete links, can not be closed!");
+		}
+	}
+	data_chunk empty;
+	ClosePacking(empty);
 }
 
 std::string ChainedMessage::UnpackAsTag(std::string tag, std::string attr, std::string tail)
