@@ -8,7 +8,7 @@
 #include <defines.h>
 #include <Message/http/HttpResponse.h>
 #include <Message/http/Header.h>
-#define LOGLEVEL LOGLEVEL_DBG
+//#define LOGLEVEL LOGLEVEL_DBG
 #include <Utilities/Logger.h>
 #include <Exception/Exception.h>
 
