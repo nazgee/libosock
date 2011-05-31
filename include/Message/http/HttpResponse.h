@@ -34,7 +34,7 @@ public:
 	HttpResponse(std::string code = "200", std::string status = "OK",
 			std::string content = "", std::string protocole = "HTTP/1.0");
 	virtual ~HttpResponse();
-	virtual std::string UnpackAsTag(std::string tag, std::string attr, std::string tail = "");
+	virtual std::string UnpackAsTag(std::string tag = Message::TAG, std::string attr = Message::ATTRBODY, std::string tail = "");
 
 protected:
 	virtual data_chunk doUnpack() const;

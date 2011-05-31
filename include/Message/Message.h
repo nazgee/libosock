@@ -55,12 +55,19 @@ public:
 	virtual ~Message(void);
 
 	data_chunk Unpack() const;
-	virtual std::string UnpackAsTag(std::string tag, std::string attr, std::string tail = "");
+	virtual std::string UnpackAsTag(std::string tag = Message::TAG, std::string attr = Message::ATTRBODY, std::string tail = "");
 	bool Pack(const data_chunk& data);
 	void RestartPacking();
 	bool getIsComplete() const;
 	const data_chunk& getRemains();
 	const std::string& getMessageName() const;
+
+	static const std::string ATTRBODY;
+	static const std::string ATTRNAME;
+	static const std::string ATTRINFO;
+	static const std::string ATTRDATA;
+	static const std::string ATTRTAIL;
+	static const std::string TAG;
 
 protected:
 	void ClosePacking(const data_chunk& remains);

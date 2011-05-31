@@ -28,6 +28,13 @@
 
 namespace osock
 {
+const std::string Message::ATTRBODY = "class=msgbody";
+const std::string Message::ATTRNAME = "class=msgname";
+const std::string Message::ATTRINFO = "class=msginfo";
+const std::string Message::ATTRDATA = "class=msgdata";
+const std::string Message::ATTRTAIL = "class=msgtail";
+const std::string Message::TAG = "div";
+
 Message::Message(std::string name) :
 	itsState(MSG_ALLOWED_PACK_AND_UNPACK),
 	itsMessageName(name)
@@ -49,10 +56,10 @@ data_chunk Message::Unpack() const
 std::string Message::UnpackAsTag(std::string tag, std::string attr, std::string tail)
 {
 	std::string value;
-	value += getAsTag(getMessageName(), "span", "class=msgname");
-	value += getAsTag(getStringInfo(), "span", "class=msginfo");
-	value += getAsTag(Utils::DataToString(Unpack()), "span", "class=msgdata");
-	value += getAsTag(tail,"span", "class=msgtail");
+	value += getAsTag(getMessageName(), TAG, ATTRNAME);
+	value += getAsTag(getStringInfo(), TAG, ATTRINFO);
+	value += getAsTag(Utils::DataToString(Unpack()), TAG, ATTRDATA);
+	value += getAsTag(tail,TAG, ATTRTAIL);
 
 	return getAsTag(value, tag, attr);
 }

@@ -29,7 +29,7 @@ public:
 	virtual ~Response();
 	const Protocole& getProtocole() const;
 	const Status& getStatus() const;
-	virtual std::string UnpackAsTag(std::string tag, std::string attr, std::string tail = "");
+	virtual std::string UnpackAsTag(std::string tag = Message::TAG, std::string attr = Message::ATTRBODY, std::string tail = "");
 
 protected:
 	virtual data_chunk doUnpack() const;
