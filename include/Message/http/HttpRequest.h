@@ -24,7 +24,7 @@ private:
 	ChainedMessage itsHeaders;
 
 public:
-	HttpRequest();
+	HttpRequest(std::string name = "HttpRequest");
 	virtual ~HttpRequest();
 	std::string getCommand();
 	std::string getPath();
