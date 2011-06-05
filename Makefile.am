@@ -38,6 +38,7 @@ libosock_@OSOCK_API_VERSION@_la_SOURCES = src/Message/Message.cpp \
 	src/Message/http/Response.cpp \
 	src/Message/http/HttpRequest.cpp \
 	src/Message/http/HttpResponse.cpp \
+	src/Message/http/HttpResponseFile.cpp \
 	src/Security/SecurityServerUnsafe.cpp \
 	src/Security/Trust/Trust.cpp \
 	src/Security/SecurityServer.cpp \
@@ -91,6 +92,7 @@ osockmessage_include_HEADERS = include/Message/StringMessage.h \
 	include/Message/http/Response.h \
 	include/Message/http/HttpRequest.h \
 	include/Message/http/HttpResponse.h \
+	include/Message/http/HttpResponseFile.h \
 	include/Message/Message.h
 	
 osocksecurity_includedir = $(osock_includedir)/Security

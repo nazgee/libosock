@@ -31,6 +31,7 @@
 #include "Message/http/Header.h"
 #include "Message/http/HttpRequest.h"
 #include "Message/http/HttpResponse.h"
+#include "Message/http/HttpResponseFile.h"
 #include "Server/Server.h"
 
 #endif /* LIBSOCKETS_H_ */

@@ -31,10 +31,11 @@ private:
 	StringMessage itsContent;
 
 public:
-	HttpResponse(std::string code = "200", std::string status = "OK",
-			std::string content = "", std::string protocole = "HTTP/1.0");
+	HttpResponse(std::string content = "", std::string code = "200",
+			std::string status = "OK", std::string protocole = "HTTP/1.0");
 	virtual ~HttpResponse();
 	virtual std::string UnpackAsTag(std::string tag = Message::TAG, std::string attr = Message::ATTRBODY, std::string tail = "");
+	StringMessage& getContent();
 
 protected:
 	virtual data_chunk doUnpack() const;

@@ -17,8 +17,8 @@
 namespace osock
 {
 
-HttpResponse::HttpResponse(std::string code, std::string status,
-		std::string content, std::string protocole) :
+HttpResponse::HttpResponse(std::string content, std::string code,
+		std::string status, std::string protocole) :
 	Message("HttpResponse"), itsResponse(), itsContent(content, http::NEWLINE)
 {
 	time_t t;
@@ -67,6 +67,11 @@ std::string HttpResponse::UnpackAsTag(std::string tag, std::string attr,
 			attr,
 			tail + itsResponse.UnpackAsTag(tag, attr) + itsHeaders.UnpackAsTag(
 					tag, attr) + itsContent.UnpackAsTag(tag, attr));
+}
+
+StringMessage& HttpResponse::getContent()
+{
+	return itsContent;
 }
 
 data_chunk HttpResponse::doUnpack() const

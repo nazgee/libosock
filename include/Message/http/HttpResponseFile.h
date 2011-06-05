@@ -1,0 +1,34 @@
+/*
+ * HttpResponseFile.h
+ *
+ *  Created on: Jun 5, 2011
+ *      Author: nazgee
+ */
+
+#ifndef HTTPRESPONSEFILE_H_
+#define HTTPRESPONSEFILE_H_
+
+#include <defines.h>
+//#define LOGLEVEL LOGLEVEL_DBG
+#include <Utilities/Logger.h>
+#include <Message/http/HttpResponse.h>
+
+#include <fstream>
+
+namespace osock
+{
+
+class HttpResponseFile: public osock::HttpResponse
+{
+private:
+	std::ifstream itsIFile;
+
+public:
+	HttpResponseFile(std::string file, std::string code = "200",
+			std::string status = "OK", std::string protocole = "HTTP/1.0");
+	virtual ~HttpResponseFile();
+};
+
+}
+
+#endif /* HTTPRESPONSEFILE_H_ */
