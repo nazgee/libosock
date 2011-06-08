@@ -31,8 +31,7 @@ public:
 		OK = 200
 	};
 
-	Status(std::string code = "200", std::string status = "OK",
-			std::string name = "Status");
+	Status(std::string code, std::string status, std::string name = "Status");
 	Status(enum statusCode code = OK, std::string name = "Status");
 	virtual ~Status();
 	std::string getCode() const;
