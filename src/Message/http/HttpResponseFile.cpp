@@ -16,7 +16,7 @@ HttpResponseFile::HttpResponseFile(std::string file, std::string code,
 {
 	itsIFile.open(file.c_str(), std::ios_base::in | std::ios_base::binary);
 	if (!itsIFile.good()) {
-		throw Exception("Bad file given");
+		throw HttpException("Bad file given", http::Status(http::Status::NOT_FOUND));
 	}
 
 	// get length of file:
