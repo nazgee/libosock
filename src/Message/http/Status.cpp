@@ -28,6 +28,21 @@ Status::Status(std::string code, std::string status, std::string name) :
 	DBG_CONSTRUCTOR;
 }
 
+Status::Status(enum statusCode code, std::string name) :
+	Message(name)
+{
+	itsCode = new StringMessage(to_string(code), " ");
+	itsChain.AddLink(itsCode);
+
+	std::string status = getDescription(code);
+	itsStatus = new StringMessage(status, NEWLINE);
+	itsChain.AddLink(itsStatus);
+
+	itsChain.LinksClose();
+
+	DBG_CONSTRUCTOR;
+}
+
 Status::~Status()
 {
 	DBG_DESTRUCTOR;
@@ -48,6 +63,34 @@ std::string Status::UnpackAsTag(std::string tag, std::string attr,
 {
 	return Message::UnpackAsTag(tag, attr,
 			tail + itsChain.UnpackAsTag(tag, attr));
+}
+
+std::string Status::getDescription(enum statusCode code)
+{
+	std::string explanation;
+
+	switch (code) {
+	case OK:
+		explanation = "OK";
+		break;
+	case NOT_FOUND:
+		explanation = "Not found";
+		break;
+	case MOVED_PERM:
+		explanation = "Moved Permanently ";
+		break;
+	case MOVED_TEMP:
+		explanation = "Moved Temporarily";
+		break;
+	case SERVER_ERROR:
+		explanation = "Server Error";
+		break;
+	default:
+		explanation = "Unknown error";
+		break;
+	}
+
+	return explanation;
 }
 
 data_chunk Status::doUnpack() const
@@ -72,8 +115,8 @@ void Status::doRestartPacking()
 std::string Status::getStringInfo()
 {
 	std::string s;
-	s = "code=" + itsCode->getString()
-	+ "; status=" + itsStatus->getString() + ";";
+	s = "code=" + itsCode->getString() + "; status=" + itsStatus->getString()
+			+ ";";
 	return s;
 }
 

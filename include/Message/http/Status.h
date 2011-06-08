@@ -23,12 +23,22 @@ private:
 	StringMessage* itsStatus;
 	ChainedMessage itsChain;
 public:
+	enum statusCode {
+		NOT_FOUND = 404,
+		MOVED_TEMP = 301,
+		MOVED_PERM = 302,
+		SERVER_ERROR = 500,
+		OK = 200
+	};
+
 	Status(std::string code = "200", std::string status = "OK",
 			std::string name = "Status");
+	Status(enum statusCode code = OK, std::string name = "Status");
 	virtual ~Status();
 	std::string getCode() const;
 	std::string getStatus() const;
 	virtual std::string UnpackAsTag(std::string tag = Message::TAG, std::string attr = Message::ATTRBODY, std::string tail = "");
+	static std::string getDescription(enum statusCode code);
 
 protected:
 	virtual data_chunk doUnpack() const;
