@@ -26,6 +26,8 @@
 #include <iostream>
 #include <stdexcept>
 
+#include <Message/http/Status.h>
+
 namespace osock
 {
 class Exception : public std::exception
@@ -51,6 +53,16 @@ public:
 	virtual ~SSLException(void) throw()
 	{
 	}
+};
+
+class HttpException: public Exception
+{
+private:
+	http::Status itsStatus;
+public:
+	HttpException(const std::string& msg, const http::Status& status);
+	virtual ~HttpException(void) throw();
+    http::Status getStatus() const;
 };
 
 class StdException: public Exception
