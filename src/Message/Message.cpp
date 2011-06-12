@@ -45,6 +45,11 @@ Message::~Message()
 {
 }
 
+Message* Message::Clone() const
+{
+	return doClone();
+}
+
 data_chunk Message::Unpack() const
 {
 	if (!isAllowed(MSG_ALLOWED_UNPACK))

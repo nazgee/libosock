@@ -54,6 +54,7 @@ public:
 	Message(std::string name = "Message");
 	virtual ~Message(void);
 
+	Message* Clone() const;
 	data_chunk Unpack() const;
 	virtual std::string UnpackAsTag(std::string tag = Message::TAG, std::string attr = Message::ATTRBODY, std::string tail = "");
 	bool Pack(const data_chunk& data);
@@ -118,8 +119,24 @@ protected:
 	 * doUnpack() should treat consecutive data_chunk as a start of a message().
 	 */
 	virtual void doRestartPacking() = 0;
-
+	/**
+	 * @brief Called from clone() method
+	 * @return Clone of this Message
+	 */
+	virtual Message* doClone() const = 0;
 };
+
+/**
+ * @brief used by boost::pointer_container library. Allows cloning containers
+ * of Messages.
+ * @param a Object to be cloned
+ * @return Clone of the given object
+ */
+inline Message* new_clone( const Message& a )
+{
+    return a.Clone();
+}
+
 } //namespace osock
 
 
