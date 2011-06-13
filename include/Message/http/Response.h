@@ -20,13 +20,15 @@ namespace http
 class Response: public osock::Message
 {
 private:
-	Status* itsStatus;
-	Protocole* itsProtocole;
+	enum LINKS {
+		LINK_PROTOCOLE,
+		LINK_STATUS
+	};
 	ChainedMessage itsChain;
+
 public:
 	Response(std::string protocole = "HTTP/1.0", std::string code = "200",
 			std::string status = "OK", std::string name = "Response");
-	Response(const Response& copy_from_me);
 	virtual ~Response();
 	const Protocole& getProtocole() const;
 	const Status& getStatus() const;

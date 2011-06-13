@@ -17,26 +17,8 @@ Response::Response(std::string protocole, std::string code,
 		std::string status, std::string name) :
 		Message(name)
 {
-	itsProtocole = new Protocole(protocole, " ");
-	itsChain.AddLink(itsProtocole);
-
-	itsStatus = new Status(code, status);
-	itsChain.AddLink(itsStatus);
-
-	itsChain.LinksClose();
-
-	DBG_CONSTRUCTOR;
-}
-
-Response::Response(const Response& copy_from_me) :
-	Message(copy_from_me)
-{
-	itsProtocole = dynamic_cast<Protocole*>(copy_from_me.getProtocole().Clone());
-	itsChain.AddLink(itsProtocole);
-
-	itsStatus = dynamic_cast<Status*>(copy_from_me.getStatus().Clone());
-	itsChain.AddLink(itsStatus);
-
+	itsChain.AddLink(new Protocole(protocole, " "));
+	itsChain.AddLink(new Status(code, status));
 	itsChain.LinksClose();
 
 	DBG_CONSTRUCTOR;
@@ -47,14 +29,14 @@ Response::~Response()
 	DBG_DESTRUCTOR;
 }
 
-const Protocole& Response::getProtocole() const
-{
-	return *itsProtocole;
-}
-
 const Status& Response::getStatus() const
 {
-	return *itsStatus;
+	return dynamic_cast<const Status&>(itsChain.getLink(LINK_STATUS));
+}
+
+const Protocole& Response::getProtocole() const
+{
+	return dynamic_cast<const Protocole&>(itsChain.getLink(LINK_PROTOCOLE));
 }
 
 std::string Response::UnpackAsTag(std::string tag, std::string attr,
@@ -91,8 +73,8 @@ Response* Response::doClone() const
 std::string Response::getStringInfo() const
 {
 	std::string s;
-	s = "protocole=" + itsProtocole->getString()
-	+ "; status=" + itsStatus->getCode() + ", " + itsStatus->getStatus() + ";";
+	s = "protocole=" + getProtocole().getString()
+	+ "; status=" + getStatus().getCode() + ", " + getStatus().getStatus() + ";";
 	return s;
 }
 
