@@ -21,14 +21,16 @@ namespace http
 
 class Request: public Message
 {
-	Command* itsCommand;
-	Path* itsPath;
-	Protocole* itsProtocole;
+	enum LINKS {
+			LINK_COMMAND,
+			LINK_PATH,
+			LINK_PROTOCOLE
+	};
 	ChainedMessage itsChain;
+
 public:
 	Request(std::string request = "GET", std::string path = "/",
 			std::string protocole = "HTTP/1.0", std::string name = "Request");
-	Request(const Request& copy_from_me);
 	virtual ~Request();
 
 	const Command& getCommand() const;

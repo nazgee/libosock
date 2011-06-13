@@ -17,30 +17,9 @@ Request::Request(std::string request, std::string path,
 		std::string protocole, std::string name) :
 		Message(name)
 {
-	itsCommand = new Command(request);
-	itsChain.AddLink(itsCommand);
-
-	itsPath = new Path(path);
-	itsChain.AddLink(itsPath);
-
-	itsProtocole = new Protocole(protocole);
-	itsChain.AddLink(itsProtocole);
-
-	DBG_CONSTRUCTOR;
-}
-
-Request::Request(const Request& copy_from_me) :
-	Message(copy_from_me)
-{
-	itsCommand = dynamic_cast<Command*>(copy_from_me.getCommand().Clone());
-	itsChain.AddLink(itsCommand);
-
-	itsPath = dynamic_cast<Path*>(copy_from_me.getPath().Clone());
-	itsChain.AddLink(itsPath);
-
-	itsProtocole = dynamic_cast<Protocole*>(copy_from_me.getProtocole().Clone());
-	itsChain.AddLink(itsProtocole);
-
+	itsChain.AddLink(new Command(request));
+	itsChain.AddLink(new Path(path));
+	itsChain.AddLink(new Protocole(protocole));
 	itsChain.LinksClose();
 
 	DBG_CONSTRUCTOR;
@@ -53,17 +32,17 @@ Request::~Request()
 
 const Command& Request::getCommand() const
 {
-	return *itsCommand;
+	return dynamic_cast<const Command&>(itsChain.getLink(LINK_COMMAND));
 }
 
 const Path& Request::getPath() const
 {
-	return *itsPath;
+	return dynamic_cast<const Path&>(itsChain.getLink(LINK_PATH));
 }
 
 const Protocole& Request::getProtocole() const
 {
-	return *itsProtocole;
+	return dynamic_cast<const Protocole&>(itsChain.getLink(LINK_PROTOCOLE));
 }
 
 std::string Request::UnpackAsTag(std::string tag, std::string attr, std::string tail)
@@ -98,9 +77,9 @@ Request* Request::doClone() const
 std::string Request::getStringInfo() const
 {
 	std::string s;
-	s = "cmd=" + itsCommand->getString()
-		+ "; path=" + itsPath->getString()
-		+ "; prot=" + itsProtocole->getString() + ";";
+	s = "cmd=" + getCommand().getString()
+		+ "; path=" + getPath().getString()
+		+ "; prot=" + getProtocole().getString() + ";";
 	return s;
 }
 
