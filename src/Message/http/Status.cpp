@@ -59,7 +59,7 @@ std::string Status::getDescription(enum statusCode code)
 		explanation = "OK";
 		break;
 	case NOT_FOUND:
-		explanation = "Not found";
+		explanation = "Not Found";
 		break;
 	case MOVED_PERM:
 		explanation = "Moved Permanently ";
@@ -71,7 +71,7 @@ std::string Status::getDescription(enum statusCode code)
 		explanation = "Server Error";
 		break;
 	default:
-		explanation = "Unknown error";
+		explanation = "Unknown Error";
 		break;
 	}
 

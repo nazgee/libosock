@@ -29,6 +29,7 @@ private:
 public:
 	HttpResponseFile(std::string file, std::string code = "200",
 			std::string status = "OK", std::string protocole = "HTTP/1.0");
+	HttpResponseFile(std::string file, const http::Status& status, std::string protocole = "HTTP/1.0");
 	HttpResponseFile(const HttpResponseFile& copy_from_me);
 	virtual ~HttpResponseFile();
 protected:

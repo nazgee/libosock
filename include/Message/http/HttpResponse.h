@@ -11,6 +11,7 @@
 #include <Message/Message.h>
 #include <Message/http/Response.h>
 #include <Message/http/Header.h>
+#include <Message/http/Status.h>
 #include <Message/StringMessage.h>
 
 namespace osock
@@ -36,6 +37,7 @@ protected:
 public:
 	HttpResponse(std::string content = "", std::string code = "200",
 			std::string status = "OK", std::string protocole = "HTTP/1.0");
+	HttpResponse(const http::Status& status, std::string content = "", std::string protocole = "HTTP/1.0");
 	virtual ~HttpResponse();
 	virtual std::string UnpackAsTag(std::string tag = Message::TAG, std::string attr = Message::ATTRBODY, std::string tail = "");
 	const StringMessage& getContent() const;
@@ -54,6 +56,7 @@ protected:
 private:
 	void doFeedHeaders(const data_chunk& data);
 	void doFeedContent(const data_chunk& data);
+	void doInitHeaders();
 };
 }
 

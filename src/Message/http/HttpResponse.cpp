@@ -20,30 +20,19 @@ namespace osock
 HttpResponse::HttpResponse(std::string content, std::string code,
 		std::string status, std::string protocole) :
 	Message("HttpResponse"),
-	itsResponse(),
+	itsResponse(code, status, protocole),
 	itsContent(content, http::NEWLINE)
 {
-	time_t t;
-	struct tm* tmp;
-	char datestr[200];
+	doInitHeaders();
+	DBG_CONSTRUCTOR;
+}
 
-	t = time(NULL);
-	tmp = localtime(&t);
-	if (tmp == NULL) {
-		throw StdException("localtime() failed");
-	}
-
-	if (strftime(datestr, sizeof(datestr), "%a, %d %b %Y %T %Z", tmp) == 0) {
-		throw StdException("strfrtime() failed");
-	}
-
-	itsHeaders.AddLink(new http::Header("Date", datestr));
-	itsHeaders.AddLink(new http::Header("Content-Type", "text/html"));
-	itsHeaders.AddLink(new http::Header("Content-Length",
-			to_string(itsContent.length())));
-	itsHeaders.AddLink(new http::Header("", ""));
-	itsHeaders.LinksClose();
-
+HttpResponse::HttpResponse(const http::Status& status, std::string content,
+		std::string protocole) :
+	Message("HttpResponse"), itsResponse(status, protocole),
+	itsContent(content, http::NEWLINE)
+{
+	doInitHeaders();
 	DBG_CONSTRUCTOR;
 }
 
@@ -94,6 +83,9 @@ const http::Response& HttpResponse::getResponse() const
 
 data_chunk HttpResponse::doUnpack() const
 {
+	// Reevaluate content length
+	const_cast<http::Header&>(getHeaderLength()).setHeadValue(to_string(getContent().length()));
+
 	DBG << "About to start unpacking" << std::endl;
 	data_chunk ret(itsResponse.Unpack());
 	DBG << "Unpacked itsResponse" << std::endl;
@@ -142,6 +134,32 @@ void HttpResponse::doFeedContent(const data_chunk& data)
 	if (itsContent.getIsComplete()) {
 		ClosePacking(itsContent.getRemains());
 	}
+}
+
+void HttpResponse::doInitHeaders()
+{
+	time_t t;
+	struct tm* tmp;
+	char datestr[200];
+
+	t = time(NULL);
+	tmp = localtime(&t);
+	if (tmp == NULL) {
+		throw StdException("localtime() failed");
+	}
+
+	if (strftime(datestr, sizeof(datestr), "%a, %d %b %Y %T %Z", tmp) == 0) {
+		throw StdException("strfrtime() failed");
+	}
+
+	itsHeaders.RestartPacking();
+
+	itsHeaders.AddLink(new http::Header("Date", datestr));
+	itsHeaders.AddLink(new http::Header("Content-Type", "text/html"));
+	itsHeaders.AddLink(
+			new http::Header("Content-Length", to_string(itsContent.length())));
+	itsHeaders.AddLink(new http::Header("", ""));
+	itsHeaders.LinksClose();
 }
 
 void HttpResponse::doRestartPacking()

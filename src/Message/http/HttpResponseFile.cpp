@@ -20,6 +20,14 @@ HttpResponseFile::HttpResponseFile(std::string file, std::string code,
 	DBG_CONSTRUCTOR;
 }
 
+HttpResponseFile::HttpResponseFile(std::string file, const http::Status& status, std::string protocole) :
+	HttpResponse(status, "", protocole),
+	itsFileName(file)
+{
+	InitContent(itsFileName);
+	DBG_CONSTRUCTOR;
+}
+
 HttpResponseFile::HttpResponseFile(const HttpResponseFile& copy_from_me) :
 	HttpResponse(copy_from_me),
 	itsFileName(copy_from_me.itsFileName)
