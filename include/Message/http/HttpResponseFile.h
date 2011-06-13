@@ -24,6 +24,7 @@ protected:
 	std::string itsFileName;
 private:
 	std::ifstream itsIFile;
+	void InitContent(std::string filename);
 
 public:
 	HttpResponseFile(std::string file, std::string code = "200",
