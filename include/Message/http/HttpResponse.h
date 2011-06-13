@@ -24,9 +24,11 @@ class HttpResponse: public osock::Message
 {
 private:
 	http::Response itsResponse;
-	http::Header* itsHeaderDate;
-	http::Header* itsHeaderType;
-	http::Header* itsHeaderLength;
+	enum LINKS {
+		HEADER_DATE,
+		HEADER_TYPE,
+		HEADER_LENGTH
+	};
 	ChainedMessage itsHeaders;
 protected:
 	StringMessage itsContent;
@@ -34,11 +36,13 @@ protected:
 public:
 	HttpResponse(std::string content = "", std::string code = "200",
 			std::string status = "OK", std::string protocole = "HTTP/1.0");
-	HttpResponse(const HttpResponse& copy_from_me);
 	virtual ~HttpResponse();
 	virtual std::string UnpackAsTag(std::string tag = Message::TAG, std::string attr = Message::ATTRBODY, std::string tail = "");
 	const StringMessage& getContent() const;
 	const ChainedMessage& getHeaders() const;
+	const http::Header& getHeaderDate() const;
+	const http::Header& getHeaderType() const;
+	const http::Header& getHeaderLength() const;
 	const http::Response& getResponse() const;
 
 protected:

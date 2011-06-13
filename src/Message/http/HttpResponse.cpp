@@ -37,39 +37,12 @@ HttpResponse::HttpResponse(std::string content, std::string code,
 		throw StdException("strfrtime() failed");
 	}
 
-	itsHeaderDate = new http::Header("Date", datestr);
-	itsHeaders.AddLink(itsHeaderDate);
-
-	itsHeaderType = new http::Header("Content-Type", "text/html");
-	itsHeaders.AddLink(itsHeaderType);
-
-	itsHeaderLength = new http::Header("Content-Length",
-			to_string(itsContent.length()));
-	itsHeaders.AddLink(itsHeaderLength);
-
+	itsHeaders.AddLink(new http::Header("Date", datestr));
+	itsHeaders.AddLink(new http::Header("Content-Type", "text/html"));
+	itsHeaders.AddLink(new http::Header("Content-Length",
+			to_string(itsContent.length())));
 	itsHeaders.AddLink(new http::Header("", ""));
-
 	itsHeaders.LinksClose();
-
-	DBG_CONSTRUCTOR;
-}
-
-HttpResponse::HttpResponse(const HttpResponse& copy_from_me) :
-	Message("HttpResponse"),
-	itsResponse(copy_from_me.getResponse()),
-	itsHeaders(copy_from_me.getHeaders()),
-	itsContent(copy_from_me.getContent())
-{
-	const http::Header* header;
-
-	header = dynamic_cast<const http::Header*>(&itsHeaders.getLink(0));
-	itsHeaderDate = const_cast<http::Header*>(header);
-
-	header = dynamic_cast<const http::Header*>(&itsHeaders.getLink(1));
-	itsHeaderType = const_cast<http::Header*>(header);
-
-	header = dynamic_cast<const http::Header*>(&itsHeaders.getLink(2));
-	itsHeaderLength = const_cast<http::Header*>(header);
 
 	DBG_CONSTRUCTOR;
 }
@@ -97,6 +70,21 @@ const StringMessage& HttpResponse::getContent() const
 const ChainedMessage& HttpResponse::getHeaders() const
 {
 	return itsHeaders;
+}
+
+const http::Header& HttpResponse::getHeaderDate() const
+{
+	return dynamic_cast<const http::Header&>(itsHeaders.getLink(HEADER_DATE));
+}
+
+const http::Header& HttpResponse::getHeaderType() const
+{
+	return dynamic_cast<const http::Header&>(itsHeaders.getLink(HEADER_TYPE));
+}
+
+const http::Header& HttpResponse::getHeaderLength() const
+{
+	return dynamic_cast<const http::Header&>(itsHeaders.getLink(HEADER_LENGTH));
 }
 
 const http::Response& HttpResponse::getResponse() const
