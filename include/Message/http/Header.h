@@ -25,7 +25,8 @@ private:
 protected:
 	virtual void doFeed(const data_chunk& data);
 	virtual data_chunk doUnpack() const;
-	virtual std::string getStringInfo();
+	virtual std::string getStringInfo() const;
+	virtual Header* doClone() const;
 
 public:
 	Header(std::string key = "", std::string value = "", std::string name = "Header");

@@ -29,22 +29,39 @@ Request::Request(std::string request, std::string path,
 	DBG_CONSTRUCTOR;
 }
 
+Request::Request(const Request& copy_from_me) :
+	Message(copy_from_me)
+{
+	itsCommand = dynamic_cast<Command*>(copy_from_me.getCommand().Clone());
+	itsChain.AddLink(itsCommand);
+
+	itsPath = dynamic_cast<Path*>(copy_from_me.getPath().Clone());
+	itsChain.AddLink(itsPath);
+
+	itsProtocole = dynamic_cast<Protocole*>(copy_from_me.getProtocole().Clone());
+	itsChain.AddLink(itsProtocole);
+
+	itsChain.LinksClose();
+
+	DBG_CONSTRUCTOR;
+}
+
 Request::~Request()
 {
 	DBG_DESTRUCTOR;
 }
 
-const Command& Request::getCommand()
+const Command& Request::getCommand() const
 {
 	return *itsCommand;
 }
 
-const Path& Request::getPath()
+const Path& Request::getPath() const
 {
 	return *itsPath;
 }
 
-const Protocole& Request::getProtocole()
+const Protocole& Request::getProtocole() const
 {
 	return *itsProtocole;
 }
@@ -73,7 +90,12 @@ void Request::doRestartPacking()
 	itsChain.RestartPacking();
 }
 
-std::string Request::getStringInfo()
+Request* Request::doClone() const
+{
+	return new Request(*this);
+}
+
+std::string Request::getStringInfo() const
 {
 	std::string s;
 	s = "cmd=" + itsCommand->getString()

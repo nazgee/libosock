@@ -46,14 +46,21 @@ StringMessage::StringMessage(const std::string& data,
 	DBG_CONSTRUCTOR;
 }
 
+StringMessage::StringMessage(const StringMessage& copy_from_me) :
+		Message((Message&)copy_from_me),
+		std::string(copy_from_me.begin(), copy_from_me.end()),
+		itsTerminator(copy_from_me.getTerminator())
+{
+	DBG_CONSTRUCTOR;
+}
+
 StringMessage::~StringMessage(void)
 {
 	DBG_DESTRUCTOR;
 }
 
-std::string StringMessage::getTerminator()
+std::string StringMessage::getTerminator() const
 {
-	RestartPacking();
 	return itsTerminator;
 }
 
@@ -98,6 +105,11 @@ void StringMessage::doRestartPacking()
 {
 	DBG << "Clearing StringMessage" << std::endl;
 	this->clear();
+}
+
+StringMessage* StringMessage::doClone() const
+{
+	return new StringMessage(*this);
 }
 
 }

@@ -90,7 +90,12 @@ void HttpRequest::doRestartPacking()
 	itsHeaders.RestartPacking();
 }
 
-std::string HttpRequest::getStringInfo()
+HttpRequest* HttpRequest::doClone() const
+{
+	return new HttpRequest(*this);
+}
+
+std::string HttpRequest::getStringInfo() const
 {
 	std::string s;
 	s += "request=" + itsRequest.getCommand().getString() + " headers_n="

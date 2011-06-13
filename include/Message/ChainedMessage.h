@@ -25,6 +25,7 @@ public:
 	~ChainedMessage();
 	void AddLink(Message* mgs2add);
 	const Message& getLastLink() const;
+	const Message& getLink(size_t link) const;
 	const int getLinksNumber() const;
 	void DeleteAllLinks();
 	void LinksClose();
@@ -33,8 +34,9 @@ public:
 protected:
 	virtual osock::data_chunk doUnpack() const;
 	virtual void doFeed(const osock::data_chunk& data);
-	void virtual doRestartPacking();
-	std::string getStringInfo();
+	virtual void doRestartPacking();
+	virtual ChainedMessage* doClone() const;
+	std::string getStringInfo() const;
 };
 
 }

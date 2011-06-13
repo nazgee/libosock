@@ -43,6 +43,21 @@ Status::Status(enum statusCode code, std::string name) :
 	DBG_CONSTRUCTOR;
 }
 
+Status::Status (const Status& copy_from_me) :
+	Message(copy_from_me)
+{
+	itsCode = new StringMessage(copy_from_me.getCode(), " ");
+	itsChain.AddLink(itsCode);
+
+	itsStatus = new StringMessage(copy_from_me.getStatus(), NEWLINE);
+	itsChain.AddLink(itsStatus);
+
+	itsChain.LinksClose();
+
+	DBG_CONSTRUCTOR;
+
+}
+
 Status::~Status()
 {
 	DBG_DESTRUCTOR;
@@ -112,7 +127,12 @@ void Status::doRestartPacking()
 	itsChain.RestartPacking();
 }
 
-std::string Status::getStringInfo()
+Status* Status::doClone() const
+{
+	return new Status(*this);
+}
+
+std::string Status::getStringInfo() const
 {
 	std::string s;
 	s = "code=" + itsCode->getString() + "; status=" + itsStatus->getString()

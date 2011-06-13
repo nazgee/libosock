@@ -74,12 +74,17 @@ data_chunk Header::doUnpack() const
 	return d;
 }
 
-std::string Header::getStringInfo()
+std::string Header::getStringInfo() const
 {
 	std::string s;
 	s ="key[" + to_string(itsKey.length()) + "]=" + itsKey +
 		"; value[" + to_string(itsValue.length()) + "]=" + itsValue + ";";
 	return s;
+}
+
+Header* Header::doClone() const
+{
+	return new Header(*this);
 }
 
 std::string Header::getHeadKey() const

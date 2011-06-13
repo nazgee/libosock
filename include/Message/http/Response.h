@@ -26,6 +26,7 @@ private:
 public:
 	Response(std::string protocole = "HTTP/1.0", std::string code = "200",
 			std::string status = "OK", std::string name = "Response");
+	Response(const Response& copy_from_me);
 	virtual ~Response();
 	const Protocole& getProtocole() const;
 	const Status& getStatus() const;
@@ -35,7 +36,8 @@ protected:
 	virtual data_chunk doUnpack() const;
 	virtual void doFeed(const data_chunk& data);
 	virtual void doRestartPacking();
-	virtual std::string getStringInfo();
+	virtual Response* doClone() const;
+	virtual std::string getStringInfo() const;
 };
 
 } // namespace http

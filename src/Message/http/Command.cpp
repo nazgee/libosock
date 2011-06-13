@@ -24,11 +24,16 @@ Command::~Command()
 	DBG_DESTRUCTOR;
 }
 
-std::string Command::getStringInfo()
+std::string Command::getStringInfo() const
 {
 	std::string s;
 	s += "cmd=" + this->getString();
 	return s;
+}
+
+Command* Command::doClone() const
+{
+	return new Command(*this);
 }
 
 }	//namespace http

@@ -21,9 +21,10 @@ public:
 	Command(std::string command, std::string terminator = " ",
 			std::string name = "Command");
 	virtual ~Command();
-	virtual std::string getStringInfo();
 
 protected:
+	virtual std::string getStringInfo() const;
+	virtual Command* doClone() const;
 
 };
 

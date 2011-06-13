@@ -28,6 +28,20 @@ Response::Response(std::string protocole, std::string code,
 	DBG_CONSTRUCTOR;
 }
 
+Response::Response(const Response& copy_from_me) :
+	Message(copy_from_me)
+{
+	itsProtocole = dynamic_cast<Protocole*>(copy_from_me.getProtocole().Clone());
+	itsChain.AddLink(itsProtocole);
+
+	itsStatus = dynamic_cast<Status*>(copy_from_me.getStatus().Clone());
+	itsChain.AddLink(itsStatus);
+
+	itsChain.LinksClose();
+
+	DBG_CONSTRUCTOR;
+}
+
 Response::~Response()
 {
 	DBG_DESTRUCTOR;
@@ -69,7 +83,12 @@ void Response::doRestartPacking()
 	itsChain.RestartPacking();
 }
 
-std::string Response::getStringInfo()
+Response* Response::doClone() const
+{
+	return new Response(*this);
+}
+
+std::string Response::getStringInfo() const
 {
 	std::string s;
 	s = "protocole=" + itsProtocole->getString()

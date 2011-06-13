@@ -36,7 +36,8 @@ protected:
 	virtual void doFeed(const data_chunk& data);
 	void doFeedHeaders(const data_chunk& data);
 	virtual void doRestartPacking();
-	std::string getStringInfo();
+	virtual HttpRequest* doClone() const;
+	std::string getStringInfo() const;
 };
 
 }

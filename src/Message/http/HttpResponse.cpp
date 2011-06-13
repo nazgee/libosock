@@ -19,11 +19,13 @@ namespace osock
 
 HttpResponse::HttpResponse(std::string content, std::string code,
 		std::string status, std::string protocole) :
-	Message("HttpResponse"), itsResponse(), itsContent(content, http::NEWLINE)
+	Message("HttpResponse"),
+	itsResponse(),
+	itsContent(content, http::NEWLINE)
 {
 	time_t t;
 	struct tm* tmp;
-	char outstr[200];
+	char datestr[200];
 
 	t = time(NULL);
 	tmp = localtime(&t);
@@ -31,13 +33,11 @@ HttpResponse::HttpResponse(std::string content, std::string code,
 		throw StdException("localtime() failed");
 	}
 
-	if (strftime(outstr, sizeof(outstr), "%a, %d %b %Y %T %Z", tmp) == 0) {
+	if (strftime(datestr, sizeof(datestr), "%a, %d %b %Y %T %Z", tmp) == 0) {
 		throw StdException("strfrtime() failed");
 	}
 
-	itsHeaderDate = new http::Header("Date", outstr);
-	DBG << "itsHeaderDate->getIsComplete()=" << itsHeaderDate->getIsComplete()
-			<< std::endl;
+	itsHeaderDate = new http::Header("Date", datestr);
 	itsHeaders.AddLink(itsHeaderDate);
 
 	itsHeaderType = new http::Header("Content-Type", "text/html");
@@ -50,6 +50,26 @@ HttpResponse::HttpResponse(std::string content, std::string code,
 	itsHeaders.AddLink(new http::Header("", ""));
 
 	itsHeaders.LinksClose();
+
+	DBG_CONSTRUCTOR;
+}
+
+HttpResponse::HttpResponse(const HttpResponse& copy_from_me) :
+	Message("HttpResponse"),
+	itsResponse(copy_from_me.getResponse()),
+	itsHeaders(copy_from_me.getHeaders()),
+	itsContent(copy_from_me.getContent())
+{
+	const http::Header* header;
+
+	header = dynamic_cast<const http::Header*>(&itsHeaders.getLink(0));
+	itsHeaderDate = const_cast<http::Header*>(header);
+
+	header = dynamic_cast<const http::Header*>(&itsHeaders.getLink(1));
+	itsHeaderType = const_cast<http::Header*>(header);
+
+	header = dynamic_cast<const http::Header*>(&itsHeaders.getLink(2));
+	itsHeaderLength = const_cast<http::Header*>(header);
 
 	DBG_CONSTRUCTOR;
 }
@@ -69,9 +89,19 @@ std::string HttpResponse::UnpackAsTag(std::string tag, std::string attr,
 					tag, attr) + itsContent.UnpackAsTag(tag, attr));
 }
 
-StringMessage& HttpResponse::getContent()
+const StringMessage& HttpResponse::getContent() const
 {
 	return itsContent;
+}
+
+const ChainedMessage& HttpResponse::getHeaders() const
+{
+	return itsHeaders;
+}
+
+const http::Response& HttpResponse::getResponse() const
+{
+	return itsResponse;
 }
 
 data_chunk HttpResponse::doUnpack() const
@@ -134,7 +164,12 @@ void HttpResponse::doRestartPacking()
 	itsContent.RestartPacking();
 }
 
-std::string HttpResponse::getStringInfo()
+HttpResponse* HttpResponse::doClone() const
+{
+	return new HttpResponse(*this);
+}
+
+std::string HttpResponse::getStringInfo() const
 {
 	std::string s;
 	s += "response=" + itsResponse.getStatus().getStatus() + " headers_n="

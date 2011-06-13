@@ -20,13 +20,18 @@ namespace osock
 
 class HttpResponseFile: public osock::HttpResponse
 {
+protected:
+	std::string itsFileName;
 private:
 	std::ifstream itsIFile;
 
 public:
 	HttpResponseFile(std::string file, std::string code = "200",
 			std::string status = "OK", std::string protocole = "HTTP/1.0");
+	HttpResponseFile(const HttpResponseFile& copy_from_me);
 	virtual ~HttpResponseFile();
+protected:
+	virtual HttpResponseFile* doClone() const;
 };
 
 }

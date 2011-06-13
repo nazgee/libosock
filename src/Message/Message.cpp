@@ -58,7 +58,7 @@ data_chunk Message::Unpack() const
 	return doUnpack();
 }
 
-std::string Message::UnpackAsTag(std::string tag, std::string attr, std::string tail)
+std::string Message::UnpackAsTag(std::string tag, std::string attr, std::string tail) const
 {
 	std::string value;
 	value += getAsTag(getMessageName(), TAG, ATTRNAME);
@@ -131,7 +131,7 @@ std::string Message::getAsTag(std::string value, std::string tag, std::string at
 	}
 }
 
-std::string Message::getStringInfo()
+std::string Message::getStringInfo() const
 {
 	return "?";
 }

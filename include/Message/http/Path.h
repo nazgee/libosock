@@ -20,8 +20,10 @@ class Path : public StringMessage
 public:
 	Path(std::string path, std::string terminator = " ", std::string name = "Path");
 	virtual ~Path();
-	virtual std::string getStringInfo();
 
+protected:
+	virtual std::string getStringInfo() const;
+	virtual Path* doClone() const;
 };
 
 }	//namespace http

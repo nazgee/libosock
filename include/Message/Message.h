@@ -56,7 +56,7 @@ public:
 
 	Message* Clone() const;
 	data_chunk Unpack() const;
-	virtual std::string UnpackAsTag(std::string tag = Message::TAG, std::string attr = Message::ATTRBODY, std::string tail = "");
+	virtual std::string UnpackAsTag(std::string tag = Message::TAG, std::string attr = Message::ATTRBODY, std::string tail = "") const;
 	bool Pack(const data_chunk& data);
 	void RestartPacking();
 	bool getIsComplete() const;
@@ -74,7 +74,7 @@ protected:
 	void ClosePacking(const data_chunk& remains);
 	void ExtendPacking();
 	static std::string getAsTag(std::string value, std::string tag = "", std::string attr = "");
-	virtual std::string getStringInfo();
+	virtual std::string getStringInfo() const;
 	/**
 	 * @brief Called to retrieve data_chunk representing message
 	 *

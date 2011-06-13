@@ -38,10 +38,15 @@ void ChainedMessage::AddLink(Message* mgs2add)
 const Message& ChainedMessage::getLastLink() const
 {
 	if (itsLinks.size()) {
-		return itsLinks[itsLinks.size() - 1];
+		return itsLinks.at(itsLinks.size() - 1);
 	} else {
 		throw Exception("There are no links, can't return last one!");
 	}
+}
+
+const Message& ChainedMessage::getLink(size_t link) const
+{
+	return itsLinks.at(link);
 }
 
 const int ChainedMessage::getLinksNumber() const
@@ -81,7 +86,7 @@ osock::data_chunk ChainedMessage::doUnpack() const
 	osock::data_chunk ret;
 
 	for (unsigned int i = 0; i < itsLinks.size(); ++i) {
-		osock::data_chunk tmp(itsLinks[i].Unpack());
+		osock::data_chunk tmp(itsLinks.at(i).Unpack());
 		ret.insert(ret.end(), tmp.begin(), tmp.end());
 	}
 
@@ -124,7 +129,12 @@ void ChainedMessage::doRestartPacking()
 	DBG << "Cleared chain links" << std::endl;
 }
 
-std::string ChainedMessage::getStringInfo()
+ChainedMessage* ChainedMessage::doClone() const
+{
+	return new ChainedMessage(*this);
+}
+
+std::string ChainedMessage::getStringInfo() const
 {
 	std::string s;
 	s = "links_n=" + to_string(itsLinks.size());

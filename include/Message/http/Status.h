@@ -33,6 +33,11 @@ public:
 
 	Status(std::string code, std::string status, std::string name = "Status");
 	Status(enum statusCode code = OK, std::string name = "Status");
+	/**
+	 * @brief Copy constructor
+	 * @param copy_from_me
+	 */
+	Status (const Status& copy_from_me);
 	virtual ~Status();
 	std::string getCode() const;
 	std::string getStatus() const;
@@ -43,7 +48,8 @@ protected:
 	virtual data_chunk doUnpack() const;
 	virtual void doFeed(const data_chunk& data);
 	virtual void doRestartPacking();
-	virtual std::string getStringInfo();
+	virtual Status* doClone() const;
+	virtual std::string getStringInfo() const;
 };
 
 } // namespace http

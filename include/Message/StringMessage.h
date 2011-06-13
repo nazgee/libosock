@@ -32,9 +32,10 @@ protected:
 public:
 	StringMessage(unsigned short dataLen, const std::string& terminator, std::string name = "StringMessage");
 	StringMessage(const std::string& data, const std::string& terminator, std::string name = "StringMessage");
+	StringMessage(const StringMessage& copy_from_me);
 	virtual ~StringMessage(void);
 
-	std::string getTerminator();
+	std::string getTerminator() const;
 	void setTerminator(std::string terminator);
 	std::string getString() const;
 
@@ -42,6 +43,7 @@ protected:
 	virtual data_chunk doUnpack() const;
 	virtual void doFeed(const data_chunk& data);
 	virtual void doRestartPacking();
+	virtual StringMessage* doClone() const;
 };
 } //namespace osock
 

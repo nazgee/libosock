@@ -24,11 +24,16 @@ Protocole::~Protocole()
 	DBG_DESTRUCTOR;
 }
 
-std::string Protocole::getStringInfo()
+std::string Protocole::getStringInfo() const
 {
 	std::string s;
 	s += "protocole=" + this->getString();
 	return s;
+}
+
+Protocole* Protocole::doClone() const
+{
+	return new Protocole(*this);
 }
 
 }	//namespace http

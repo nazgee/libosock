@@ -28,20 +28,25 @@ private:
 	http::Header* itsHeaderType;
 	http::Header* itsHeaderLength;
 	ChainedMessage itsHeaders;
+protected:
 	StringMessage itsContent;
 
 public:
 	HttpResponse(std::string content = "", std::string code = "200",
 			std::string status = "OK", std::string protocole = "HTTP/1.0");
+	HttpResponse(const HttpResponse& copy_from_me);
 	virtual ~HttpResponse();
 	virtual std::string UnpackAsTag(std::string tag = Message::TAG, std::string attr = Message::ATTRBODY, std::string tail = "");
-	StringMessage& getContent();
+	const StringMessage& getContent() const;
+	const ChainedMessage& getHeaders() const;
+	const http::Response& getResponse() const;
 
 protected:
 	virtual data_chunk doUnpack() const;
 	virtual void doFeed(const data_chunk& data);
 	virtual void doRestartPacking();
-	virtual std::string getStringInfo();
+	virtual HttpResponse* doClone() const;
+	virtual std::string getStringInfo() const;
 private:
 	void doFeedHeaders(const data_chunk& data);
 	void doFeedContent(const data_chunk& data);

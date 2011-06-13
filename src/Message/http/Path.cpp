@@ -24,11 +24,16 @@ Path::~Path()
 	DBG_DESTRUCTOR;
 }
 
-std::string Path::getStringInfo()
+std::string Path::getStringInfo() const
 {
 	std::string s;
 	s += "path=" + this->getString();
 	return s;
+}
+
+Path* Path::doClone() const
+{
+	return new Path(*this);
 }
 
 }	//namespace http
