@@ -19,9 +19,12 @@ namespace http
 class Status: public osock::Message
 {
 private:
-	StringMessage* itsCode;
-	StringMessage* itsStatus;
+	enum LINKS {
+			LINK_CODE,
+			LINK_STATUS
+	};
 	ChainedMessage itsChain;
+
 public:
 	enum statusCode {
 		NOT_FOUND = 404,
@@ -33,14 +36,9 @@ public:
 
 	Status(std::string code, std::string status, std::string name = "Status");
 	Status(enum statusCode code = OK, std::string name = "Status");
-	/**
-	 * @brief Copy constructor
-	 * @param copy_from_me
-	 */
-	Status (const Status& copy_from_me);
 	virtual ~Status();
-	std::string getCode() const;
-	std::string getStatus() const;
+	const StringMessage& getCode() const;
+	const StringMessage& getStatus() const ;
 	virtual std::string UnpackAsTag(std::string tag = Message::TAG, std::string attr = Message::ATTRBODY, std::string tail = "");
 	static std::string getDescription(enum statusCode code);
 

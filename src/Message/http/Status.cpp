@@ -17,11 +17,8 @@ namespace http
 Status::Status(std::string code, std::string status, std::string name) :
 	Message(name)
 {
-	itsCode = new StringMessage(code, " ");
-	itsChain.AddLink(itsCode);
-
-	itsStatus = new StringMessage(status, NEWLINE);
-	itsChain.AddLink(itsStatus);
+	itsChain.AddLink(new StringMessage(code, " "));
+	itsChain.AddLink(new StringMessage(status, NEWLINE));
 
 	itsChain.LinksClose();
 
@@ -31,46 +28,19 @@ Status::Status(std::string code, std::string status, std::string name) :
 Status::Status(enum statusCode code, std::string name) :
 	Message(name)
 {
-	itsCode = new StringMessage(to_string(code), " ");
-	itsChain.AddLink(itsCode);
-
 	std::string status = getDescription(code);
-	itsStatus = new StringMessage(status, NEWLINE);
-	itsChain.AddLink(itsStatus);
+
+	itsChain.AddLink(new StringMessage(to_string(code), " "));
+	itsChain.AddLink(new StringMessage(status, NEWLINE));
 
 	itsChain.LinksClose();
 
 	DBG_CONSTRUCTOR;
-}
-
-Status::Status (const Status& copy_from_me) :
-	Message(copy_from_me)
-{
-	itsCode = new StringMessage(copy_from_me.getCode(), " ");
-	itsChain.AddLink(itsCode);
-
-	itsStatus = new StringMessage(copy_from_me.getStatus(), NEWLINE);
-	itsChain.AddLink(itsStatus);
-
-	itsChain.LinksClose();
-
-	DBG_CONSTRUCTOR;
-
 }
 
 Status::~Status()
 {
 	DBG_DESTRUCTOR;
-}
-
-std::string Status::getCode() const
-{
-	return itsCode->getString();
-}
-
-std::string Status::getStatus() const
-{
-	return itsStatus->getString();
 }
 
 std::string Status::UnpackAsTag(std::string tag, std::string attr,
@@ -108,6 +78,16 @@ std::string Status::getDescription(enum statusCode code)
 	return explanation;
 }
 
+const StringMessage& Status::getCode() const
+{
+	return dynamic_cast<const StringMessage&>(itsChain.getLink(LINK_CODE));
+}
+
+const StringMessage& Status::getStatus() const
+{
+	return dynamic_cast<const StringMessage&>(itsChain.getLink(LINK_STATUS));
+}
+
 data_chunk Status::doUnpack() const
 {
 	// it will throw, if called when not complete
@@ -135,7 +115,7 @@ Status* Status::doClone() const
 std::string Status::getStringInfo() const
 {
 	std::string s;
-	s = "code=" + itsCode->getString() + "; status=" + itsStatus->getString()
+	s = "code=" + getCode() + "; status=" + getStatus()
 			+ ";";
 	return s;
 }
