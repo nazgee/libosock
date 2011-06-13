@@ -27,8 +27,9 @@ private:
 	ChainedMessage itsChain;
 
 public:
-	Response(std::string protocole = "HTTP/1.0", std::string code = "200",
-			std::string status = "OK", std::string name = "Response");
+	Response(std::string code = "200", std::string status = "OK",
+			std::string protocole = "HTTP/1.0", std::string name = "Response");
+	Response(const http::Status& status, std::string protocole = "HTTP/1.0", std::string name = "Response");
 	virtual ~Response();
 	const Protocole& getProtocole() const;
 	const Status& getStatus() const;

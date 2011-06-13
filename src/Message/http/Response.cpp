@@ -13,12 +13,21 @@ namespace osock
 {
 namespace http
 {
-Response::Response(std::string protocole, std::string code,
-		std::string status, std::string name) :
+Response::Response(std::string code, std::string status, std::string protocole, std::string name) :
 		Message(name)
 {
 	itsChain.AddLink(new Protocole(protocole, " "));
 	itsChain.AddLink(new Status(code, status));
+	itsChain.LinksClose();
+
+	DBG_CONSTRUCTOR;
+}
+
+Response::Response(const http::Status& status, std::string protocole, std::string name) :
+		Message(name)
+{
+	itsChain.AddLink(new Protocole(protocole, " "));
+	itsChain.AddLink(new Status(status));
 	itsChain.LinksClose();
 
 	DBG_CONSTRUCTOR;
