@@ -49,7 +49,7 @@ HttpException::~HttpException(void) throw ()
 {
 }
 
-http::Status HttpException::getStatus() const
+const http::Status& HttpException::getStatus() const
 {
 	return itsStatus;
 }

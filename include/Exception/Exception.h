@@ -62,7 +62,7 @@ private:
 public:
 	HttpException(const std::string& msg, const http::Status& status);
 	virtual ~HttpException(void) throw();
-    http::Status getStatus() const;
+    const http::Status& getStatus() const;
 };
 
 class StdException: public Exception
