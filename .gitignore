@@ -1,3 +1,4 @@
+*.o
 *.lo
 .libs
 .autotools
@@ -9,11 +10,12 @@ config.*
 configure
 depcomp
 install-sh
-libosock-1.0.la
+libosock-*.la
+unittestlibosock*
 libtool
 ltmain.sh
 missing
-osock-1.0.pc
+osock-*.pc
 osockconfig.h
 .deps/
 .dirstamp

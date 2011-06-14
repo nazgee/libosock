@@ -48,7 +48,7 @@ AC_PROG_RANLIB
 ### Checks for libraries.
 # this will create 2 variables: OPENSSL_CFLAGS and OPENSSL_LIBS 
 # containing respectively, the flags for the C compiler and the linker.
-PKG_CHECK_MODULES(OPENSSLDEP, openssl >= 0.9.8)
+PKG_CHECK_MODULES(OPENSSL, openssl >= 0.9.8)
 
 ### Checks for header files.
 AC_CHECK_HEADERS([arpa/inet.h netdb.h stdint.h stdlib.h string.h sys/socket.h])

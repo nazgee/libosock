@@ -10,6 +10,18 @@ AUTOMAKE_OPTIONS = subdir-objects
 ## to provide a way for the user to supply additional arguments.
 ACLOCAL_AMFLAGS = ${ACLOCAL_FLAGS}
 
+## Define name of the binaries that should be built along with our library.
+## In the end this should be conditional, but for now we are good with building
+## it every time
+bin_PROGRAMS = unittestlibosock
+## Define the source file list for the "unittestlibosock" target
+unittestlibosock_SOURCES = src/Testing/main.cpp
+## Prepare linker flags
+unittestlibosock_LDFLAGS = $(OPENSSL_LIBS)
+unittestlibosock_LDFLAGS += -L$(top_srcdir) -losock-$(OSOCK_API_VERSION)
+## Prepare compiler flags
+unittestlibosock_CXXFLAGS = -I$(top_srcdir)/include $(OPENSSL_CFLAGS) -Wall
+
 ## Define a libtool archive target "libosock-@OSOCK_API_VERSION@.la", with
 ## @OSOCK_API_VERSION@ substituted into the generated Makefile at configure
 ## time.
