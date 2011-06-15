@@ -15,12 +15,16 @@ ACLOCAL_AMFLAGS = ${ACLOCAL_FLAGS}
 ## it every time
 bin_PROGRAMS = unittestlibosock
 ## Define the source file list for the "unittestlibosock" target
-unittestlibosock_SOURCES = src/Testing/main.cpp
+unittestlibosock_SOURCES  = src/Testing/main.cpp
+unittestlibosock_SOURCES += src/Testing/Unit/Message/StringMessageTest.cpp
 ## Prepare linker flags
-unittestlibosock_LDFLAGS = $(OPENSSL_LIBS)
+unittestlibosock_LDFLAGS  = $(OPENSSL_LIBS)
+unittestlibosock_LDFLAGS += $(CPPUNIT_LIBS)
 unittestlibosock_LDFLAGS += -L$(top_srcdir) -losock-$(OSOCK_API_VERSION)
 ## Prepare compiler flags
-unittestlibosock_CXXFLAGS = -I$(top_srcdir)/include $(OPENSSL_CFLAGS) -Wall
+unittestlibosock_CXXFLAGS  = -I$(top_srcdir)/include -I$(top_srcdir)/include/Testing -Wall 
+unittestlibosock_CXXFLAGS += $(OPENSSL_CFLAGS)
+unittestlibosock_CXXFLAGS += $(CPPUNIT_CFLAGS) 
 
 ## Define a libtool archive target "libosock-@OSOCK_API_VERSION@.la", with
 ## @OSOCK_API_VERSION@ substituted into the generated Makefile at configure
