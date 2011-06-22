@@ -6,31 +6,23 @@
  */
 #include <osock.h>
 #include <testutils.h>
-
 #include <iostream>
-
-#include <cppunit/TestRunner.h>
-#include <cppunit/TestResult.h>
-#include <cppunit/TestResultCollector.h>
 #include <cppunit/extensions/HelperMacros.h>
-#include <cppunit/BriefTestProgressListener.h>
-#include <cppunit/extensions/TestFactoryRegistry.h>
-
-#define MSG_STRING "teststring"
-#define MSG_TERMINATOR "testterminator"
-
 
 class StringMessageTest : public CPPUNIT_NS::TestCase
 {
   CPPUNIT_TEST_SUITE(StringMessageTest);
-  CPPUNIT_TEST(constructing);
-  CPPUNIT_TEST(copying);
+  CPPUNIT_TEST(copiesShallBeEqual);
+  CPPUNIT_TEST(constructorsArgumetsShallBeReturned);
   CPPUNIT_TEST_SUITE_END();
 
-  osock::StringMessage* m1_empty;
-  osock::StringMessage* m2;
-  osock::StringMessage* m3;
-  osock::StringMessage* m4_binary;
+  osock::StringMessage* m_empty;
+  osock::StringMessage* m_text;
+  osock::StringMessage* m_text_copy;
+  osock::StringMessage* m_binary;
+  osock::StringMessage* m_binary_copy;
+  std::string MSG_TXTSTRING;
+  std::string MSG_TXTTERMINATOR;
   std::string MSG_BINSTRING;
   std::string MSG_BINTERMINATOR;
 
@@ -41,35 +33,48 @@ public:
 	  char term[] = {0,0,1,2,3,0,5,6,7,0};
 	  MSG_BINSTRING.assign(str, sizeof(str));
 	  MSG_BINSTRING.assign(term, sizeof(term));
+	  MSG_TXTSTRING = "this is a text string";
+	  MSG_TXTTERMINATOR= "this is a text terminator";
 
-	  m1_empty = new osock::StringMessage("", "");
-	  m2 = new osock::StringMessage(MSG_STRING, MSG_TERMINATOR);
-	  m3 = new osock::StringMessage(*m2);
-	  m4_binary = new osock::StringMessage(MSG_BINSTRING, MSG_BINTERMINATOR);
+	  m_empty = new osock::StringMessage("", "");
+	  m_text = new osock::StringMessage(MSG_TXTSTRING, MSG_TXTTERMINATOR);
+	  m_text_copy = new osock::StringMessage(*m_text);
+	  m_binary = new osock::StringMessage(MSG_BINSTRING, MSG_BINTERMINATOR);
+	  m_binary_copy = new osock::StringMessage(*m_binary);
   }
   void tearDown(void)
   {
-	  delete m1_empty;
-	  delete m2;
-	  delete m3;
-	  delete m4_binary;
+	  delete m_empty;
+	  delete m_text;
+	  delete m_text_copy;
+	  delete m_binary;
+	  delete m_binary_copy;
   }
 
 protected:
-  void constructing(void)
+  void copiesShallBeEqual(void)
   {
-	  CPPUNIT_ASSERT(m2->getString() == MSG_STRING);
-	  CPPUNIT_ASSERT(m2->getTerminator() == MSG_TERMINATOR);
+	  // Textual data
+	  CPPUNIT_ASSERT_EQUAL_MESSAGE("values shall be equal", *m_text, *m_text_copy);
+	  CPPUNIT_ASSERT_EQUAL_MESSAGE("terminators shall be equal", m_text->getTerminator(), m_text_copy->getTerminator());
+	  CPPUNIT_ASSERT_EQUAL_MESSAGE("strings shall be equal", m_text->getString(), m_text_copy->getString());
 
-	  CPPUNIT_ASSERT_EQUAL(MSG_BINTERMINATOR, m4_binary->getString());
-	  CPPUNIT_ASSERT_EQUAL(MSG_BINSTRING, m4_binary->getString());
-	  CPPUNIT_ASSERT_EQUAL(MSG_BINTERMINATOR, m4_binary->getTerminator());
+	  // Binary data
+	  CPPUNIT_ASSERT_EQUAL_MESSAGE("values shall be equal", *m_binary, *m_binary_copy);
+	  CPPUNIT_ASSERT_EQUAL_MESSAGE("terminators shall be equal", m_binary->getTerminator(), m_binary_copy->getTerminator());
+	  CPPUNIT_ASSERT_EQUAL_MESSAGE("strings shall be equal", m_binary->getString(), m_binary_copy->getString());
   }
-  void copying(void)
+  void constructorsArgumetsShallBeReturned(void)
   {
-	  CPPUNIT_ASSERT(*m2 == *m3);
-	  CPPUNIT_ASSERT(m2->getString() == m3->getString());
-	  CPPUNIT_ASSERT(m2->getTerminator() == m3->getTerminator());
+	  // Textual data
+	  CPPUNIT_ASSERT_EQUAL(MSG_TXTSTRING, m_text->getString());
+	  CPPUNIT_ASSERT_EQUAL(MSG_TXTTERMINATOR, m_text->getTerminator());
+
+	  // Binary data
+	  CPPUNIT_ASSERT_EQUAL(MSG_BINSTRING, m_binary->getString());
+	  CPPUNIT_ASSERT_EQUAL(MSG_BINTERMINATOR, m_binary->getTerminator());
+	  CPPUNIT_ASSERT_EQUAL(MSG_BINSTRING.length(), m_binary->getString().length());
+	  CPPUNIT_ASSERT_EQUAL(MSG_BINTERMINATOR.length(), m_binary->getTerminator().length());
   }
 };
 

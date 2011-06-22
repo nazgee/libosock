@@ -18,7 +18,7 @@ namespace http
 class Path : public StringMessage
 {
 public:
-	Path(std::string path, std::string terminator = " ", std::string name = "Path");
+	Path(std::string path = "index.html", std::string terminator = " ", std::string name = "Path");
 	virtual ~Path();
 
 protected:

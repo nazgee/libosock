@@ -17,6 +17,7 @@ bin_PROGRAMS = unittestlibosock
 ## Define the source file list for the "unittestlibosock" target
 unittestlibosock_SOURCES  = src/Testing/main.cpp
 unittestlibosock_SOURCES += src/Testing/Unit/Message/StringMessageTest.cpp
+unittestlibosock_SOURCES += src/Testing/Unit/Message/MessageTest.cpp
 ## Prepare linker flags
 unittestlibosock_LDFLAGS  = $(OPENSSL_LIBS)
 unittestlibosock_LDFLAGS += $(CPPUNIT_LIBS)

@@ -20,21 +20,16 @@
 #ifndef DEFINES_H_
 #define DEFINES_H_
 
-//#include <Utilities/Logger.h>
+#include "osockconfig.h"
+#include "config.h"
 
 #include <sys/socket.h>
 #include <stdio.h>
 #include <iostream>
 #include <sstream>
 
-
 namespace osock
 {
-
-#define LOGLEVEL_DBG	4
-#define LOGLEVEL_NFO	3
-#define LOGLEVEL_WRN	2
-#define LOGLEVEL_ERR	1
 
 namespace http
 {

@@ -9,30 +9,46 @@
 
 #include <iostream>
 
-#include <cppunit/TestRunner.h>
-#include <cppunit/TestResult.h>
+#include <cppunit/ui/text/TestRunner.h>
+#include <cppunit/TextTestResult.h>
 #include <cppunit/TestResultCollector.h>
-#include <cppunit/extensions/HelperMacros.h>
 #include <cppunit/BriefTestProgressListener.h>
+#include <cppunit/TextTestProgressListener.h>
+#include <cppunit/TextOutputter.h>
 #include <cppunit/extensions/TestFactoryRegistry.h>
 
-int main( int ac, char **av )
+int main(int ac, char **av)
 {
-  //--- Create the event manager and test controller
-  CPPUNIT_NS::TestResult controller;
+	//--- Create the event manager and test controller
+	CPPUNIT_NS::TestResult controller;
 
-  //--- Add a listener that colllects test result
-  CPPUNIT_NS::TestResultCollector result;
-  controller.addListener( &result );
+	//--- Add a listener that colllects test result
+	CPPUNIT_NS::TestResultCollector result;
+	controller.addListener(&result);
 
-  //--- Add a listener that print dots as test run.
-  CPPUNIT_NS::BriefTestProgressListener progress;
-  controller.addListener( &progress );
+	//--- Add a listener that print brief info as test run.
+	CPPUNIT_NS::BriefTestProgressListener brief;
+	controller.addListener(&brief);
 
-  //--- Add the top suite to the test runner
-  CPPUNIT_NS::TestRunner runner;
-  runner.addTest( CPPUNIT_NS::TestFactoryRegistry::getRegistry(Utils::getSuiteNameUnit()).makeTest() );
-  runner.run( controller );
+	//--- Add a listener that print dots as test run.
+	CPPUNIT_NS::TextTestProgressListener progress;
+	controller.addListener(&progress);
 
-  return result.wasSuccessful() ? 0 : 1;
+	//--- Add the top suite to the test runner
+	CPPUNIT_NS::TextUi::TestRunner runner;
+	runner.addTest(CPPUNIT_NS::TestFactoryRegistry::getRegistry(
+					Utils::getSuiteNameUnit()).makeTest());
+	runner.run(controller);
+
+	if (result.wasSuccessful()) {
+		std::cout << "No failures encountered- nice one!" << std::endl;
+		return 0;
+	}
+
+	std::cout << "Oops!" << std::endl;
+	//--- Output info about the failures
+	CPPUNIT_NS::TextOutputter outputter(&result, std::cout);
+	outputter.printFailures();
+
+	return 1;
 }

@@ -22,6 +22,7 @@
 #include <typeinfo>
 #include <iostream>
 #include <iomanip>
+
 #include <defines.h>
 
 namespace osock
@@ -57,10 +58,9 @@ public:
 };
 //=============================================================================
 
-#define LOGLEVEL_SURPRESS	LOGLEVEL_DBG
-#define LOGLEVEL_FORCE		LOGLEVEL_WRN
+
 #ifndef LOGLEVEL
-#define LOGLEVEL 			LOGLEVEL_NFO
+#error "osockconfig.h does not contain LOGLEVEL definition"
 #endif
 
 #define LOG_SETTINGS_DBG_CON 	"dbg + "
