@@ -23,6 +23,8 @@
 
 #include <assert.h>
 
+static osock::Logger logger("Certificate");
+
 namespace osock
 {
 Certificate::Certificate(std::string certFile, SSL_CTX* ctx) :

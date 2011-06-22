@@ -20,6 +20,8 @@
 #include <Security/SecurityClientUnsafe.h>
 #include <Socket/SocketClientUnsafe.h>
 
+static osock::Logger logger("SocketClientUnsafe");
+
 namespace osock
 {
 SocketClientUnsafe::SocketClientUnsafe(Address& serverAddress) :

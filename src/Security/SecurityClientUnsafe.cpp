@@ -21,6 +21,8 @@
 #include <Exception/Exception.h>
 #include <Utilities/SSLWrap.h>
 
+static osock::Logger logger("SecurityClientUnsafe");
+
 namespace osock
 {
 SecurityClientUnsafe::SecurityClientUnsafe(Address& serverAddress) :

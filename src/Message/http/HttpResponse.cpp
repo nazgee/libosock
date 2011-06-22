@@ -14,6 +14,8 @@
 
 #include <time.h>
 
+static osock::Logger logger("HttpResponse");
+
 namespace osock
 {
 

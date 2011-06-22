@@ -23,6 +23,7 @@
 #include <Security/Trust/Trust.h>
 #include <Exception/Exception.h>
 
+static osock::Logger logger("Trust");
 
 namespace osock
 {

@@ -29,6 +29,8 @@
 #include <assert.h>
 #include <stdio.h>
 
+static osock::Logger logger("Address");
+
 namespace osock
 {
 void Address::GetAddrInfo(char* host, char* port, struct addrinfo **ai)

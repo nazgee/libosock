@@ -23,6 +23,8 @@
 #include <Utilities/Logger.h>
 #include <Utilities/Logger.h>
 
+static osock::Logger logger("Server");
+
 namespace osock
 {
 

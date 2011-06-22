@@ -18,29 +18,55 @@
 */
 #include <Utilities/Logger.h>
 
+#include <assert.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 #include <sstream>
 #include <iostream>
 
+#include "osockconfig.h"
+
 namespace osock
 {
-Logger::logLevel Logger::printLoglevel = Logger::logOff;
-NullStream Logger::nullingstream;
 
-Logger::Logger()
+Logger::Logger(std::string logname, int loglevel) :
+		itsLogname(logname)
 {
+	if (loglevel == -1)
+		loglevel = LOGLEVEL;
+
+	getLoggers().insert(loggerDesc_t(logname, static_cast<logLevel>(loglevel)));
 }
 
 Logger::~Logger()
 {
 }
 
-std::ostream& Logger::Print(logLevel loglevel)
+std::map<std::string, Logger::logLevel>& Logger::getLoggers()
 {
-	if(loglevel <= printLoglevel) {
-		return nullingstream;
+	static std::map<std::string, logLevel>* loggersDescs = new std::map<std::string, logLevel>();
+	return *loggersDescs;
+}
+
+NullStream& Logger::getNullStream()
+{
+	static NullStream* nstream = new NullStream();
+	return *nstream;
+}
+
+std::ostream& Logger::out(logLevel loglevel)
+{
+	std::map<std::string, logLevel>::const_iterator it;
+
+	//XXX consecutive accesses to map can result in data corruption if we were rescheduled
+	it = getLoggers().find(itsLogname);
+	assert(it != getLoggers().end());
+
+//	std::cout << to_string(loglevel) << "/" << to_string((*it).second) << " " << itsLogname << std::endl;
+
+	if(loglevel < (*it).second) {
+		return getNullStream();
 	} else {
 		if (loglevel <= logInfo)
 			return std::cout << getpid() << " ";

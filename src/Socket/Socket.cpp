@@ -32,6 +32,8 @@
 #include <boost/scoped_array.hpp>
 #include <algorithm>
 
+static osock::Logger logger("Socket");
+
 namespace osock
 {
 Socket::Socket(BIO* bio) :

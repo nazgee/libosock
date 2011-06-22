@@ -8,6 +8,8 @@
 #include <Message/http/HttpResponseFile.h>
 #include <Exception/Exception.h>
 
+static osock::Logger logger("HttpResponseFile");
+
 namespace osock
 {
 

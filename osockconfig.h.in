@@ -1,14 +1,12 @@
 namespace osock
 {
 // Global definitions of loglevels
-#define LOGLEVEL_DBG	4
-#define LOGLEVEL_NFO	3
-#define LOGLEVEL_WRN	2
-#define LOGLEVEL_ERR	1
+#define LOGLEVEL_DBG	1
+#define LOGLEVEL_NFO	2
+#define LOGLEVEL_WRN	3
+#define LOGLEVEL_ERR	4
 
 // Userdefined level of verbosity
-#define LOGLEVEL 			LOGLEVEL_NFO
-#define LOGLEVEL_FORCE		LOGLEVEL_DBG
-#define LOGLEVEL_SURPRESS	LOGLEVEL_WRN
+#define LOGLEVEL 			LOGLEVEL_WRN
 
 }

@@ -141,7 +141,8 @@ osockexception_include_HEADERS = include/Exception/Exception.h
 
 osockloose_includedir = $(osock_includedir)
 osockloose_include_HEADERS = include/osock.h \
-	include/defines.h
+	include/defines.h \
+	osockconfig.h
 
 ## The generated configuration header is installed in its own subdirectory of
 ## $(libdir).  The reason for this is that the configuration information put
@@ -152,10 +153,10 @@ osockloose_include_HEADERS = include/osock.h \
 ## The nodist_ prefix instructs Automake to not generate rules for including
 ## the listed files in the distribution on 'make dist'.  Files that are listed
 ## in _HEADERS variables are normally included in the distribution, but the
-## configuration header file (osockconfig.h) is generated at configure time and 
+## configuration header file (config.h) is generated at configure time and 
 ## should not be shipped with the source tarball.
 osock_libincludedir = $(libdir)/osock-$(OSOCK_API_VERSION)/include
-nodist_osock_libinclude_HEADERS = osockconfig.h
+nodist_osock_libinclude_HEADERS = config.h
 
 ## Install the generated pkg-config file (.pc) into the expected location for
 ## architecture-dependent package configuration information.  Occasionally,

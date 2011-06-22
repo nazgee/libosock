@@ -24,6 +24,8 @@
 #include <Security/Trust/Trust.h>
 #include <Utilities/SSLWrap.h>
 
+static osock::Logger logger("SecurityClientSSL");
+
 namespace osock
 {
 SecurityClientSSL::SecurityClientSSL(	Address& Address,

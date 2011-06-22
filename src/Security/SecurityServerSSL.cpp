@@ -26,6 +26,8 @@
 #include <Security/Trust/Trust.h>
 #include <Utilities/SSLWrap.h>
 
+static osock::Logger logger("SecurityServerSSL");
+
 namespace osock
 {
 SecurityServerSSL::SecurityServerSSL(int listenPort,

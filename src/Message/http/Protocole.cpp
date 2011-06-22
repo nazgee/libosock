@@ -8,6 +8,8 @@
 #include <Utilities/Logger.h>
 #include <Message/http/Protocole.h>
 
+static osock::Logger logger("http::Protocole");
+
 namespace osock
 {
 namespace http

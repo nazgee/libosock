@@ -79,3 +79,41 @@ public:
 	}
 };
 CPPUNIT_TEST_SUITE_NAMED_REGISTRATION(MessageTest_http_Path, Utils::getSuiteNameUnit());
+
+
+class MessageTest_http_Request: public MessageTest
+{
+	CPPUNIT_TEST_SUITE(MessageTest_http_Request);
+	MESSAGE_TESTS_PACK();
+	CPPUNIT_TEST_SUITE_END();
+
+public:
+	virtual void setUpTestDataValid()
+	{
+		std::string s;
+		// simple message data
+		s = "GET / HTTP/1.0" + osock::http::NEWLINE;
+		installTestData(
+				osock::data_chunk(&s.c_str()[0], &s.c_str()[s.length()]),
+				TESTDATA_VALID);
+		// complicated message data
+		s = "PUT /path/to/file/index.html HTTP/0.9" + osock::http::NEWLINE;
+		installTestData(
+				osock::data_chunk(&s.c_str()[0], &s.c_str()[s.length()]),
+				TESTDATA_VALID);
+	}
+	virtual void setUpTestDataInvalid()
+	{
+		std::string s;
+		// malformed message data
+		s = "GET HTTP/0.9" + osock::http::NEWLINE;
+		installTestData(
+				osock::data_chunk(&s.c_str()[0], &s.c_str()[s.length()]),
+				TESTDATA_INVALID);
+	}
+	virtual void setUpMessagesToTest()
+	{
+		intstallTestMessage(new osock::http::Request());
+	}
+};
+CPPUNIT_TEST_SUITE_NAMED_REGISTRATION(MessageTest_http_Request, Utils::getSuiteNameUnit());

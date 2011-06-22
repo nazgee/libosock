@@ -20,9 +20,6 @@
 #ifndef DEFINES_H_
 #define DEFINES_H_
 
-#include "osockconfig.h"
-#include "config.h"
-
 #include <sys/socket.h>
 #include <stdio.h>
 #include <iostream>

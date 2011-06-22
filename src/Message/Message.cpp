@@ -26,6 +26,8 @@
 
 #include <typeinfo>
 
+static osock::Logger logger("Message");
+
 namespace osock
 {
 const std::string Message::ATTRBODY = "class=msgbody";

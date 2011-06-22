@@ -27,6 +27,8 @@
 
 #include <boost/scoped_ptr.hpp>
 
+static osock::Logger logger("SocketServerUnsafe");
+
 namespace osock {
 SocketServerUnsafe::SocketServerUnsafe(int port, serviceType type) :
 			SocketServer(

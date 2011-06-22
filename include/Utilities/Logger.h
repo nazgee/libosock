@@ -22,6 +22,7 @@
 #include <typeinfo>
 #include <iostream>
 #include <iomanip>
+#include <map>
 
 #include <defines.h>
 
@@ -46,37 +47,40 @@ struct NullStream: std::ostream
 //=============================================================================
 class Logger
 {
-private:
-	Logger();
 public:
 	typedef enum { logOff, logDebug, logInfo, logWarn, logError } logLevel;
 
-	static NullStream nullingstream;
-	static logLevel printLoglevel;
-	static std::ostream& Print(logLevel loglevel);
+private:
+	typedef std::pair<std::string, logLevel> loggerDesc_t;
+	std::string itsLogname;
+	/**
+	 * @brief Protects us from static initialization fiasco- Logger objects can
+	 * be created stati, despite having static field
+	 * @return Instance of loggers description map
+	 */
+	static std::map<std::string, logLevel>& getLoggers();
+	/**
+	 * @brief Protects us from static initialization fiasco- Logger objects can
+	 * be created stati, despite having static field
+	 * @return NullStream reference
+	 */
+	static NullStream& getNullStream();
+
+public:
+	Logger(std::string logname, int logelvel = -1);
 	virtual ~Logger();
+
+	std::ostream& out(logLevel loglevel);
 };
 //=============================================================================
+#define LOG_SETTINGS_DBG_CON 	" dbg + "
+#define LOG_SETTINGS_DBG_DES 	" dbg ~ "
+#define LOG_SETTINGS_DBG 		" dbg   "
+#define LOG_SETTINGS_NFO 		" nfo . "
+#define LOG_SETTINGS_WRN 		" wrn ? "
+#define LOG_SETTINGS_ERR 		" ERR ! "
 
-
-#ifndef LOGLEVEL
-#error "osockconfig.h does not contain LOGLEVEL definition"
-#endif
-
-#define LOG_SETTINGS_DBG_CON 	"dbg + "
-#define LOG_SETTINGS_DBG_DES 	"dbg ~ "
-#define LOG_SETTINGS_DBG 		"dbg   "
-#define LOG_SETTINGS_NFO 		"nfo . "
-#define LOG_SETTINGS_WRN 		"wrn ? "
-#define LOG_SETTINGS_ERR 		"ERR ! "
-
-#define LOG_LEVEL_DBG	Logger::logDebug
-#define LOG_LEVEL_NFO	Logger::logInfo
-#define LOG_LEVEL_WRN	Logger::logWarn
-#define LOG_LEVEL_ERR	Logger::logError
-#define LOG_LEVEL_OFF	Logger::logOff
-#define LOG_PRINT		Logger::Print
-
+#define LOG_PRINT			logger.out
 #define LOG_FUNC_NAME_FORMAT std::setw(35) << std::left
 #define LOG_FUNC_NAME_RAW	std::string(__PRETTY_FUNCTION__)
 #define LOG_FUNC_NAME 		LOG_FUNC_NAME_RAW.erase(LOG_FUNC_NAME_RAW.find('(')).substr(LOG_FUNC_NAME_RAW.find("::")+2)
@@ -88,60 +92,25 @@ public:
 	outstream << LOG_FUNC_LINE << LOG_FUNC_NAME_FORMAT << __FUNCTION__ << header
 #define LOGLINE_FUNC_NOLINE(outstream, header) \
 	outstream << LOG_FUNC_NAME_FORMAT << __FUNCTION__ << header
-#define LOGLEVEL_PASSED(value, level) (((value >= level) || (LOGLEVEL_FORCE >= level)) && (LOGLEVEL_SURPRESS >= level ))
+#define LOGLEVEL_PASSED(value, level) 1
 //========================= debug logs =========================================
-#if (LOGLEVEL_PASSED(LOGLEVEL, LOGLEVEL_DBG))
-#define DBG_CONSTRUCTOR	LOGLINE_CLASS(LOG_PRINT(LOG_LEVEL_DBG), LOG_SETTINGS_DBG_CON) << this << std::endl
-#define DBG_DESTRUCTOR	LOGLINE_CLASS(LOG_PRINT(LOG_LEVEL_DBG), LOG_SETTINGS_DBG_DES) << this << std::endl
-#define DBG 			LOGLINE_CLASS(LOG_PRINT(LOG_LEVEL_DBG), LOG_SETTINGS_DBG)
-#define DBG_FUNC		LOGLINE_FUNC(LOG_PRINT(LOG_LEVEL_DBG), LOG_SETTINGS_DBG)
-#define DBG_FUNC_NOLINE	LOGLINE_FUNC_NOLINE(LOG_PRINT(LOG_LEVEL_DBG), LOG_SETTINGS_DBG, " ")
-#else
-#define DBG 			LOGLINE_CLASS(LOG_PRINT(LOG_LEVEL_OFF), LOG_SETTINGS_DBG)
-#define DBG_FUNC		LOGLINE_FUNC(LOG_PRINT(LOG_LEVEL_OFF), LOG_SETTINGS_DBG)
-#define DBG_FUNC_NOLINE	LOGLINE_FUNC_NOLINE(LOG_PRINT(LOG_LEVEL_OFF), LOG_SETTINGS_DBG)
-//constructors and destructors have one last chance to still be printed
-#if (defined(DBG_FORCED_CONSTRUCTORS))
-#define DBG_CONSTRUCTOR	LOGLINE_FUNC(LOG_PRINT(LOG_LEVEL_DBG), LOG_SETTINGS_DBG_CON) << this << std::endl
-#else
-#define DBG_CONSTRUCTOR	LOGLINE_FUNC(LOG_PRINT(LOG_LEVEL_OFF), LOG_SETTINGS_DBG_CON) << this << std::endl
-#endif
-#if (defined(DBG_FORCED_DESTRUCTORS))
-#define DBG_DESTRUCTOR	LOGLINE_FUNC(LOG_PRINT(LOG_LEVEL_DBG), LOG_SETTINGS_DBG_DES) << this << std::endl
-#else
-#define DBG_DESTRUCTOR	LOGLINE_FUNC(LOG_PRINT(LOG_LEVEL_OFF), LOG_SETTINGS_DBG_DES) << this << std::endl
-#endif
-#endif
+#define DBG_CONSTRUCTOR	LOGLINE_CLASS(LOG_PRINT(Logger::logDebug), LOG_SETTINGS_DBG_CON) << this << std::endl
+#define DBG_DESTRUCTOR	LOGLINE_CLASS(LOG_PRINT(Logger::logDebug), LOG_SETTINGS_DBG_DES) << this << std::endl
+#define DBG 			LOGLINE_CLASS(LOG_PRINT(Logger::logDebug), LOG_SETTINGS_DBG)
+#define DBG_FUNC		LOGLINE_FUNC(LOG_PRINT(Logger::logDebug), LOG_SETTINGS_DBG)
+#define DBG_FUNC_NOLINE	LOGLINE_FUNC_NOLINE(LOG_PRINT(Logger::logDebug), LOG_SETTINGS_DBG)
 //========================= info logs ==========================================
-#if (LOGLEVEL_PASSED(LOGLEVEL, LOGLEVEL_NFO))
-#define NFO 			LOGLINE_CLASS(LOG_PRINT(LOG_LEVEL_NFO), LOG_SETTINGS_NFO)
-#define NFO_FUNC		LOGLINE_FUNC(LOG_PRINT(LOG_LEVEL_NFO), LOG_SETTINGS_NFO)
-#define NFO_FUNC_NOLINE	LOGLINE_FUNC_NOLINE(LOG_PRINT(LOG_LEVEL_NFO), LOG_SETTINGS_NFO, " ")
-#else
-#define NFO 			LOGLINE_CLASS(LOG_PRINT(LOG_LEVEL_OFF), LOG_SETTINGS_NFO)
-#define NFO_FUNC		LOGLINE_FUNC(LOG_PRINT(LOG_LEVEL_OFF), LOG_SETTINGS_NFO)
-#define NFO_FUNC_NOLINE	LOGLINE_FUNC_NOLINE(LOG_PRINT(LOG_LEVEL_OFF), LOG_SETTINGS_NFO)
-#endif
+#define NFO 			LOGLINE_CLASS(LOG_PRINT(Logger::logInfo), LOG_SETTINGS_NFO)
+#define NFO_FUNC		LOGLINE_FUNC(LOG_PRINT(Logger::logInfo), LOG_SETTINGS_NFO)
+#define NFO_FUNC_NOLINE	LOGLINE_FUNC_NOLINE(LOG_PRINT(Logger::logInfo), LOG_SETTINGS_NFO)
 //========================= warning logs =======================================
-#if (LOGLEVEL_PASSED(LOGLEVEL, LOGLEVEL_WRN))
-#define WRN 			LOGLINE_CLASS(LOG_PRINT(LOG_LEVEL_WRN), LOG_SETTINGS_WRN)
-#define WRN_FUNC		LOGLINE_FUNC(LOG_PRINT(LOG_LEVEL_WRN), LOG_SETTINGS_WRN)
-#define WRN_FUNC_NOLINE	LOGLINE_FUNC_NOLINE(LOG_PRINT(LOG_LEVEL_WRN), LOG_SETTINGS_WRN, " ")
-#else
-#define WRN 			LOGLINE_CLASS(LOG_PRINT(LOG_LEVEL_OFF), LOG_SETTINGS_WRN)
-#define WRN_FUNC		LOGLINE_FUNC(LOG_PRINT(LOG_LEVEL_OFF), LOG_SETTINGS_WRN)
-#define WRN_FUNC_NOLINE	LOGLINE_FUNC_NOLINE(LOG_PRINT(LOG_LEVEL_OFF), LOG_SETTINGS_WRN)
-#endif
+#define WRN 			LOGLINE_CLASS(LOG_PRINT(Logger::logWarn), LOG_SETTINGS_WRN)
+#define WRN_FUNC		LOGLINE_FUNC(LOG_PRINT(Logger::logWarn), LOG_SETTINGS_WRN)
+#define WRN_FUNC_NOLINE	LOGLINE_FUNC_NOLINE(LOG_PRINT(Logger::logWarn), LOG_SETTINGS_WRN)
 //========================= error logs =========================================
-#if (LOGLEVEL_PASSED(LOGLEVEL, LOGLEVEL_ERR))
-#define ERR 			LOGLINE_CLASS(LOG_PRINT(LOG_LEVEL_ERR), LOG_SETTINGS_ERR)
-#define ERR_FUNC		LOGLINE_FUNC(LOG_PRINT(LOG_LEVEL_ERR), LOG_SETTINGS_ERR)
-#define ERR_FUNC_NOLINE	LOGLINE_FUNC_NOLINE(LOG_PRINT(LOG_LEVEL_ERR), LOG_SETTINGS_ERR, " ")
-#else
-#define ERR 			LOGLINE_CLASS(LOG_PRINT(LOG_LEVEL_OFF), LOG_SETTINGS_ERR)
-#define ERR_FUNC		LOGLINE_FUNC(LOG_PRINT(LOG_LEVEL_OFF), LOG_SETTINGS_ERR)
-#define ERR_FUNC_NOLINE	LOGLINE_FUNC_NOLINE(LOG_PRINT(LOG_LEVEL_OFF), LOG_SETTINGS_ERR)
-#endif
+#define ERR 			LOGLINE_CLASS(LOG_PRINT(Logger::logError), LOG_SETTINGS_ERR)
+#define ERR_FUNC		LOGLINE_FUNC(LOG_PRINT(Logger::logError), LOG_SETTINGS_ERR)
+#define ERR_FUNC_NOLINE	LOGLINE_FUNC_NOLINE(LOG_PRINT(Logger::logError), LOG_SETTINGS_ERR)
 
 }	//namespace osock
 

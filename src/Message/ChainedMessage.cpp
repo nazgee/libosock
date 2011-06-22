@@ -11,6 +11,8 @@
 #include <Message/ChainedMessage.h>
 #include <Exception/Exception.h>
 
+static osock::Logger logger("ChainedMessage");
+
 namespace osock
 {
 

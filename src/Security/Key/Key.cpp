@@ -22,6 +22,8 @@
 #include <Security/Key/Key.h>
 #include <Exception/Exception.h>
 
+static osock::Logger logger("Key");
+
 namespace osock
 {
 Key::Key(std::string keyFile, SSL_CTX* ctx) :

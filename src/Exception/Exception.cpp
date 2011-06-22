@@ -22,6 +22,8 @@
 #include <string.h>
 #include <stdio.h>
 
+static osock::Logger logger("Exception");
+
 namespace osock
 {
 Exception::Exception(const std::string& msg) :

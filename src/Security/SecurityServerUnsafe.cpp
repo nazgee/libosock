@@ -23,6 +23,8 @@
 #include <Exception/Exception.h>
 #include <Utilities/SSLWrap.h>
 
+static osock::Logger logger("SecurityServerUnsafe");
+
 namespace osock
 {
 SecurityServerUnsafe::SecurityServerUnsafe(int listenPort) :

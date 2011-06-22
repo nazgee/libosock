@@ -24,6 +24,8 @@
 
 #include <string.h>
 
+static osock::Logger logger("StringMessage");
+
 namespace osock
 {
 StringMessage::StringMessage(unsigned short dataLen,

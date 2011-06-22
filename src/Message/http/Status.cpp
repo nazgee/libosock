@@ -9,6 +9,8 @@
 #include <Message/http/Status.h>
 #include <Utilities/Logger.h>
 
+static osock::Logger logger("http::Status");
+
 namespace osock
 {
 namespace http

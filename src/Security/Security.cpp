@@ -25,6 +25,8 @@
 
 #include <assert.h>
 
+static osock::Logger logger("Security");
+
 namespace osock
 {
 bool Security::libsslReady = false;

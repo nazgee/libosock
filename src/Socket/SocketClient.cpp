@@ -24,6 +24,8 @@
 
 #include <netdb.h>
 
+static osock::Logger logger("SocketClient");
+
 namespace osock
 {
 SocketClient::SocketClient(SecurityClient* security):

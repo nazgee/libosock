@@ -12,7 +12,7 @@
 #include <Message/http/Header.h>
 #include <Exception/Exception.h>
 
-
+static osock::Logger logger("http::Header");
 
 namespace osock
 {

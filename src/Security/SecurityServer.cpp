@@ -19,6 +19,8 @@
 #include <Utilities/Logger.h>
 #include <Security/SecurityServer.h>
 
+static osock::Logger logger("SecurityServer");
+
 namespace osock
 {
 SecurityServer::SecurityServer(int port) :

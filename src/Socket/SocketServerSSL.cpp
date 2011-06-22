@@ -23,6 +23,8 @@
 
 #include <boost/scoped_ptr.hpp>
 
+static osock::Logger logger("SocketServerSSL");
+
 namespace osock
 {
 SocketServerSSL::SocketServerSSL(	int port,

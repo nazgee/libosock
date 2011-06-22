@@ -31,6 +31,8 @@
 #include <assert.h>
 #include <arpa/inet.h>
 
+static osock::Logger logger("SocketServer");
+
 namespace osock
 {
 SocketServer::SocketServer(SecurityServer* security, serviceType type) :

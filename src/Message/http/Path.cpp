@@ -8,6 +8,8 @@
 #include <Utilities/Logger.h>
 #include <Message/http/Path.h>
 
+static osock::Logger logger("http::Path");
+
 namespace osock
 {
 namespace http

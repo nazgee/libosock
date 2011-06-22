@@ -9,6 +9,9 @@
 #include <Message/http/Response.h>
 //#define LOGLEVEL LOGLEVEL_DBG
 #include <Utilities/Logger.h>
+
+static osock::Logger logger("http::Response");
+
 namespace osock
 {
 namespace http

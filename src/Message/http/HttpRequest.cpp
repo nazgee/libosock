@@ -11,6 +11,8 @@
 #include <Message/http/HttpRequest.h>
 #include <Message/http/Header.h>
 
+static osock::Logger logger("HttpRequest");
+
 namespace osock
 {
 

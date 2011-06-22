@@ -20,6 +20,8 @@
 #include <Security/SecurityClientSSL.h>
 #include <Socket/SocketClientSSL.h>
 
+static osock::Logger logger("SocketClientSSL");
+
 namespace osock
 {
 SocketClientSSL::SocketClientSSL(	Address& serverAddress,

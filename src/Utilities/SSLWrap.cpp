@@ -26,6 +26,9 @@
 
 #include <openssl/ssl.h>
 #include <openssl/bio.h>
+
+static osock::Logger logger("SSLWrap");
+
 namespace osock
 {
 namespace SSLWrap
