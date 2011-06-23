@@ -95,7 +95,7 @@ void SocketServer::Accept(Address& Addr, clientsHandler handler, Server* control
 					if (SSLWrap::BIO_set_close_(GetBIO(), BIO_NOCLOSE) != 1)
 						throw_SSL("BIO_set_close failed!");
 
-					// Close fd, so we are not waisting descriptors
+					// Close fd, so we are not wasting descriptors
 					int fd = -1;
 					BIO_get_fd(GetBIO(), &fd);
 					close(fd);
@@ -128,7 +128,7 @@ void SocketServer::Accept(Address& Addr, clientsHandler handler, Server* control
 					if (SSLWrap::BIO_set_close_(client, BIO_NOCLOSE) != 1)
 						throw_SSL("BIO_set_close failed!");
 
-					// Close fd, so we are not waisting descriptors
+					// Close fd, so we are not wasting descriptors
 					int fd = -1;
 					BIO_get_fd(client, &fd);
 					close(fd);
