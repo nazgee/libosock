@@ -90,10 +90,16 @@ void SocketServer::Accept(Address& Addr, clientsHandler handler, Server* control
 					throw StdException("Error while forking!");
 
 				if (childpid == 0) {
-					// We have to make sure that parent's BIO will not be closed
-					// when we (child) will be cleaning up
+					// We have to make sure that parent's BIO will not be shuted
+					// down when we (child) will be cleaning up
 					if (SSLWrap::BIO_set_close_(GetBIO(), BIO_NOCLOSE) != 1)
 						throw_SSL("BIO_set_close failed!");
+
+					// Close fd, so we are not waisting descriptors
+					int fd = -1;
+					BIO_get_fd(GetBIO(), &fd);
+					close(fd);
+
 					SetForked(true);
 
 					// Perform handshake to decide whether client is authorized
@@ -117,10 +123,15 @@ void SocketServer::Accept(Address& Addr, clientsHandler handler, Server* control
 					DBG << "Client: " << Addr << " served" << std::endl;
 					return;
 				} else {
-					// We have to make sure that child's BIO will not be closed
-					// when we (parent) will be cleaning up
+					// We have to make sure that child's BIO will not be shuted
+					// down when we (parent) will be cleaning up
 					if (SSLWrap::BIO_set_close_(client, BIO_NOCLOSE) != 1)
 						throw_SSL("BIO_set_close failed!");
+
+					// Close fd, so we are not waisting descriptors
+					int fd = -1;
+					BIO_get_fd(client, &fd);
+					close(fd);
 
 					DBG << "Getting back to accepting clients" << std::endl;
 					SSLWrap::BIO_free_all(client);
