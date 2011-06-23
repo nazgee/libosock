@@ -54,7 +54,23 @@ public:
 	{
 	}
 };
+/**
+ * @class MessageException
+ * @brief Throwed by Message objects when they encounter problems, i.e. with
+ * serializing/deserialzing
+ */
+class MessageException: public Exception
+{
+public:
+	MessageException(const std::string& msg) : Exception(msg) {}
+	virtual ~MessageException(void) throw() {};
+};
 
+/**
+ * @class HttpException
+ * @brief Throwed when http-related errors are encountered by Messages from
+ * osock::http namespace
+ */
 class HttpException: public Exception
 {
 private:
