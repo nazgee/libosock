@@ -97,6 +97,8 @@ public:
 
 	void packingMultipleMesssages(void)
 	{
+		assert(itsTestDataValid.size() > 1);
+
 		for (std::vector<osock::Message*>::iterator im =
 				itsMessagesToTest.begin(); im != itsMessagesToTest.end(); ++im) {
 			osock::data_chunk d;
