@@ -57,7 +57,7 @@ data_chunk Message::Unpack() const
 	if (!isAllowed(MSG_ALLOWED_UNPACK))
 		throw Exception("Unpack() called on incomplete Message!");
 
-	return doUnpack();
+	return doSerialize();
 }
 
 std::string Message::UnpackAsTag(std::string tag, std::string attr, std::string tail) const

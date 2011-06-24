@@ -52,7 +52,7 @@ std::string Request::UnpackAsTag(std::string tag, std::string attr, std::string 
 	return Message::UnpackAsTag(tag, attr,	tail + itsChain.UnpackAsTag(tag, attr));
 }
 
-data_chunk Request::doUnpack() const
+data_chunk Request::doSerialize() const
 {
 	// it will throw, if called when not complete
 	return itsChain.Unpack();

@@ -83,7 +83,7 @@ std::string ChainedMessage::UnpackAsTag(std::string tag, std::string attr, std::
 	return Message::UnpackAsTag(tag, attr, tail);
 }
 
-osock::data_chunk ChainedMessage::doUnpack() const
+osock::data_chunk ChainedMessage::doSerialize() const
 {
 	osock::data_chunk ret;
 

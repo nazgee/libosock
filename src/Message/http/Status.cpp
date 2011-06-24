@@ -90,7 +90,7 @@ const StringMessage& Status::getStatus() const
 	return dynamic_cast<const StringMessage&>(itsChain.getLink(LINK_STATUS));
 }
 
-data_chunk Status::doUnpack() const
+data_chunk Status::doSerialize() const
 {
 	// it will throw, if called when not complete
 	return itsChain.Unpack();

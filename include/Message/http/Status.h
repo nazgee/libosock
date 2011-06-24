@@ -43,7 +43,7 @@ public:
 	static std::string getDescription(enum statusCode code);
 
 protected:
-	virtual data_chunk doUnpack() const;
+	virtual data_chunk doSerialize() const;
 	virtual void doFeed(const data_chunk& data);
 	virtual void doRestartPacking();
 	virtual Status* doClone() const;

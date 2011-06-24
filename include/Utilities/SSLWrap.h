@@ -39,11 +39,31 @@ namespace SSLWrap
 	BIO *BIO_new_connect(char *host);
 	BIO *BIO_new_accept(char *host_port);
 	BIO *BIO_push(BIO *b,BIO *append);
+	/**
+	 * @brief Pops out BIO from a BIO chain
+	 * @param b BIO chain to pop BIO from
+	 * @return popped BIO
+	 */
 	BIO *BIO_pop(BIO *b);
 	void BIO_set_conn_hostname_(BIO *b, const char* hostname);
-	long BIO_set_close_(BIO* b, int flags);
+	/**
+	 * @brief Closes given BIO*; throws SSLException on failure
+	 * @param b BIO to close
+	 * @param flags one of @c BIO_NOCLOSE or @c BIO_CLOSE
+	 */
+	void BIO_set_close_(BIO* b, int flags);
 	long BIO_do_handshake_(BIO* b);
-	long BIO_do_accept_(BIO* b);
+	/**
+	 * @brief Creates accpe socket, or awaits an incomming connection in
+	 * blocking mode; throws SSLException on failure
+	 *
+	 * Serves two functions. When it is first called, after the accept BIO has
+	 * been setup, it will attempt to create the accept socket and bind an
+	 * address to it. Second and subsequent calls to BIO_do_accept() will await
+	 * an incoming connection, or request a retry in non blocking mode.
+	 * @param b BIO to setup/listen on
+	 */
+	void BIO_do_accept_(BIO* b);
 	long BIO_set_accept_bios_(BIO* b, BIO* bio);
 	long BIO_get_ssl_(BIO* b, SSL** ssl);
 	SSL_METHOD *TLSv1_server_method(void);

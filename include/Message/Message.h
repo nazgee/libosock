@@ -73,7 +73,7 @@ public:
 protected:
 	/**
 	 * @brief Marks Message as completely deserialized
-	 * @note Should be called only from doUnpack(), when message was able to
+	 * @note Should be called only from doSerialize(), when message was able to
 	 * eventually deserialize istelf using provided data chunks
 	 * @param remains Remainin data, that was not used during de
 	 */
@@ -106,7 +106,7 @@ protected:
 	 *
 	 * @return Serialized message
 	 */
-	virtual data_chunk doUnpack() const = 0;
+	virtual data_chunk doSerialize() const = 0;
 	/**
 	 * @brief Feeds Message with data to be used for deserialization
 	 *
@@ -129,7 +129,7 @@ protected:
 	 * After this message is called, internal serialization/deserialization
 	 * logic of the message should be reset. As a result, doFeed() should treat
 	 * next data chunk as beginning of the Message, and
-	 * doUnpack() should allow immediate deserialization.
+	 * doSerialize() should allow immediate deserialization.
 	 */
 	virtual void doRestartPacking() = 0;
 	/**

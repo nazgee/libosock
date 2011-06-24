@@ -135,6 +135,8 @@ namespace SSLWrap
 		BIO* bret;
 		bret = ::BIO_pop(b);
 		DBG_FUNC_NOLINE <<  "( b=" << b << " ) : " << (void*)bret << std::endl;
+		if (bret == NULL)
+			throw_SSL("BIO_pop failed");
 		return bret;
 	}
 
@@ -144,7 +146,7 @@ namespace SSLWrap
 		DBG_FUNC_NOLINE << "( b=" << b << ", host=" << hostname << " ) : " << std::endl;
 	}
 
-	long BIO_set_close_(BIO* b, int f)
+	void BIO_set_close_(BIO* b, int f)
 	{
 		long l;
 		if (f == BIO_NOCLOSE)
@@ -153,7 +155,9 @@ namespace SSLWrap
 			l = BIO_set_close(b, BIO_CLOSE);
 
 		DBG_FUNC_NOLINE <<  "( b=" << b << ", f=" << f << " ) : " << l << std::endl;
-		return l;
+
+		if (l != 1)
+			throw_SSL("BIO_set_close failed!");
 	}
 
 	long BIO_do_handshake_(BIO* b)
@@ -163,11 +167,13 @@ namespace SSLWrap
 		return l;
 	}
 
-	long BIO_do_accept_(BIO* b)
+	void BIO_do_accept_(BIO* b)
 	{
 		long l = ::BIO_do_accept(b);
 		DBG_FUNC_NOLINE <<  "( b=" << b << " ) : " << l << std::endl;
-		return l;
+		if (l<=0) {
+			throw_SSL("BIO_do_accept failed");
+		}
 	}
 
 	long BIO_set_accept_bios_(BIO* b, BIO* bio)

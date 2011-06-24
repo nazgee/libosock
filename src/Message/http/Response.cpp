@@ -58,7 +58,7 @@ std::string Response::UnpackAsTag(std::string tag, std::string attr,
 			tail + itsChain.UnpackAsTag(tag, attr));
 }
 
-data_chunk Response::doUnpack() const
+data_chunk Response::doSerialize() const
 {
 	// it will throw, if called when not complete
 	return itsChain.Unpack();

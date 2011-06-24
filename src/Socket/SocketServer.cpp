@@ -41,9 +41,7 @@ SocketServer::SocketServer(SecurityServer* security, serviceType type) :
 {
 	// First call of BIO_do_accpept does not really accept a connection-
 	// instead it does some initial-setup only
-	if (SSLWrap::BIO_do_accept_(GetBIO()) <= 0) {
-		throw_SSL("BIO_do_accept failed");
-	}
+	SSLWrap::BIO_do_accept_(GetBIO());
 	DBG_CONSTRUCTOR;
 }
 
@@ -92,8 +90,7 @@ void SocketServer::Accept(Address& Addr, clientsHandler handler, Server* control
 				if (childpid == 0) {
 					// We have to make sure that parent's BIO will not be shuted
 					// down when we (child) will be cleaning up
-					if (SSLWrap::BIO_set_close_(GetBIO(), BIO_NOCLOSE) != 1)
-						throw_SSL("BIO_set_close failed!");
+					SSLWrap::BIO_set_close_(GetBIO(), BIO_NOCLOSE);
 
 					// Close fd, so we are not wasting descriptors
 					int fd = -1;
@@ -125,8 +122,7 @@ void SocketServer::Accept(Address& Addr, clientsHandler handler, Server* control
 				} else {
 					// We have to make sure that child's BIO will not be shuted
 					// down when we (parent) will be cleaning up
-					if (SSLWrap::BIO_set_close_(client, BIO_NOCLOSE) != 1)
-						throw_SSL("BIO_set_close failed!");
+					SSLWrap::BIO_set_close_(client, BIO_NOCLOSE);
 
 					// Close fd, so we are not wasting descriptors
 					int fd = -1;
@@ -170,15 +166,9 @@ BIO* SocketServer::AcceptIncoming()
 	BIO* out;
 
 	// Sit and wait on our accept channel
-	if (SSLWrap::BIO_do_accept_(GetBIO()) <= 0) {
-		throw_SSL("BIO_do_accept failed");
-	}
-
+	SSLWrap::BIO_do_accept_(GetBIO());
 	// Pop out incoming client from our accept channel
 	out = SSLWrap::BIO_pop(GetBIO());
-	if (out == NULL) {
-		throw_SSL("BIO_pop failed");
-	}
 
 	return out;
 }

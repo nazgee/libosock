@@ -79,7 +79,7 @@ std::string StringMessage::getString() const
 	return this->substr(0, this->length() - itsTerminator.length());
 }
 
-data_chunk StringMessage::doUnpack() const
+data_chunk StringMessage::doSerialize() const
 {
 	return data_chunk(this->data(), this->data() + this->size());
 }

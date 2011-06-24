@@ -40,7 +40,7 @@ public:
 	virtual std::string UnpackAsTag(std::string tag = Message::TAG, std::string attr = Message::ATTRBODY, std::string tail = "");
 
 protected:
-	virtual data_chunk doUnpack() const;
+	virtual data_chunk doSerialize() const;
 	virtual void doFeed(const data_chunk& data);
 	virtual void doRestartPacking();
 	virtual Request* doClone() const;

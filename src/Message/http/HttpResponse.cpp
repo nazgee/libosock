@@ -83,7 +83,7 @@ const http::Response& HttpResponse::getResponse() const
 	return itsResponse;
 }
 
-data_chunk HttpResponse::doUnpack() const
+data_chunk HttpResponse::doSerialize() const
 {
 	// Reevaluate content length
 	const_cast<http::Header&>(getHeaderLength()).setHeadValue(to_string(getContent().length()));

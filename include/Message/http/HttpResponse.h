@@ -48,7 +48,7 @@ public:
 	const http::Response& getResponse() const;
 
 protected:
-	virtual data_chunk doUnpack() const;
+	virtual data_chunk doSerialize() const;
 	virtual void doFeed(const data_chunk& data);
 	virtual void doRestartPacking();
 	virtual HttpResponse* doClone() const;

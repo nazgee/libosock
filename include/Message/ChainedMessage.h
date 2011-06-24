@@ -32,7 +32,7 @@ public:
 	virtual std::string UnpackAsTag(std::string tag = Message::TAG, std::string attr = Message::ATTRBODY, std::string tail = "");
 
 protected:
-	virtual osock::data_chunk doUnpack() const;
+	virtual osock::data_chunk doSerialize() const;
 	virtual void doFeed(const osock::data_chunk& data);
 	virtual void doRestartPacking();
 	virtual ChainedMessage* doClone() const;

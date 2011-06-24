@@ -62,7 +62,7 @@ void Header::doFeed(const data_chunk& data)
 	}
 }
 
-data_chunk Header::doUnpack() const
+data_chunk Header::doSerialize() const
 {
 	data_chunk d;
 	if (itsKey.length()) {

@@ -48,7 +48,7 @@ std::string HttpRequest::UnpackAsTag(std::string tag, std::string attr, std::str
 		+ itsHeaders.UnpackAsTag(tag, attr));
 }
 
-data_chunk HttpRequest::doUnpack() const
+data_chunk HttpRequest::doSerialize() const
 {
 	data_chunk ret(itsRequest.Unpack());
 	data_chunk tmp(itsHeaders.Unpack());
