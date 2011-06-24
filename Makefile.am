@@ -16,19 +16,19 @@ ACLOCAL_AMFLAGS = ${ACLOCAL_FLAGS} -I m4
 ## Define name of the binaries that should be built along with our library.
 ## In the end this should be conditional, but for now we are good with building
 ## it every time
-bin_PROGRAMS = unittestlibosock
+EXTRA_PROGRAMS = unittest
 ## Define the source file list for the "unittestlibosock" target
-unittestlibosock_SOURCES  = src/Testing/main.cpp
-unittestlibosock_SOURCES += src/Testing/Unit/Message/StringMessageTest.cpp
-unittestlibosock_SOURCES += src/Testing/Unit/Message/MessageTest.cpp
+unittest_SOURCES  = src/Testing/main.cpp
+unittest_SOURCES += src/Testing/Unit/Message/StringMessageTest.cpp
+unittest_SOURCES += src/Testing/Unit/Message/MessageTest.cpp
 ## Prepare linker flags
-unittestlibosock_LDFLAGS  = $(OPENSSL_LIBS)
-unittestlibosock_LDFLAGS += $(CPPUNIT_LIBS)
-unittestlibosock_LDFLAGS += -L$(top_srcdir) -losock-$(OSOCK_API_VERSION)
+unittest_LDFLAGS  = $(OPENSSL_LIBS)
+unittest_LDFLAGS += $(CPPUNIT_LIBS)
+unittest_LDFLAGS += -L$(top_srcdir) -losock-$(OSOCK_API_VERSION)
 ## Prepare compiler flags
-unittestlibosock_CXXFLAGS  = -I$(top_srcdir)/include -I$(top_srcdir)/include/Testing -Wall 
-unittestlibosock_CXXFLAGS += $(OPENSSL_CFLAGS)
-unittestlibosock_CXXFLAGS += $(CPPUNIT_CFLAGS) 
+unittest_CXXFLAGS  = -I$(top_srcdir)/include -I$(top_srcdir)/include/Testing -Wall 
+unittest_CXXFLAGS += $(OPENSSL_CFLAGS)
+unittest_CXXFLAGS += $(CPPUNIT_CFLAGS) 
 
 ## Define a libtool archive target "libosock-@OSOCK_API_VERSION@.la", with
 ## @OSOCK_API_VERSION@ substituted into the generated Makefile at configure
