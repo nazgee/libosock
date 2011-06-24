@@ -1,6 +1,8 @@
 ## libosock:
 ## C++ wrapper of OpenSSL and standard sockets- server/client convinience class
 
+include $(top_srcdir)/aminclude.am
+
 ## Place generated object files (.o) into the same directory as their source
 ## files, in order to avoid collisions when non-recursive make is used.
 AUTOMAKE_OPTIONS = subdir-objects
@@ -8,7 +10,8 @@ AUTOMAKE_OPTIONS = subdir-objects
 ## Additional flags to pass to aclocal when it is invoked automatically at
 ## make time. The ${ACLOCAL_FLAGS} variable is picked up from the environment
 ## to provide a way for the user to supply additional arguments.
-ACLOCAL_AMFLAGS = ${ACLOCAL_FLAGS}
+## -I m4 will make sure, that all macros in m4 directory will be available
+ACLOCAL_AMFLAGS = ${ACLOCAL_FLAGS} -I m4
 
 ## Define name of the binaries that should be built along with our library.
 ## In the end this should be conditional, but for now we are good with building

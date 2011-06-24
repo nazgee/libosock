@@ -1,3 +1,6 @@
+doc/
+texput.log
+m4/
 *.o
 *.lo
 .libs

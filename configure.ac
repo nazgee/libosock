@@ -7,6 +7,14 @@ AC_INIT([libosock], [0.5], [michal.stawinski@gmail.com], [tarname],
         [http://www.nazgee.eu])
 AC_PREREQ([2.67])
 
+AC_CONFIG_MACRO_DIR([m4])
+
+# Doxygen documentation
+DX_HTML_FEATURE(ON)
+DX_PS_FEATURE(OFF)
+DX_PDF_FEATURE(OFF)
+DX_INIT_DOXYGEN([$PACKAGE_NAME], [doxy.conf])
+
 #AM_INIT_AUTOMAKE([OPTIONS]) 
 # -no-define; prevent the PACKAGE and VERSION variables from being AC_DEFINEd
 AM_INIT_AUTOMAKE([1.10 -Wall no-define])
