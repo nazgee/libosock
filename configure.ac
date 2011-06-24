@@ -34,6 +34,11 @@ LT_INIT([disable-static])
 AC_SUBST([OSOCK_SO_VERSION], [1:1:0])
 AC_SUBST([OSOCK_API_VERSION], [1.0])
 
+AC_SUBST([LIB_SRC_DIR], [src])
+AC_SUBST([LIB_INC_DIR], [include])
+AC_SUBST([TST_SRC_DIR], [src/Testing])
+AC_SUBST([TST_INC_DIR], [include/Testing])
+
 # distribute compiler flags
 # AM_CXXFLAGS="$AM_CXXFLAGS -g -Wall"
 # AC_SUBST([AM_CXXFLAGS])
