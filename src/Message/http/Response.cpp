@@ -51,30 +51,30 @@ const Protocole& Response::getProtocole() const
 	return dynamic_cast<const Protocole&>(itsChain.getLink(LINK_PROTOCOLE));
 }
 
-std::string Response::UnpackAsTag(std::string tag, std::string attr,
-		std::string tail)
+std::string Response::doToTag(std::string tag, std::string attr,
+		std::string tail) const
 {
-	return Message::UnpackAsTag(tag, attr,
-			tail + itsChain.UnpackAsTag(tag, attr));
+	return Message::doToTag(tag, attr,
+			tail + itsChain.ToTag(tag, attr));
 }
 
 data_chunk Response::doSerialize() const
 {
 	// it will throw, if called when not complete
-	return itsChain.Unpack();
+	return itsChain.Serialize();
 }
 
-void Response::doFeed(const data_chunk& data)
+void Response::doDeserializeChunk(const data_chunk& data)
 {
 	DBG << "Got " << data.size() << "B to pack" << std::endl;
-	if (itsChain.Pack(data)) {
-		ClosePacking(itsChain.getRemains());
+	if (itsChain.DeserializeChunk(data)) {
+		DeserializingComplete(itsChain.getDeserializingRemains());
 	}
 }
 
-void Response::doRestartPacking()
+void Response::doDeserializingRestart()
 {
-	itsChain.RestartPacking();
+	itsChain.DeserializingRestart();
 }
 
 Response* Response::doClone() const
@@ -82,7 +82,7 @@ Response* Response::doClone() const
 	return new Response(*this);
 }
 
-std::string Response::getStringInfo() const
+std::string Response::doToString() const
 {
 	std::string s;
 	s = "protocole=" + getProtocole().getString()

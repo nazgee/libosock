@@ -34,10 +34,10 @@ Header::~Header()
 	DBG_DESTRUCTOR;
 }
 
-void Header::doFeed(const data_chunk& data)
+void Header::doDeserializeChunk(const data_chunk& data)
 {
-	StringMessage::doFeed(data);
-	if (getIsComplete()) {
+	StringMessage::doDeserializeChunk(data);
+	if (isDeserializingComplete()) {
 		if (getString().length() == 0) {
 			setHeadKey("");
 			setHeadValue("");
@@ -74,7 +74,7 @@ data_chunk Header::doSerialize() const
 	return d;
 }
 
-std::string Header::getStringInfo() const
+std::string Header::doToString() const
 {
 	std::string s;
 	s ="key[" + to_string(itsKey.length()) + "]=" + itsKey +
@@ -89,7 +89,7 @@ Header* Header::doClone() const
 
 std::string Header::getHeadKey() const
 {
-	if (!getIsComplete())
+	if (!isDeserializingComplete())
 		throw Exception("getName() called on incomplete Header!");
 
     return itsKey;
@@ -97,7 +97,7 @@ std::string Header::getHeadKey() const
 
 std::string Header::getHeadValue() const
 {
-	if (!getIsComplete())
+	if (!isDeserializingComplete())
 		throw Exception("getValue() called on incomplete Header!");
 
     return itsValue;

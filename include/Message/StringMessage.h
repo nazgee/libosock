@@ -41,8 +41,8 @@ public:
 
 protected:
 	virtual data_chunk doSerialize() const;
-	virtual void doFeed(const data_chunk& data);
-	virtual void doRestartPacking();
+	virtual void doDeserializeChunk(const data_chunk& data);
+	virtual void doDeserializingRestart();
 	virtual StringMessage* doClone() const;
 };
 } //namespace osock

@@ -22,7 +22,7 @@ public:
 	virtual ~Protocole();
 
 protected:
-	virtual std::string getStringInfo() const;
+	virtual std::string doToString() const;
 	virtual Protocole* doClone() const;
 
 };

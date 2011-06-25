@@ -23,7 +23,7 @@ public:
 	virtual ~Command();
 
 protected:
-	virtual std::string getStringInfo() const;
+	virtual std::string doToString() const;
 	virtual Command* doClone() const;
 
 };

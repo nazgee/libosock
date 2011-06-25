@@ -18,15 +18,15 @@ ACLOCAL_AMFLAGS = ${ACLOCAL_FLAGS} -I m4
 ## it every time
 EXTRA_PROGRAMS = unittest
 ## Define the source file list for the "unittestlibosock" target
-unittest_SOURCES  = $(TST_SRC_DIR)/main.cpp
-unittest_SOURCES += $(TST_SRC_DIR)/Unit/Message/StringMessageTest.cpp
-unittest_SOURCES += $(TST_SRC_DIR)/Unit/Message/MessageTest.cpp
+unittest_SOURCES  = src/Testing/main.cpp
+unittest_SOURCES += src/Testing/Unit/Message/StringMessageTest.cpp
+unittest_SOURCES += src/Testing/Unit/Message/MessageTest.cpp
 ## Prepare linker flags
 unittest_LDFLAGS  = $(OPENSSL_LIBS)
 unittest_LDFLAGS += $(CPPUNIT_LIBS)
 unittest_LDFLAGS += -L$(top_srcdir) -losock-$(OSOCK_API_VERSION)
 ## Prepare compiler flags
-unittest_CXXFLAGS  = -I$(LIB_INC_DIR) -I$(TST_INC_DIR) -Wall 
+unittest_CXXFLAGS  = -Iinclude -Iinclude/Testing -Wall 
 unittest_CXXFLAGS += $(OPENSSL_CFLAGS)
 unittest_CXXFLAGS += $(CPPUNIT_CFLAGS) 
 
@@ -46,42 +46,42 @@ lib_LTLIBRARIES = libosock-@OSOCK_API_VERSION@.la
 ## rules which invoke the C++ compiler to produce a libtool object file (.lo)
 ## from each source file.  Note that it is not necessary to list header files
 ## which are already listed elsewhere in a _HEADERS variable assignment.
-libosock_@OSOCK_API_VERSION@_la_SOURCES = $(LIB_SRC_DIR)/Message/Message.cpp \
-	$(LIB_SRC_DIR)/Message/StringMessage.cpp \
-	$(LIB_SRC_DIR)/Message/ChainedMessage.cpp \
-	$(LIB_SRC_DIR)/Message/http/Path.cpp \
-	$(LIB_SRC_DIR)/Message/http/Command.cpp \
-	$(LIB_SRC_DIR)/Message/http/Protocole.cpp \
-	$(LIB_SRC_DIR)/Message/http/Header.cpp \
-	$(LIB_SRC_DIR)/Message/http/Status.cpp \
-	$(LIB_SRC_DIR)/Message/http/Request.cpp \
-	$(LIB_SRC_DIR)/Message/http/Response.cpp \
-	$(LIB_SRC_DIR)/Message/http/HttpRequest.cpp \
-	$(LIB_SRC_DIR)/Message/http/HttpResponse.cpp \
-	$(LIB_SRC_DIR)/Message/http/HttpResponseFile.cpp \
-	$(LIB_SRC_DIR)/Security/SecurityServerUnsafe.cpp \
-	$(LIB_SRC_DIR)/Security/Trust/Trust.cpp \
-	$(LIB_SRC_DIR)/Security/SecurityServer.cpp \
-	$(LIB_SRC_DIR)/Security/SecurityClientSSL.cpp \
-	$(LIB_SRC_DIR)/Security/Key/Key.cpp \
-	$(LIB_SRC_DIR)/Security/SecurityServerSSL.cpp \
-	$(LIB_SRC_DIR)/Security/Security.cpp \
-	$(LIB_SRC_DIR)/Security/Certificate/Certificate.cpp \
-	$(LIB_SRC_DIR)/Security/SecurityClientUnsafe.cpp \
-	$(LIB_SRC_DIR)/Security/SecurityClient.cpp \
-	$(LIB_SRC_DIR)/Socket/SocketClient.cpp \
-	$(LIB_SRC_DIR)/Socket/SocketClientSSL.cpp \
-	$(LIB_SRC_DIR)/Socket/SocketServer.cpp \
-	$(LIB_SRC_DIR)/Socket/SocketClientUnsafe.cpp \
-	$(LIB_SRC_DIR)/Socket/SocketServerSSL.cpp \
-	$(LIB_SRC_DIR)/Socket/SocketServerUnsafe.cpp \
-	$(LIB_SRC_DIR)/Socket/Socket.cpp \
-	$(LIB_SRC_DIR)/Address/Address.cpp \
-	$(LIB_SRC_DIR)/Exception/Exception.cpp \
-	$(LIB_SRC_DIR)/Utilities/Logger.cpp \
-	$(LIB_SRC_DIR)/Utilities/SSLWrap.cpp \
-	$(LIB_SRC_DIR)/Utilities/Utils.cpp \
-	$(LIB_SRC_DIR)/Server/Server.cpp
+libosock_@OSOCK_API_VERSION@_la_SOURCES = src/Message/Message.cpp \
+	src/Message/StringMessage.cpp \
+	src/Message/ChainedMessage.cpp \
+	src/Message/http/Path.cpp \
+	src/Message/http/Command.cpp \
+	src/Message/http/Protocole.cpp \
+	src/Message/http/Header.cpp \
+	src/Message/http/Status.cpp \
+	src/Message/http/Request.cpp \
+	src/Message/http/Response.cpp \
+	src/Message/http/HttpRequest.cpp \
+	src/Message/http/HttpResponse.cpp \
+	src/Message/http/HttpResponseFile.cpp \
+	src/Security/SecurityServerUnsafe.cpp \
+	src/Security/Trust/Trust.cpp \
+	src/Security/SecurityServer.cpp \
+	src/Security/SecurityClientSSL.cpp \
+	src/Security/Key/Key.cpp \
+	src/Security/SecurityServerSSL.cpp \
+	src/Security/Security.cpp \
+	src/Security/Certificate/Certificate.cpp \
+	src/Security/SecurityClientUnsafe.cpp \
+	src/Security/SecurityClient.cpp \
+	src/Socket/SocketClient.cpp \
+	src/Socket/SocketClientSSL.cpp \
+	src/Socket/SocketServer.cpp \
+	src/Socket/SocketClientUnsafe.cpp \
+	src/Socket/SocketServerSSL.cpp \
+	src/Socket/SocketServerUnsafe.cpp \
+	src/Socket/Socket.cpp \
+	src/Address/Address.cpp \
+	src/Exception/Exception.cpp \
+	src/Utilities/Logger.cpp \
+	src/Utilities/SSLWrap.cpp \
+	src/Utilities/Utils.cpp \
+	src/Server/Server.cpp
 
 ## Instruct libtool to include ABI version information in the generated shared
 ## library file (.so).  The library ABI version is defined in configure.ac, so
@@ -101,50 +101,50 @@ libosock_@OSOCK_API_VERSION@_la_CXXFLAGS = -I$(top_srcdir)/include $(OPENSSL_CFL
 osock_includedir = $(includedir)/osock-$(OSOCK_API_VERSION)
 
 osockmessage_includedir = $(osock_includedir)/Message
-osockmessage_include_HEADERS = $(LIB_INC_DIR)/Message/StringMessage.h \
-	$(LIB_INC_DIR)/Message/ChainedMessage.h \
-	$(LIB_INC_DIR)/Message/http/Path.h \
-	$(LIB_INC_DIR)/Message/http/Command.h \
-	$(LIB_INC_DIR)/Message/http/Protocole.h \
-	$(LIB_INC_DIR)/Message/http/Header.h \
-	$(LIB_INC_DIR)/Message/http/Status.h \
-	$(LIB_INC_DIR)/Message/http/Request.h \
-	$(LIB_INC_DIR)/Message/http/Response.h \
-	$(LIB_INC_DIR)/Message/http/HttpRequest.h \
-	$(LIB_INC_DIR)/Message/http/HttpResponse.h \
-	$(LIB_INC_DIR)/Message/http/HttpResponseFile.h \
-	$(LIB_INC_DIR)/Message/Message.h
+osockmessage_include_HEADERS = include/Message/StringMessage.h \
+	include/Message/ChainedMessage.h \
+	include/Message/http/Path.h \
+	include/Message/http/Command.h \
+	include/Message/http/Protocole.h \
+	include/Message/http/Header.h \
+	include/Message/http/Status.h \
+	include/Message/http/Request.h \
+	include/Message/http/Response.h \
+	include/Message/http/HttpRequest.h \
+	include/Message/http/HttpResponse.h \
+	include/Message/http/HttpResponseFile.h \
+	include/Message/Message.h
 	
 osocksecurity_includedir = $(osock_includedir)/Security
-osocksecurity_include_HEADERS = $(LIB_INC_DIR)/Security/Trust/Trust.h \
-	$(LIB_INC_DIR)/Security/SecurityServerSSL.h \
-	$(LIB_INC_DIR)/Security/Key/Key.h \
-	$(LIB_INC_DIR)/Security/SecurityClientUnsafe.h \
-	$(LIB_INC_DIR)/Security/SecurityServer.h \
-	$(LIB_INC_DIR)/Security/Security.h \
-	$(LIB_INC_DIR)/Security/Certificate/Certificate.h \
-	$(LIB_INC_DIR)/Security/SecurityClient.h \
-	$(LIB_INC_DIR)/Security/SecurityServerUnsafe.h \
-	$(LIB_INC_DIR)/Security/SecurityClientSSL.h
+osocksecurity_include_HEADERS = include/Security/Trust/Trust.h \
+	include/Security/SecurityServerSSL.h \
+	include/Security/Key/Key.h \
+	include/Security/SecurityClientUnsafe.h \
+	include/Security/SecurityServer.h \
+	include/Security/Security.h \
+	include/Security/Certificate/Certificate.h \
+	include/Security/SecurityClient.h \
+	include/Security/SecurityServerUnsafe.h \
+	include/Security/SecurityClientSSL.h
 
 osocksocket_includedir = $(osock_includedir)/Socket
-osocksocket_include_HEADERS = $(LIB_INC_DIR)/Socket/SocketClientUnsafe.h \
-	$(LIB_INC_DIR)/Socket/SocketServerUnsafe.h \
-	$(LIB_INC_DIR)/Socket/SocketClient.h \
-	$(LIB_INC_DIR)/Socket/Socket.h \
-	$(LIB_INC_DIR)/Socket/SocketServer.h \
-	$(LIB_INC_DIR)/Socket/SocketClientSSL.h \
-	$(LIB_INC_DIR)/Socket/SocketServerSSL.h
+osocksocket_include_HEADERS = include/Socket/SocketClientUnsafe.h \
+	include/Socket/SocketServerUnsafe.h \
+	include/Socket/SocketClient.h \
+	include/Socket/Socket.h \
+	include/Socket/SocketServer.h \
+	include/Socket/SocketClientSSL.h \
+	include/Socket/SocketServerSSL.h
 	
 osockaddress_includedir = $(osock_includedir)/Address
-osockaddress_include_HEADERS = $(LIB_INC_DIR)/Address/Address.h
+osockaddress_include_HEADERS = include/Address/Address.h
 
 osockexception_includedir = $(osock_includedir)/Exception
-osockexception_include_HEADERS = $(LIB_INC_DIR)/Exception/Exception.h			
+osockexception_include_HEADERS = include/Exception/Exception.h			
 
 osockloose_includedir = $(osock_includedir)
-osockloose_include_HEADERS = $(LIB_INC_DIR)/osock.h \
-	$(LIB_INC_DIR)/defines.h \
+osockloose_include_HEADERS = include/osock.h \
+	include/defines.h \
 	osockconfig.h
 
 ## The generated configuration header is installed in its own subdirectory of

@@ -26,7 +26,7 @@ Command::~Command()
 	DBG_DESTRUCTOR;
 }
 
-std::string Command::getStringInfo() const
+std::string Command::doToString() const
 {
 	std::string s;
 	s += "cmd=" + this->getString();

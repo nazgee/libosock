@@ -46,12 +46,6 @@ bool Server::onServed(Address& servedClient)
 	return true;
 }
 
-void Server::Serve(Socket& Client)
-{
-	WRN << "Default handler for client=" << Client << ", doing nothing!"
-			<< std::endl;
-}
-
 void Server::Run()
 {
 	Address client;

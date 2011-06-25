@@ -22,6 +22,13 @@ private:
 
 public:
 	static std::string DataToString(const data_chunk& chunk);
+	/**
+	 * @brief Returns xml/html represenatation of a message
+	 *
+	 * @return std::string being xml/html represenatation of a message
+	 */
+	static std::string StringToTag(std::string value, std::string tag, std::string attr);
+
 	virtual ~Utils();
 };
 

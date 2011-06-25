@@ -42,26 +42,26 @@ std::string HttpRequest::getProtocole()
 	return itsRequest.getProtocole().getString();
 }
 
-std::string HttpRequest::UnpackAsTag(std::string tag, std::string attr, std::string tail)
+std::string HttpRequest::doToTag(std::string tag, std::string attr, std::string tail) const
 {
-	return Message::UnpackAsTag(tag, attr, tail + itsRequest.UnpackAsTag(tag, attr)
-		+ itsHeaders.UnpackAsTag(tag, attr));
+	return Message::doToTag(tag, attr, tail + itsRequest.ToTag(tag, attr)
+		+ itsHeaders.ToTag(tag, attr));
 }
 
 data_chunk HttpRequest::doSerialize() const
 {
-	data_chunk ret(itsRequest.Unpack());
-	data_chunk tmp(itsHeaders.Unpack());
+	data_chunk ret(itsRequest.Serialize());
+	data_chunk tmp(itsHeaders.Serialize());
 	ret.insert(ret.end(), tmp.begin(), tmp.end());
 	return ret;
 }
 
-void HttpRequest::doFeed(const data_chunk& data)
+void HttpRequest::doDeserializeChunk(const data_chunk& data)
 {
-	if (!itsRequest.getIsComplete()) {
-		if (itsRequest.Pack(data)) {
+	if (!itsRequest.isDeserializingComplete()) {
+		if (itsRequest.DeserializeChunk(data)) {
 			itsHeaders.AddLink(new http::Header());
-			doFeedHeaders(itsRequest.getRemains());
+			doFeedHeaders(itsRequest.getDeserializingRemains());
 		}
 	} else {
 		doFeedHeaders(data);
@@ -70,26 +70,26 @@ void HttpRequest::doFeed(const data_chunk& data)
 
 void HttpRequest::doFeedHeaders(const data_chunk& data)
 {
-	if (itsHeaders.Pack(data)) {
+	if (itsHeaders.DeserializeChunk(data)) {
 		const http::Header& h =
 				dynamic_cast<const http::Header&> (itsHeaders.getLastLink());
 
 		if (h.IsHeadEmpty()) {
-			ClosePacking(itsHeaders.getRemains());
+			DeserializingComplete(itsHeaders.getDeserializingRemains());
 		} else {
 			http::Header *hptr = new http::Header();
 			itsHeaders.AddLink(hptr);
 			DBG << "Got non empty header, waiting for another" << std::endl;
-			doFeedHeaders(itsHeaders.getRemains());
+			doFeedHeaders(itsHeaders.getDeserializingRemains());
 		}
 	}
 }
 
-void HttpRequest::doRestartPacking()
+void HttpRequest::doDeserializingRestart()
 {
-	itsRequest.RestartPacking();
+	itsRequest.DeserializingRestart();
 	itsHeaders.DeleteAllLinks();
-	itsHeaders.RestartPacking();
+	itsHeaders.DeserializingRestart();
 }
 
 HttpRequest* HttpRequest::doClone() const
@@ -97,7 +97,7 @@ HttpRequest* HttpRequest::doClone() const
 	return new HttpRequest(*this);
 }
 
-std::string HttpRequest::getStringInfo() const
+std::string HttpRequest::doToString() const
 {
 	std::string s;
 	s += "request=" + itsRequest.getCommand().getString() + " headers_n="

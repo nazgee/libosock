@@ -37,14 +37,14 @@ public:
 	const Path& getPath() const;
 	const Protocole& getProtocole() const;
 
-	virtual std::string UnpackAsTag(std::string tag = Message::TAG, std::string attr = Message::ATTRBODY, std::string tail = "");
 
 protected:
 	virtual data_chunk doSerialize() const;
-	virtual void doFeed(const data_chunk& data);
-	virtual void doRestartPacking();
+	virtual void doDeserializeChunk(const data_chunk& data);
+	virtual void doDeserializingRestart();
 	virtual Request* doClone() const;
-	virtual std::string getStringInfo() const;
+	virtual std::string doToString() const;
+	virtual std::string doToTag(std::string tag, std::string attr, std::string tail = "") const;
 
 };
 

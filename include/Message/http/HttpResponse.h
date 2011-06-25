@@ -39,7 +39,6 @@ public:
 			std::string status = "OK", std::string protocole = "HTTP/1.0");
 	HttpResponse(const http::Status& status, std::string content = "", std::string protocole = "HTTP/1.0");
 	virtual ~HttpResponse();
-	virtual std::string UnpackAsTag(std::string tag = Message::TAG, std::string attr = Message::ATTRBODY, std::string tail = "");
 	const StringMessage& getContent() const;
 	const ChainedMessage& getHeaders() const;
 	const http::Header& getHeaderDate() const;
@@ -49,10 +48,11 @@ public:
 
 protected:
 	virtual data_chunk doSerialize() const;
-	virtual void doFeed(const data_chunk& data);
-	virtual void doRestartPacking();
+	virtual void doDeserializeChunk(const data_chunk& data);
+	virtual void doDeserializingRestart();
 	virtual HttpResponse* doClone() const;
-	virtual std::string getStringInfo() const;
+	virtual std::string doToString() const;
+	virtual std::string doToTag(std::string tag, std::string attr, std::string tail = "") const;
 private:
 	void doFeedHeaders(const data_chunk& data);
 	void doFeedContent(const data_chunk& data);

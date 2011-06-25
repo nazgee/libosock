@@ -23,9 +23,9 @@ private:
 	static const std::string separator;
 
 protected:
-	virtual void doFeed(const data_chunk& data);
+	virtual void doDeserializeChunk(const data_chunk& data);
 	virtual data_chunk doSerialize() const;
-	virtual std::string getStringInfo() const;
+	virtual std::string doToString() const;
 	virtual Header* doClone() const;
 
 public:

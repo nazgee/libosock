@@ -26,7 +26,7 @@ Path::~Path()
 	DBG_DESTRUCTOR;
 }
 
-std::string Path::getStringInfo() const
+std::string Path::doToString() const
 {
 	std::string s;
 	s += "path=" + this->getString();

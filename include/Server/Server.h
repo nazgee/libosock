@@ -32,10 +32,22 @@ class Server
 public:
 	Server(SocketServer* socketServer);
 	virtual ~Server();
+	/**
+	 * @brief Starts serving clients using Serve() method
+	 */
 	void Run();
-
+	/**
+	 * Called automagically after each client was served using Serve()
+	 * @param servedClient Address of served client- can be used for logging
+	 * @return determines if server should wait for other clients- this usually
+	 * should be set to @true
+	 */
 	virtual bool onServed(Address& servedClient);
-	virtual void Serve(Socket& Client);
+	/**
+	 * @brief Implement this function to handle client connections
+	 * @param Client Socket of client to be served
+	 */
+	virtual void Serve(Socket& Client) = 0;
 private:
 	SocketServer* itsSocketServer;
 };

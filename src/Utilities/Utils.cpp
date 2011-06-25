@@ -37,4 +37,13 @@ std::string Utils::DataToString(const data_chunk& chunk)
 	return ret;
 }
 
+std::string Utils::StringToTag(std::string value, std::string tag, std::string attr)
+{
+	if (tag.length()) {
+		return std::string("<" + tag + " " + attr + ">" + value + "</" + tag + ">" + http::NEWLINE );
+	} else {
+		return value;
+	}
+}
+
 }

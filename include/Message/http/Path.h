@@ -22,7 +22,7 @@ public:
 	virtual ~Path();
 
 protected:
-	virtual std::string getStringInfo() const;
+	virtual std::string doToString() const;
 	virtual Path* doClone() const;
 };
 

@@ -73,7 +73,7 @@ void StringMessage::setTerminator(std::string terminator)
 
 std::string StringMessage::getString() const
 {
-	if (!getIsComplete())
+	if (!isDeserializingComplete())
 		throw Exception("getValue() called on incomplete StringMessage!");
 
 	return this->substr(0, this->length() - itsTerminator.length());
@@ -84,7 +84,7 @@ data_chunk StringMessage::doSerialize() const
 	return data_chunk(this->data(), this->data() + this->size());
 }
 
-void StringMessage::doFeed(const data_chunk& data)
+void StringMessage::doDeserializeChunk(const data_chunk& data)
 {
 	this->append(data.begin(), data.end());
 	size_t found = this->find(itsTerminator);
@@ -94,7 +94,7 @@ void StringMessage::doFeed(const data_chunk& data)
 		size_t remains_pos = found + itsTerminator.size();
 		data_chunk remains(this->begin() + remains_pos, this->end());
 		this->erase(this->begin() + remains_pos, this->end());
-		ClosePacking(remains);
+		DeserializingComplete(remains);
 		DBG << "Completed string with " << this->size()
 			<< "B (" << found << " + " << itsTerminator.size() << ")" << std::endl;
 	} else {
@@ -103,7 +103,7 @@ void StringMessage::doFeed(const data_chunk& data)
 	}
 }
 
-void StringMessage::doRestartPacking()
+void StringMessage::doDeserializingRestart()
 {
 	DBG << "Clearing StringMessage" << std::endl;
 	this->clear();

@@ -26,7 +26,7 @@ private:
 				osock::data_chunk unpacked;
 				CPPUNIT_ASSERT_EQUAL_MESSAGE("message shall successfully deserialize", true, m->Pack(data));
 				rest = m->getRemains();
-				unpacked = m->Unpack();
+				unpacked = m->Serialize();
 				unpacked.insert(unpacked.end(), rest.begin(), rest.end()); //unpacked = unpacked + remains
 				CPPUNIT_ASSERT_MESSAGE("unpacked message should equal data that was packed", unpacked == data);
 				data = rest;

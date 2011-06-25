@@ -43,14 +43,14 @@ HttpResponse::~HttpResponse()
 	DBG_DESTRUCTOR;
 }
 
-std::string HttpResponse::UnpackAsTag(std::string tag, std::string attr,
-		std::string tail)
+std::string HttpResponse::doToTag(std::string tag, std::string attr,
+		std::string tail) const
 {
-	return Message::UnpackAsTag(
+	return Message::doToTag(
 			tag,
 			attr,
-			tail + itsResponse.UnpackAsTag(tag, attr) + itsHeaders.UnpackAsTag(
-					tag, attr) + itsContent.UnpackAsTag(tag, attr));
+			tail + itsResponse.ToTag(tag, attr) + itsHeaders.ToTag(
+					tag, attr) + itsContent.ToTag(tag, attr));
 }
 
 const StringMessage& HttpResponse::getContent() const
@@ -89,23 +89,23 @@ data_chunk HttpResponse::doSerialize() const
 	const_cast<http::Header&>(getHeaderLength()).setHeadValue(to_string(getContent().length()));
 
 	DBG << "About to start unpacking" << std::endl;
-	data_chunk ret(itsResponse.Unpack());
+	data_chunk ret(itsResponse.Serialize());
 	DBG << "Unpacked itsResponse" << std::endl;
-	data_chunk tmph(itsHeaders.Unpack());
+	data_chunk tmph(itsHeaders.Serialize());
 	ret.insert(ret.end(), tmph.begin(), tmph.end());
 	DBG << "Unpacked itsHeaders" << std::endl;
-	data_chunk tmpc(itsContent.Unpack());
+	data_chunk tmpc(itsContent.Serialize());
 	ret.insert(ret.end(), tmpc.begin(), tmpc.end());
 	DBG << "Unpacked itsContent" << std::endl;
 	return ret;
 }
 
-void HttpResponse::doFeed(const data_chunk& data)
+void HttpResponse::doDeserializeChunk(const data_chunk& data)
 {
-	if (!itsResponse.getIsComplete()) {
-		if (itsResponse.Pack(data)) {
+	if (!itsResponse.isDeserializingComplete()) {
+		if (itsResponse.DeserializeChunk(data)) {
 			itsHeaders.AddLink(new http::Header());
-			doFeedHeaders(itsResponse.getRemains());
+			doFeedHeaders(itsResponse.getDeserializingRemains());
 		}
 	} else {
 		doFeedHeaders(data);
@@ -114,7 +114,7 @@ void HttpResponse::doFeed(const data_chunk& data)
 
 void HttpResponse::doFeedHeaders(const data_chunk& data)
 {
-	if (!itsHeaders.getIsComplete() && itsHeaders.Pack(data)) {
+	if (!itsHeaders.isDeserializingComplete() && itsHeaders.DeserializeChunk(data)) {
 		const http::Header& h =
 				dynamic_cast<const http::Header&> (itsHeaders.getLastLink());
 
@@ -124,17 +124,17 @@ void HttpResponse::doFeedHeaders(const data_chunk& data)
 			http::Header *hptr = new http::Header();
 			itsHeaders.AddLink(hptr);
 			DBG << "Got non empty header, waiting for another" << std::endl;
-			doFeedHeaders(itsHeaders.getRemains());
+			doFeedHeaders(itsHeaders.getDeserializingRemains());
 		}
-	} else if (itsHeaders.getIsComplete()) {
+	} else if (itsHeaders.isDeserializingComplete()) {
 		doFeedContent(data);
 	}
 }
 
 void HttpResponse::doFeedContent(const data_chunk& data)
 {
-	if (itsContent.getIsComplete()) {
-		ClosePacking(itsContent.getRemains());
+	if (itsContent.isDeserializingComplete()) {
+		DeserializingComplete(itsContent.getDeserializingRemains());
 	}
 }
 
@@ -154,7 +154,7 @@ void HttpResponse::doInitHeaders()
 		throw StdException("strfrtime() failed");
 	}
 
-	itsHeaders.RestartPacking();
+	itsHeaders.DeserializingRestart();
 
 	itsHeaders.AddLink(new http::Header("Date", datestr));
 	itsHeaders.AddLink(new http::Header("Content-Type", "text/html"));
@@ -164,12 +164,12 @@ void HttpResponse::doInitHeaders()
 	itsHeaders.LinksClose();
 }
 
-void HttpResponse::doRestartPacking()
+void HttpResponse::doDeserializingRestart()
 {
-	itsResponse.RestartPacking();
+	itsResponse.DeserializingRestart();
 	itsHeaders.DeleteAllLinks();
-	itsHeaders.RestartPacking();
-	itsContent.RestartPacking();
+	itsHeaders.DeserializingRestart();
+	itsContent.DeserializingRestart();
 }
 
 HttpResponse* HttpResponse::doClone() const
@@ -177,7 +177,7 @@ HttpResponse* HttpResponse::doClone() const
 	return new HttpResponse(*this);
 }
 
-std::string HttpResponse::getStringInfo() const
+std::string HttpResponse::doToString() const
 {
 	std::string s;
 	s += "response=" + itsResponse.getStatus().getStatus() + " headers_n="

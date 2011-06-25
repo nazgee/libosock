@@ -35,6 +35,7 @@ Logger::Logger(std::string logname, int loglevel) :
 {
 	if (loglevel == -1)
 		loglevel = LOGLEVEL;
+//		loglevel = logDebug;
 
 	getLoggers().insert(loggerDesc_t(logname, static_cast<logLevel>(loglevel)));
 }

@@ -45,11 +45,11 @@ Status::~Status()
 	DBG_DESTRUCTOR;
 }
 
-std::string Status::UnpackAsTag(std::string tag, std::string attr,
-		std::string tail)
+std::string Status::doToTag(std::string tag, std::string attr,
+		std::string tail) const
 {
-	return Message::UnpackAsTag(tag, attr,
-			tail + itsChain.UnpackAsTag(tag, attr));
+	return Message::doToTag(tag, attr,
+			tail + itsChain.ToTag(tag, attr));
 }
 
 std::string Status::getDescription(enum statusCode code)
@@ -93,20 +93,20 @@ const StringMessage& Status::getStatus() const
 data_chunk Status::doSerialize() const
 {
 	// it will throw, if called when not complete
-	return itsChain.Unpack();
+	return itsChain.Serialize();
 }
 
-void Status::doFeed(const data_chunk& data)
+void Status::doDeserializeChunk(const data_chunk& data)
 {
 	DBG << "Got " << data.size() << "B to pack" << std::endl;
-	if (itsChain.Pack(data)) {
-		ClosePacking(itsChain.getRemains());
+	if (itsChain.DeserializeChunk(data)) {
+		DeserializingComplete(itsChain.getDeserializingRemains());
 	}
 }
 
-void Status::doRestartPacking()
+void Status::doDeserializingRestart()
 {
-	itsChain.RestartPacking();
+	itsChain.DeserializingRestart();
 }
 
 Status* Status::doClone() const
@@ -114,7 +114,7 @@ Status* Status::doClone() const
 	return new Status(*this);
 }
 
-std::string Status::getStringInfo() const
+std::string Status::doToString() const
 {
 	std::string s;
 	s = "code=" + getCode() + "; status=" + getStatus()

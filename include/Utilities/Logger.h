@@ -48,7 +48,7 @@ struct NullStream: std::ostream
 class Logger
 {
 public:
-	typedef enum { logOff, logDebug, logInfo, logWarn, logError } logLevel;
+	typedef enum { logAll, logDebug, logInfo, logWarn, logError } logLevel;
 
 private:
 	typedef std::pair<std::string, logLevel> loggerDesc_t;

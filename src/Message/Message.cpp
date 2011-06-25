@@ -52,7 +52,7 @@ Message* Message::Clone() const
 	return doClone();
 }
 
-data_chunk Message::Unpack() const
+data_chunk Message::Serialize() const
 {
 	if (!isAllowed(MSG_ALLOWED_UNPACK))
 		throw Exception("Unpack() called on incomplete Message!");
@@ -60,18 +60,23 @@ data_chunk Message::Unpack() const
 	return doSerialize();
 }
 
-std::string Message::UnpackAsTag(std::string tag, std::string attr, std::string tail) const
+std::string Message::ToTag(std::string tag, std::string attr, std::string tail) const
 {
-	std::string value;
-	value += getAsTag(getMessageName(), TAG, ATTRNAME);
-	value += getAsTag(getStringInfo(), TAG, ATTRINFO);
-	value += getAsTag(Utils::DataToString(Unpack()), TAG, ATTRDATA);
-	value += getAsTag(tail,TAG, ATTRTAIL);
-
-	return getAsTag(value, tag, attr);
+	return doToTag(tag, attr, tail);
 }
 
-bool Message::Pack(const data_chunk& data)
+std::string Message::doToTag(std::string tag, std::string attr, std::string tail) const
+{
+	std::string value;
+	value += Utils::StringToTag(getName(), TAG, ATTRNAME);
+	value += Utils::StringToTag(doToString(), TAG, ATTRINFO);
+	value += Utils::StringToTag(Utils::DataToString(Serialize()), TAG, ATTRDATA);
+	value += Utils::StringToTag(tail,TAG, ATTRTAIL);
+
+	return Utils::StringToTag(value, tag, attr);
+}
+
+bool Message::DeserializeChunk(const data_chunk& data)
 {
 	if (!isAllowed(MSG_ALLOWED_PACK))
 		throw Exception("Pack() called when not allowed!");
@@ -80,36 +85,36 @@ bool Message::Pack(const data_chunk& data)
 		return false;
 	}
 
-	if (getIsComplete()) {
-		RestartPacking();
+	if (isDeserializingComplete()) {
+		DeserializingRestart();
 	}
 
-	doFeed(data);
+	doDeserializeChunk(data);
 
-	if (getIsComplete()) {
+	if (isDeserializingComplete()) {
 		NFO << "Packed!"
 						<< "; REST" << Utils::DataToString(itsRemains)
-						<< "; INFO: " << getStringInfo() << std::endl;
+						<< "; INFO: " << doToString() << std::endl;
 	}
 
-	return getIsComplete();
+	return isDeserializingComplete();
 }
 
-void Message::RestartPacking()
+void Message::DeserializingRestart()
 {
-	doRestartPacking();
+	doDeserializingRestart();
 	itsRemains.clear();
 	clearAllowed(MSG_ALLOWED_UNPACK);
 }
 
-void Message::ClosePacking(const data_chunk& remains)
+void Message::DeserializingComplete(const data_chunk& remains)
 {
 	itsRemains = remains;
 	setAllowed(MSG_ALLOWED_UNPACK);
 	setAllowed(MSG_ALLOWED_REMAINS);
 }
 
-void Message::ExtendPacking()
+void Message::SerializingExtend()
 {
 	if (isAllowed(MSG_ALLOWED_REMAINS)) {
 		DBG << "Pack() allowed, but prepend new data with Remains!" << std::endl;
@@ -119,31 +124,22 @@ void Message::ExtendPacking()
 	clearAllowed(MSG_ALLOWED_UNPACK);
 }
 
-const std::string& Message::getMessageName() const
+const std::string& Message::getName() const
 {
 	return itsMessageName;
 }
 
-std::string Message::getAsTag(std::string value, std::string tag, std::string attr)
-{
-	if (tag.length()) {
-		return std::string("<" + tag + " " + attr + ">" + value + "</" + tag + ">" + http::NEWLINE );
-	} else {
-		return value;
-	}
-}
-
-std::string Message::getStringInfo() const
+std::string Message::doToString() const
 {
 	return "?";
 }
 
-bool Message::getIsComplete() const
+bool Message::isDeserializingComplete() const
 {
 	return isAllowed(MSG_ALLOWED_UNPACK);
 }
 
-const data_chunk& Message::getRemains()
+const data_chunk& Message::getDeserializingRemains()
 {
 	if (!isAllowed(MSG_ALLOWED_REMAINS)) {
 		WRN << "Why are you trying to read Remains (again)?" << std::endl;

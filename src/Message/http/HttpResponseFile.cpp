@@ -58,7 +58,7 @@ void HttpResponseFile::InitContent(std::string filename)
 
 	std::copy(std::istreambuf_iterator<char>(itsIFile),
 			std::istreambuf_iterator<char>(), itsContent.begin());
-	DBG << "Content of the file=" << getContent().UnpackAsTag();
+	DBG << "Content of the file=" << getContent();
 }
 
 HttpResponseFile* HttpResponseFile::doClone() const

@@ -26,7 +26,7 @@ Protocole::~Protocole()
 	DBG_DESTRUCTOR;
 }
 
-std::string Protocole::getStringInfo() const
+std::string Protocole::doToString() const
 {
 	std::string s;
 	s += "protocole=" + this->getString();

@@ -78,7 +78,7 @@ BIO* Socket::GetBIO() const
 
 int Socket::Send(Message& message) const
 {
-	data_chunk buf(message.Unpack());
+	data_chunk buf(message.Serialize());
 
 	int bytes = buf.size();
 	int i, off = 0;
@@ -110,12 +110,12 @@ int Socket::Receive(Message& message, int timeout_ms)
 	data_chunk tempData(chunkSize);
 
 	DBG << "Getting message ready for Pack()" << std::endl;
-	message.RestartPacking();
+	message.DeserializingRestart();
 	DBG << "Remains from previous read:" << Utils::DataToString(itsRemainsOfData)
 			<< std::endl;
 
 	SSLWrap::BIO_set_read_tmo(GetBIO(), timeout_ms);
-	if (!message.Pack(itsRemainsOfData)) {
+	if (!message.DeserializeChunk(itsRemainsOfData)) {
 		DBG << "Waiting for message" << std::endl;
 		do {
 			//XXX: optimize this loop
@@ -144,12 +144,12 @@ int Socket::Receive(Message& message, int timeout_ms)
 			tempData.resize(rxedNumber);
 			DBG << "data_RX" << Utils::DataToString(tempData) << std::endl;
 
-			//try to Pack() data that was just received
-		} while (!message.Pack(tempData));
+			//try to DeserializeChunk() data that was just received
+		} while (!message.DeserializeChunk(tempData));
 	}
 
 	// Store remainings for future use
-	itsRemainsOfData = message.getRemains();
+	itsRemainsOfData = message.getDeserializingRemains();
 	DBG << "DONE! Remains from current read:" << Utils::DataToString(
 			itsRemainsOfData) << std::endl;
 

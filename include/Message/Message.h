@@ -42,6 +42,7 @@ private:
 	msg_state itsState;
 	std::string itsMessageName;
 
+	// TODO make it a single and nice looking class, serving flags
 	bool isAllowed(msg_state flag) const { return ((itsState & flag) == flag); }
 	void setAllowed(msg_state flag) { int s = itsState; s |= static_cast<int>(flag); itsState = static_cast<msg_state>(s);}
 	void clearAllowed(msg_state flag) { int s = itsState; s &= ~static_cast<int>(flag); itsState = static_cast<msg_state>(s);}
@@ -53,15 +54,45 @@ protected:
 public:
 	Message(std::string name = "Message");
 	virtual ~Message(void);
-
+	/**
+	 * @brief Returns clone of the Message
+	 *
+	 * It is used to allow containers cloning.
+	 * @return Clone of this Message
+	 * @note Relies on doClone() to do it's job
+	 */
 	Message* Clone() const;
-	data_chunk Unpack() const;
-	virtual std::string UnpackAsTag(std::string tag = Message::TAG, std::string attr = Message::ATTRBODY, std::string tail = "") const;
-	bool Pack(const data_chunk& data);
-	void RestartPacking();
-	bool getIsComplete() const;
-	const data_chunk& getRemains();
-	const std::string& getMessageName() const;
+	/**
+	 * @brief Converts Message into chunk of data that can be send
+	 * @return Chunk of data containing deserialized message
+	 * @note Relies on doSerialize() to do it's job
+	 */
+	data_chunk Serialize() const;
+	/**
+	 * @brief Used to feed Message with chunk of data to be used to deserialize
+	 * message
+	 * @param data Chunk of data to be used for deserialization
+	 * @return @c true if message is fully deserialized and does not need
+	 * additional data chunks, @c false otherwise (i.e. Message needs more data
+	 * in order fo finish deserialization)
+	 * @note Relies on doDeserializeChunk() to do it's job
+	 */
+	bool DeserializeChunk(const data_chunk& data);
+	/**
+	 * @brief Stops current deserialization and allows to start over
+	 * @note Relies on doDeserializingRestart() to do it's job
+	 */
+	void DeserializingRestart();
+	/**
+	 * @brief Returns true if message is completely deserialized
+	 * @return @c true if message is fully deserialized, @c false otherwise (i.e.
+	 * deserialization is in progress)
+	 */
+	bool isDeserializingComplete() const;
+	const data_chunk& getDeserializingRemains();
+	const std::string& getName() const;
+	// TODO add class Tag, that would makes A LOT things more sexy and clean
+	std::string ToTag(std::string tag, std::string attr, std::string tail = "") const;
 
 	static const std::string ATTRBODY;
 	static const std::string ATTRNAME;
@@ -77,44 +108,41 @@ protected:
 	 * eventually deserialize istelf using provided data chunks
 	 * @param remains Remainin data, that was not used during de
 	 */
-	void ClosePacking(const data_chunk& remains);
+	void DeserializingComplete(const data_chunk& remains);
 	/**
 	 * @brief Marks Message as not fully deserialized
 	 */
-	void ExtendPacking();
+	void SerializingExtend();
 	/**
-	 * @brief Returns xml/html represenatation of a message
+	 * @brief Implement it to allow restarting of deserialization
 	 *
-	 * Uses getStringInfo() to generate contents of the returned std::string
-	 * @return std::string being xml/html represenatation of a message
+	 * After this message is called, internal serialization/deserialization
+	 * logic of the message should be reset. As a result, doDeserializeChunk()
+	 * should consider next data chunk as beginning of the Message, and
+	 * doSerialize() should allow immediate deserialization.
 	 */
-	static std::string getAsTag(std::string value, std::string tag = "", std::string attr = "");
+	virtual void doDeserializingRestart() = 0;
 	/**
-	 * @brief Returns std::string represenatation of a message (used for debugging)
-	 * @return std::string represenatation of a message
-	 */
-	virtual std::string getStringInfo() const;
-	/**
-	 * @brief Returns data_chunk representing serialized Message
+	 * @brief Implement it to return data_chunk representing serialized Message
 	 *
 	 * Data chunk returned by this message should represent whole Message, and
-	 * allow immediate deserialization when given to doFeed(). This will be data
+	 * allow immediate deserialization when given to doDeserializeChunk(). This will be data
 	 * chunk sent when Socket::Send() method will be used.
 	 *
 	 * @note This method will NOT be called if message is in a middle of
-	 * deserialization (using doFeed())
+	 * deserialization (using doDeserializeChunk())
 	 *
 	 * @return Serialized message
 	 */
 	virtual data_chunk doSerialize() const = 0;
 	/**
-	 * @brief Feeds Message with data to be used for deserialization
+	 * @brief Implement it to accept data to be used for deserialization
 	 *
-	 * This method is called from Pack() whenever new data_chunk arrives.
+	 * This method is called from DeserializeChunk() whenever new data_chunk arrives.
 	 * Consecutive chunks of data will be delivered until message will not
 	 * mark itself as deserialized. Moreover, all extra data that was not used
 	 * during message deserialization should be returned. Marking message as
-	 * serialized and returning unused data is done in a single call to ClosePacking().
+	 * serialized and returning unused data is done in a single call to DeserializingComplete().
 	 *
 	 * @param data Contains data (possibly partial) that should be used
 	 * during deserialization of the Message.
@@ -122,24 +150,25 @@ protected:
 	 * might be needed to fully deserialize Message. Single data chunk can
 	 * contain only a part of, whole, or multiple Messages.
 	 */
-	virtual void doFeed(const data_chunk& data) = 0;
+	virtual void doDeserializeChunk(const data_chunk& data) = 0;
 	/**
-	 * @brief Called when internal state of the message should be cleared
+	 * @brief Implement it to returns clone of the Message
 	 *
-	 * After this message is called, internal serialization/deserialization
-	 * logic of the message should be reset. As a result, doFeed() should treat
-	 * next data chunk as beginning of the Message, and
-	 * doSerialize() should allow immediate deserialization.
-	 */
-	virtual void doRestartPacking() = 0;
-	/**
-	 * @brief Returns clone of the Message
-	 *
-	 * It is used to allow containers cloning. Often default copy constructor
-	 * can be called here, but someteimes it has to be overriden.
+	 * Used to allow cloning containers that contain Messages. Usually default
+	 * copy constructor can be used to create a new clone.
 	 * @return Clone of this Message
 	 */
 	virtual Message* doClone() const = 0;
+	/**
+	 * @brief Implement it to return std::string represenatation of a message (used for debugging)
+	 * @return std::string represenatation of a message
+	 */
+	virtual std::string doToString() const;
+	/**
+	 * @brief Implement it to return Tag represenatation of a message (used for debugging/presentation)
+	 * @return Tag represenatation of a message
+	 */
+	virtual std::string doToTag(std::string tag, std::string attr, std::string tail = "") const;
 };
 
 /**
