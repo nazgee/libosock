@@ -117,7 +117,7 @@ Status* Status::doClone() const
 std::string Status::doToString() const
 {
 	std::string s;
-	s = "code=" + getCode() + "; status=" + getStatus()
+	s = "code=" + getCode().getString() + "; status=" + getStatus().getString()
 			+ ";";
 	return s;
 }
