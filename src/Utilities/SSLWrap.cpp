@@ -154,7 +154,9 @@ namespace SSLWrap
 		else
 			l = BIO_set_close(b, BIO_CLOSE);
 
-		DBG_FUNC <<  "( b=" << b << ", f=" << f << " ) : " << l << std::endl;
+		std::string res;
+		res = (f == BIO_NOCLOSE)?"NOCLOSE":"CLOSE";
+		DBG_FUNC <<  "( b=" << b << ", f=" << res << " ) : " << l << std::endl;
 
 		if (l != 1)
 			throw_SSL("BIO_set_close failed!");
