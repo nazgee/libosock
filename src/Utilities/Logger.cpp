@@ -37,16 +37,20 @@ Logger::Logger(std::string logname, int loglevel) :
 		loglevel = LOGLEVEL;
 //		loglevel = logDebug;
 
-	getLoggers().insert(loggerDesc_t(logname, static_cast<logLevel>(loglevel)));
+	logConfig config;
+	config.CurrentLevel = static_cast<logLevel>(loglevel);
+	config.DefaultLevel = static_cast<logLevel>(loglevel);
+
+	getLoggers().insert(loggerDesc_t(logname, config));
 }
 
 Logger::~Logger()
 {
 }
 
-std::map<std::string, Logger::logLevel>& Logger::getLoggers()
+std::map<std::string, Logger::logConfig>& Logger::getLoggers()
 {
-	static std::map<std::string, logLevel>* loggersDescs = new std::map<std::string, logLevel>();
+	static std::map<std::string, Logger::logConfig>* loggersDescs = new std::map<std::string, Logger::logConfig>();
 	return *loggersDescs;
 }
 
@@ -56,17 +60,54 @@ NullStream& Logger::getNullStream()
 	return *nstream;
 }
 
+void Logger::ForceLoglevel(logLevel level)
+{
+	std::map<std::string, logConfig>::iterator it;
+	it = getLoggers().begin();
+
+	for (; it != getLoggers().end(); ++it) {
+		(*it).second.CurrentLevel = level;
+	}
+}
+
+void Logger::ForceLoglevel(logLevel level, std::string module)
+{
+	std::map<std::string, logConfig>::iterator it;
+	it = getLoggers().find(module);
+	assert(it != getLoggers().end());
+	(*it).second.CurrentLevel = level;
+}
+
+void Logger::RestoreLoglevel()
+{
+	std::map<std::string, logConfig>::iterator it;
+	it = getLoggers().begin();
+
+	for (; it != getLoggers().end(); ++it) {
+		(*it).second.CurrentLevel = (*it).second.DefaultLevel;
+	}
+}
+
+void Logger::RestoreLoglevel(std::string module)
+{
+	std::map<std::string, logConfig>::iterator it;
+	it = getLoggers().find(module);
+	assert(it != getLoggers().end());
+	(*it).second.CurrentLevel = (*it).second.DefaultLevel;
+
+}
+
 std::ostream& Logger::out(logLevel loglevel)
 {
-	std::map<std::string, logLevel>::const_iterator it;
+	std::map<std::string, logConfig>::const_iterator it;
 
 	//XXX consecutive accesses to map can result in data corruption if we were rescheduled
 	it = getLoggers().find(itsLogname);
 	assert(it != getLoggers().end());
 
-//	std::cout << to_string(loglevel) << "/" << to_string((*it).second) << " " << itsLogname << std::endl;
+//	std::cout << to_string(loglevel) << "/" << to_string((*it).second.CurrentLevel) << " " << itsLogname << std::endl;
 
-	if(loglevel < (*it).second) {
+	if(loglevel < (*it).second.CurrentLevel) {
 		return getNullStream();
 	} else {
 		if (loglevel <= logInfo)

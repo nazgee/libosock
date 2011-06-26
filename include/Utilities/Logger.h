@@ -49,16 +49,20 @@ class Logger
 {
 public:
 	typedef enum { logAll, logDebug, logInfo, logWarn, logError } logLevel;
+	typedef struct {
+		logLevel CurrentLevel;
+		logLevel DefaultLevel;
+	} logConfig;
 
 private:
-	typedef std::pair<std::string, logLevel> loggerDesc_t;
+	typedef std::pair<std::string, logConfig> loggerDesc_t;
 	std::string itsLogname;
 	/**
 	 * @brief Protects us from static initialization fiasco- Logger objects can
 	 * be created stati, despite having static field
 	 * @return Instance of loggers description map
 	 */
-	static std::map<std::string, logLevel>& getLoggers();
+	static std::map<std::string, logConfig>& getLoggers();
 	/**
 	 * @brief Protects us from static initialization fiasco- Logger objects can
 	 * be created stati, despite having static field
@@ -70,6 +74,10 @@ public:
 	Logger(std::string logname, int logelvel = -1);
 	virtual ~Logger();
 
+	static void ForceLoglevel(logLevel level);
+	static void ForceLoglevel(logLevel level, std::string module);
+	static void RestoreLoglevel();
+	static void RestoreLoglevel(std::string);
 	std::ostream& out(logLevel loglevel);
 };
 //=============================================================================
