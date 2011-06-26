@@ -37,30 +37,27 @@ static osock::Logger logger("Socket");
 namespace osock
 {
 Socket::Socket(BIO* bio) :
-	itsSD(-1), itsSecurity(new Security(bio))
+	itsSecurity(new Security(bio))
 {
-	BIO_get_fd(GetBIO(), &itsSD);
 	DBG_CONSTRUCTOR;
 }
 
 Socket::Socket(Security* security) :
-	itsSD(-1), itsSecurity(security)
+	itsSecurity(security)
 {
 	assert(itsSecurity != NULL);
-	BIO_get_fd(GetBIO(), &itsSD);
-
 	DBG_CONSTRUCTOR;
 }
 
 Socket::Socket(Socket& sock)
 {
-	int err;
-	socklen_t size = sizeof(err);
+	WRN << "TO BE VERIFIED!";
 
-	if (getsockopt(itsSD, SOL_SOCKET, SO_ERROR, &err, &size) != 0)
-		throw StdException("Socket error");
-	if ((itsSD = dup(sock.itsSD)) < 0)
+	int sd;
+	if ((sd = dup(sock.GetSD())) < 0)
 		throw StdException("Can't copy socket");
+
+	itsSecurity = new Security(BIO_new_fd(sd, BIO_NOCLOSE));
 
 	DBG_CONSTRUCTOR;
 }
@@ -111,8 +108,8 @@ int Socket::Receive(Message& message, int timeout_ms)
 
 	DBG << "Getting message ready for Pack()" << std::endl;
 	message.DeserializingRestart();
-	DBG << "Remains from previous read:" << Utils::DataToString(itsRemainsOfData)
-			<< std::endl;
+	DBG << "Remains from previous read:" << Utils::DataToString(
+			itsRemainsOfData) << std::endl;
 
 	SSLWrap::BIO_set_read_tmo(GetBIO(), timeout_ms);
 	if (!message.DeserializeChunk(itsRemainsOfData)) {
@@ -131,9 +128,9 @@ int Socket::Receive(Message& message, int timeout_ms)
 						throw Exception("Read timeout!");
 					}
 
-					NFO << "Sleeping before retrying; ret="
-							<< to_string(rxedNumber) << "errno="
-							<< to_string(errno) << std::endl;
+					NFO << "Sleeping before retrying; ret=" << to_string(
+							rxedNumber) << "errno=" << to_string(errno)
+							<< std::endl;
 					sleep(1); //XXX is sleeping here really needed?!
 					tempData.clear();
 					continue;
@@ -158,7 +155,8 @@ int Socket::Receive(Message& message, int timeout_ms)
 
 std::ostream& operator <<(std::ostream &os, const Socket *obj)
 {
-	os << (void*) obj << " itsBIO=" << obj->GetBIO() << " itsSD=" << obj->itsSD;
+	os << (void*) obj << " itsBIO=" << obj->GetBIO() << " itsSD="
+			<< obj->GetSD();
 	return os;
 }
 

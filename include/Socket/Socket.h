@@ -35,13 +35,17 @@ class Security;
 class Socket
 {
 private:
-	int itsSD;
 	Security* itsSecurity;
 	data_chunk itsRemainsOfData;
 
 protected:
 	BIO* GetBIO() const;
-	int GetSD() { return itsSD; }
+	int GetSD() const
+	{
+		int sd;
+		BIO_get_fd(GetBIO(), &sd);
+		return sd;
+	}
 
 public:
 	Socket(BIO* bio);
