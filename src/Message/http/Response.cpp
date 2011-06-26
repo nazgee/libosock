@@ -86,7 +86,8 @@ std::string Response::doToString() const
 {
 	std::string s;
 	s = "protocole=" + getProtocole().getString()
-	+ "; status=" + getStatus().getCode() + ", " + getStatus().getStatus() + ";";
+	+ "; status=" + getStatus().getCode().getString()
+	+ ", " + getStatus().getStatus().getString() + ";";
 	return s;
 }
 
