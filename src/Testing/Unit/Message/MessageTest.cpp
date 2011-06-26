@@ -5,7 +5,7 @@
  *      Author: nazgee
  */
 
-#include <Testing/Message/MessageTest.h>
+#include <Testing/Unit/Message/MessageTest.h>
 
 class MessageTest_http_Header: public MessageTest
 {
