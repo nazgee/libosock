@@ -48,6 +48,16 @@ public:
 	 * @param Client Socket of client to be served
 	 */
 	virtual void Serve(Socket& Client) = 0;
+	/**
+	 * @brief Collects return codes of child-processess, to prevent zombies
+	 * @param n
+	 */
+	static void ChildReaper(int n);
+	/**
+	 * @brief Installs children reaper, that should prevent zombies creation
+	 * @param reaper
+	 */
+	static void InstallChildReaper(void (*reaper)(int) = ChildReaper);
 private:
 	SocketServer* itsSocketServer;
 };

@@ -17,6 +17,8 @@
 	along with libsockets.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <wait.h>
+#include <signal.h>
 
 #include <Socket/SocketServer.h>
 #include <Server/Server.h>
@@ -58,6 +60,18 @@ void Server::Run()
 		DBG << "Serving " << client << " done!" << std::endl;
 		exit(0);
 	}
+}
+
+void Server::ChildReaper(int n)
+{
+	wait3(NULL, WNOHANG, NULL);
+	std::cout << "I'd just ripped one of your children- bye bye, daddy!" << std::endl;
+}
+
+void Server::InstallChildReaper(void (*reaper)(int))
+{
+	// Prevent zombies creation
+	signal(SIGCHLD, reaper);
 }
 
 } //namespace osock
