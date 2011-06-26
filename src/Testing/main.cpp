@@ -17,6 +17,8 @@
 #include <cppunit/TextOutputter.h>
 #include <cppunit/extensions/TestFactoryRegistry.h>
 
+#include <osock.h>
+
 int main(int ac, char **av)
 {
 	//--- Create the event manager and test controller
@@ -38,7 +40,10 @@ int main(int ac, char **av)
 	CPPUNIT_NS::TextUi::TestRunner runner;
 	runner.addTest(CPPUNIT_NS::TestFactoryRegistry::getRegistry(
 					Utils::getSuiteNameUnit()).makeTest());
+
+	osock::Logger::ForceLoglevel((osock::Logger::logLevel)atoi(av[1]));
 	runner.run(controller);
+
 
 	if (result.wasSuccessful()) {
 		std::cout << "No failures encountered- nice one!" << std::endl;
