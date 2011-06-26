@@ -20,6 +20,7 @@
 #ifndef LIBSOCKETS_H_
 #define LIBSOCKETS_H_
 
+#include "Utilities/Logger.h"
 #include "Socket/SocketServerSSL.h"
 #include "Socket/SocketServerUnsafe.h"
 #include "Socket/SocketClientSSL.h"
@@ -33,5 +34,6 @@
 #include "Message/http/HttpResponse.h"
 #include "Message/http/HttpResponseFile.h"
 #include "Server/Server.h"
+#include "Server/ServerEcho.h"
 
 #endif /* LIBSOCKETS_H_ */

@@ -97,6 +97,60 @@ void Logger::RestoreLoglevel(std::string module)
 
 }
 
+
+std::string Logger::StripPrettyFunction(const char* fname)
+{
+	// e.g.: std::ostream& osock::Logger::out(osock::Logger::logLevel);
+	std::string name(fname);
+	// get rid of space
+	name = name.substr(name.find(' '));
+	// get rid of arguments
+	name = name.erase(name.find('('));
+	return name;
+}
+
+std::string Logger::doGetClassName(std::string name)
+{
+	// e.g.: osock::Logger*
+	// get rid of '*'
+	name.erase(name.find('*'));
+	//strip out all namespaces
+	for(size_t pos = name.find("::"); pos != std::string::npos; pos = name.find("::")) {
+		name = name.substr(pos + 2);
+	}
+	return name;
+}
+
+std::string Logger::doTrim(std::string s, unsigned int w)
+{
+	if (s.length() > w) {
+		s = s.substr(s.length() - w + 3);
+		s = "..." + s;
+	}
+
+	return s;
+}
+
+std::ostream& Logger::doPrint(logLevel loglevel, const char* func, std::string c)
+{
+	std::string m = doTrim(func, wMeth);
+	c = doTrim(c, wClass);
+
+	return out(loglevel) << "<" << std::setw(wClass) << std::right << c
+			<< "::" << std::setw(wMeth) << std::left << m << "> ";
+}
+
+std::ostream& Logger::out(logLevel loglevel, const char* func)
+{
+	std::string f = doTrim(func, wFunc);
+	unsigned int pad = wFunc - f.length();
+	unsigned int beg = (pad / 2);
+	unsigned int end = (pad / 2) + (pad % 2);
+	return out(loglevel)<< std::setw(beg + 1) << std::left << "<"
+						<< f
+						<< std::setw(end + 2) << std::right << "> ";
+}
+
 std::ostream& Logger::out(logLevel loglevel)
 {
 	std::map<std::string, logConfig>::const_iterator it;
@@ -105,15 +159,18 @@ std::ostream& Logger::out(logLevel loglevel)
 	it = getLoggers().find(itsLogname);
 	assert(it != getLoggers().end());
 
-//	std::cout << to_string(loglevel) << "/" << to_string((*it).second.CurrentLevel) << " " << itsLogname << std::endl;
+//	std::cout << "YYY "<< ExtractClass(this)
+//			<< "FFF " << __func__ << std::endl;
+//			<< "XXX " << SimplifyFuncname(__PRETTY_FUNCTION__) << std::endl;
 
+//	std::cout <<  ti << std::endl;
 	if(loglevel < (*it).second.CurrentLevel) {
 		return getNullStream();
 	} else {
 		if (loglevel <= logInfo)
-			return std::cout << getpid() << " ";
+			return std::cout << getpid() << " " ;
 		else
-			return std::cerr << getpid() << " ";
+			return std::cerr << getpid() << " " ;
 	}
 }
 }

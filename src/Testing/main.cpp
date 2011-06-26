@@ -41,7 +41,9 @@ int main(int ac, char **av)
 	runner.addTest(CPPUNIT_NS::TestFactoryRegistry::getRegistry(
 					Utils::getSuiteNameUnit()).makeTest());
 
-	osock::Logger::ForceLoglevel((osock::Logger::logLevel)atoi(av[1]));
+	osock::Server::InstallChildReaper();
+	if (ac > 1)
+		osock::Logger::ForceLoglevel((osock::Logger::logLevel)atoi(av[1]));
 	runner.run(controller);
 
 

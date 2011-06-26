@@ -37,20 +37,20 @@ namespace SSLWrap
 	{
 		SSL_CTX* ctx;
 		ctx = ::SSL_CTX_new(meth);
-		DBG_FUNC_NOLINE <<  "( meth=" << (void*) meth << " ) : " << (void*)ctx << std::endl;
+		DBG_FUNC <<  "( meth=" << (void*) meth << " ) : " << (void*)ctx << std::endl;
 		return ctx;
 	}
 
 	void SSL_CTX_free(SSL_CTX *ctx)
 	{
 		::SSL_CTX_free(ctx);
-		DBG_FUNC_NOLINE <<  "( ctx=" << (void*)ctx << " ) : void" << std::endl;
+		DBG_FUNC <<  "( ctx=" << (void*)ctx << " ) : void" << std::endl;
 	}
 
 	SSL *SSL_new(SSL_CTX *ctx)
 	{
 		SSL* ssl = ::SSL_new(ctx);
-		DBG_FUNC_NOLINE <<  "( ctx=" << (void*)ctx << " ) : " << ssl << std::endl;
+		DBG_FUNC <<  "( ctx=" << (void*)ctx << " ) : " << ssl << std::endl;
 		return ssl;
 	}
 
@@ -69,32 +69,32 @@ namespace SSLWrap
 	void SSL_set_bio(SSL *s, BIO *rbio, BIO *wbio)
 	{
 		::SSL_set_bio(s, rbio, wbio);
-		DBG_FUNC_NOLINE <<  "( ssl=" << s << ", rbio=" << rbio << ", wbio=" << wbio <<" ) : void" << std::endl;
+		DBG_FUNC <<  "( ssl=" << s << ", rbio=" << rbio << ", wbio=" << wbio <<" ) : void" << std::endl;
 	}
 
 	void SSL_CTX_set_default_passwd_cb(SSL_CTX *ctx, pem_password_cb *cb)
 	{
 		::SSL_CTX_set_default_passwd_cb(ctx, cb);
-		DBG_FUNC_NOLINE <<  "( ctx=" << (void*)ctx << ", cb=" << (void*)cb << " ) : void" << std::endl;
+		DBG_FUNC <<  "( ctx=" << (void*)ctx << ", cb=" << (void*)cb << " ) : void" << std::endl;
 	}
 
 	void SSL_CTX_set_default_passwd_cb_userdata(SSL_CTX *ctx, void *u)
 	{
 		::SSL_CTX_set_default_passwd_cb_userdata(ctx, u);
-		DBG_FUNC_NOLINE <<  "( ctx=" << (void*) ctx << ", u=" << u << " ) : void" << std::endl;
+		DBG_FUNC <<  "( ctx=" << (void*) ctx << ", u=" << u << " ) : void" << std::endl;
 	}
 
 	void SSL_set_mode_(SSL* ssl, int mode)
 	{
 		::SSL_set_mode(ssl, mode);
-		DBG_FUNC_NOLINE <<  "( ssl=" << ssl << ", mode=" << mode <<" ) : " << std::endl;
+		DBG_FUNC <<  "( ssl=" << ssl << ", mode=" << mode <<" ) : " << std::endl;
 	}
 
 	BIO *BIO_new_ssl(SSL_CTX *ctx,int client)
 	{
 		BIO* b;
 		b = ::BIO_new_ssl(ctx, client);
-		DBG_FUNC_NOLINE <<  "( ctx=" << (void*) ctx << ", client=" << client <<" ) : " << (void*)b << std::endl;
+		DBG_FUNC <<  "( ctx=" << (void*) ctx << ", client=" << client <<" ) : " << (void*)b << std::endl;
 		return b;
 	}
 
@@ -102,7 +102,7 @@ namespace SSLWrap
 	{
 		BIO* b;
 		b = ::BIO_new_ssl_connect(ctx);
-		DBG_FUNC_NOLINE <<  "( ctx=" << (void*) ctx <<" ) : " << (void*)b << std::endl;
+		DBG_FUNC <<  "( ctx=" << (void*) ctx <<" ) : " << (void*)b << std::endl;
 		return b;
 	}
 
@@ -110,7 +110,7 @@ namespace SSLWrap
 	{
 		BIO* b;
 		b = ::BIO_new_connect(host);
-		DBG_FUNC_NOLINE <<  "( host=" << host <<" ) : " << (void*)b << std::endl;
+		DBG_FUNC <<  "( host=" << host <<" ) : " << (void*)b << std::endl;
 		return b;
 	}
 
@@ -118,7 +118,7 @@ namespace SSLWrap
 	{
 		BIO* b;
 		b = ::BIO_new_accept(host_port);
-		DBG_FUNC_NOLINE <<  "( host_port=" << host_port << " ) : " << (void*)b << std::endl;
+		DBG_FUNC <<  "( host_port=" << host_port << " ) : " << (void*)b << std::endl;
 		return b;
 	}
 
@@ -126,7 +126,7 @@ namespace SSLWrap
 	{
 		BIO* bret;
 		bret = ::BIO_push(b, append);
-		DBG_FUNC_NOLINE <<  "( b=" << b << ", app=" << append << " ) : " << (void*)bret << std::endl;
+		DBG_FUNC <<  "( b=" << b << ", app=" << append << " ) : " << (void*)bret << std::endl;
 		return bret;
 	}
 
@@ -134,7 +134,7 @@ namespace SSLWrap
 	{
 		BIO* bret;
 		bret = ::BIO_pop(b);
-		DBG_FUNC_NOLINE <<  "( b=" << b << " ) : " << (void*)bret << std::endl;
+		DBG_FUNC <<  "( b=" << b << " ) : " << (void*)bret << std::endl;
 		if (bret == NULL)
 			throw_SSL("BIO_pop failed");
 		return bret;
@@ -143,7 +143,7 @@ namespace SSLWrap
 	void BIO_set_conn_hostname_(BIO *b, const char* hostname)
 	{
 		::BIO_set_conn_hostname(b, hostname);
-		DBG_FUNC_NOLINE << "( b=" << b << ", host=" << hostname << " ) : " << std::endl;
+		DBG_FUNC << "( b=" << b << ", host=" << hostname << " ) : " << std::endl;
 	}
 
 	void BIO_set_close_(BIO* b, int f)
@@ -154,7 +154,7 @@ namespace SSLWrap
 		else
 			l = BIO_set_close(b, BIO_CLOSE);
 
-		DBG_FUNC_NOLINE <<  "( b=" << b << ", f=" << f << " ) : " << l << std::endl;
+		DBG_FUNC <<  "( b=" << b << ", f=" << f << " ) : " << l << std::endl;
 
 		if (l != 1)
 			throw_SSL("BIO_set_close failed!");
@@ -163,14 +163,14 @@ namespace SSLWrap
 	long BIO_do_handshake_(BIO* b)
 	{
 		long l = ::BIO_do_handshake(b);
-		DBG_FUNC_NOLINE <<  "( b=" << b << " ) : " << l << std::endl;
+		DBG_FUNC <<  "( b=" << b << " ) : " << l << std::endl;
 		return l;
 	}
 
 	void BIO_do_accept_(BIO* b)
 	{
 		long l = ::BIO_do_accept(b);
-		DBG_FUNC_NOLINE <<  "( b=" << b << " ) : " << l << std::endl;
+		DBG_FUNC <<  "( b=" << b << " ) : " << l << std::endl;
 		if (l<=0) {
 			throw_SSL("BIO_do_accept failed");
 		}
@@ -179,14 +179,14 @@ namespace SSLWrap
 	long BIO_set_accept_bios_(BIO* b, BIO* bio)
 	{
 		long l = ::BIO_set_accept_bios(b, bio);
-		DBG_FUNC_NOLINE <<  "( b=" << b << ", bio=" << bio << " ) : " << l << std::endl;
+		DBG_FUNC <<  "( b=" << b << ", bio=" << bio << " ) : " << l << std::endl;
 		return l;
 	}
 
 	long BIO_get_ssl_(BIO* b, SSL** ssl)
 	{
 		long l = ::BIO_get_ssl(b, ssl);
-		DBG_FUNC_NOLINE <<  "( b=" << b << ", *ssl=" << *ssl << " ) : " << l << std::endl;
+		DBG_FUNC <<  "( b=" << b << ", *ssl=" << *ssl << " ) : " << l << std::endl;
 		return l;
 	}
 
@@ -194,7 +194,7 @@ namespace SSLWrap
 	{
 		SSL_METHOD *m;
 		m = ::TLSv1_server_method();
-		DBG_FUNC_NOLINE <<  "() : " << (void*)m << std::endl;
+		DBG_FUNC <<  "() : " << (void*)m << std::endl;
 		return m;
 	}
 
@@ -202,7 +202,7 @@ namespace SSLWrap
 	{
 		SSL_METHOD *m;
 		m = ::SSLv2_server_method();
-		DBG_FUNC_NOLINE <<  "() : " << (void*)m << std::endl;
+		DBG_FUNC <<  "() : " << (void*)m << std::endl;
 		return m;
 	}
 
@@ -210,7 +210,7 @@ namespace SSLWrap
 	{
 		SSL_METHOD *m;
 		m = ::SSLv3_server_method();
-		DBG_FUNC_NOLINE << "SSLv3_server_method() : " << (void*)m << std::endl;
+		DBG_FUNC << "SSLv3_server_method() : " << (void*)m << std::endl;
 		return m;
 	}
 
@@ -218,40 +218,40 @@ namespace SSLWrap
 	{
 		SSL_METHOD *m;
 		m = ::SSLv23_server_method();
-		DBG_FUNC_NOLINE <<  "() : " << (void*)m << std::endl;
+		DBG_FUNC <<  "() : " << (void*)m << std::endl;
 		return m;
 	}
 
 	int BIO_should_retry_(BIO* b)
 	{
 		int l = ::BIO_should_retry(b);
-		DBG_FUNC_NOLINE <<  "( b=" << b << " ) : " << l << std::endl;
+		DBG_FUNC <<  "( b=" << b << " ) : " << l << std::endl;
 		return l;
 	}
 
 	void BIO_free_all(BIO *b)
 	{
 		::BIO_free_all(b);
-		DBG_FUNC_NOLINE << "( b=" << b << " ) : void" << std::endl;
+		DBG_FUNC << "( b=" << b << " ) : void" << std::endl;
 	}
 
 	int	BIO_free(BIO *b)
 	{
 		int i = ::BIO_free(b);
-		DBG_FUNC_NOLINE << "( b=" << b << " ) : " << i << std::endl;
+		DBG_FUNC << "( b=" << b << " ) : " << i << std::endl;
 		return i;
 	}
 
 	void BIO_vfree(BIO *b)
 	{
 		::BIO_vfree(b);
-		DBG_FUNC_NOLINE << "( b=" << b << " ) : void" << std::endl;
+		DBG_FUNC << "( b=" << b << " ) : void" << std::endl;
 	}
 
 	void SSL_free(SSL *ssl)
 	{
 		::SSL_free(ssl);
-		DBG_FUNC_NOLINE << "( ssl=" << ssl << " ) : void" << std::endl;
+		DBG_FUNC << "( ssl=" << ssl << " ) : void" << std::endl;
 	}
 } //namespace SSLWrap
 } //namespace osock
