@@ -44,6 +44,7 @@ protected:
 	virtual void doDeserializeChunk(const data_chunk& data);
 	virtual void doDeserializingRestart();
 	virtual StringMessage* doClone() const;
+	virtual std::string doToString() const;
 };
 } //namespace osock
 

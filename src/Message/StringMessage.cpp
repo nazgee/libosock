@@ -114,4 +114,13 @@ StringMessage* StringMessage::doClone() const
 	return new StringMessage(*this);
 }
 
+std::string StringMessage::doToString() const
+{
+	std::string r;
+	r = "string[" + to_string(getString().size()) + "]=" + getString()
+	+ "; terminator[" + to_string(getTerminator().size()) + "]=" + getTerminator();
+
+	return r;
+}
+
 }
