@@ -21,10 +21,11 @@ EXTRA_PROGRAMS = unittest
 unittest_SOURCES  = src/Testing/main.cpp
 unittest_SOURCES += src/Testing/Unit/Message/StringMessageTest.cpp
 unittest_SOURCES += src/Testing/Unit/Message/MessageTest.cpp
+unittest_SOURCES += src/Testing/Unit/Server/ServerTest.cpp
 ## Prepare linker flags
 unittest_LDFLAGS  = $(OPENSSL_LIBS)
 unittest_LDFLAGS += $(CPPUNIT_LIBS)
-unittest_LDFLAGS += -L$(top_srcdir) -losock-$(OSOCK_API_VERSION)
+unittest_LDFLAGS += -L$(top_srcdir) -losock-$(OSOCK_API_VERSION) -lpthread
 ## Prepare compiler flags
 unittest_CXXFLAGS  = -Iinclude -Iinclude/Testing -Wall 
 unittest_CXXFLAGS += $(OPENSSL_CFLAGS)
@@ -81,7 +82,8 @@ libosock_@OSOCK_API_VERSION@_la_SOURCES = src/Message/Message.cpp \
 	src/Utilities/Logger.cpp \
 	src/Utilities/SSLWrap.cpp \
 	src/Utilities/Utils.cpp \
-	src/Server/Server.cpp
+	src/Server/Server.cpp \
+	src/Server/ServerEcho.cpp
 
 ## Instruct libtool to include ABI version information in the generated shared
 ## library file (.so).  The library ABI version is defined in configure.ac, so
@@ -135,6 +137,10 @@ osocksocket_include_HEADERS = include/Socket/SocketClientUnsafe.h \
 	include/Socket/SocketServer.h \
 	include/Socket/SocketClientSSL.h \
 	include/Socket/SocketServerSSL.h
+	
+osockserver_includedir = $(osock_includedir)/Server
+osockserver_include_HEADERS = include/Server/Server.h \
+	include/Server/ServerEcho.h
 	
 osockaddress_includedir = $(osock_includedir)/Address
 osockaddress_include_HEADERS = include/Address/Address.h

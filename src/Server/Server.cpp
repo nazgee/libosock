@@ -38,7 +38,7 @@ Server::Server(SocketServer* socketServer) :
 
 Server::~Server()
 {
-	DBG_CONSTRUCTOR;
+	DBG_DESTRUCTOR;
 	delete itsSocketServer;
 }
 

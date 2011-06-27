@@ -28,6 +28,7 @@
 #include <openssl/err.h>
 #include <openssl/bio.h>
 #include <iostream>
+#include <Utilities/SSLWrap.h>
 
 namespace osock
 {
@@ -42,9 +43,11 @@ protected:
 	BIO* GetBIO() const;
 	int GetSD() const
 	{
-		int sd;
-		BIO_get_fd(GetBIO(), &sd);
-		return sd;
+		try {
+			return SSLWrap::BIO_get_fd_(GetBIO());
+		} catch (...) {
+			return -1;
+		}
 	}
 
 public:
