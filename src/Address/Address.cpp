@@ -75,6 +75,9 @@ Address::Address(const char* Name) :
 		*itsPortname = 0;
 		itsPortname++;
 	} else {
+		ERR << "itsHostname=" << itsHostname
+				<< " itsPortname=" << itsPortname
+				<< "itsPort=" << to_string(itsPort) << std::endl;
 		throw Exception("Host name should be in format \"host:port\"");
 	}
 
