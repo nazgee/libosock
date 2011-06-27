@@ -71,6 +71,7 @@ namespace SSLWrap
 	SSL_METHOD *SSLv3_server_method(void);
 	SSL_METHOD *SSLv23_server_method(void);
 	int BIO_should_retry_(BIO* b);
+	int BIO_get_fd_(BIO *b);
 	void BIO_free_all(BIO *b);
 	int	BIO_free(BIO *b);
 	void BIO_vfree(BIO *b);

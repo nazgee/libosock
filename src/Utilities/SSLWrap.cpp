@@ -231,6 +231,18 @@ namespace SSLWrap
 		return l;
 	}
 
+	int BIO_get_fd_(BIO *b)
+	{
+		int sd;
+		long l = ::BIO_get_fd(b, &sd);
+//		DBG_FUNC <<  "( b=" << b << ", fd=" << sd << ") : " << l << std::endl;
+		if (l<=0) {
+			throw_SSL("BIO_get_fd failed");
+		}
+
+		return sd;
+	}
+
 	void BIO_free_all(BIO *b)
 	{
 		::BIO_free_all(b);
