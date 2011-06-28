@@ -44,9 +44,8 @@ public:
 	void virtual setUp(void)
 	{
 //		osock::Logger::ForceLoglevel(osock::Logger::logAll);
+		int port = Utils::getFreePort(10000, 10000);
 
-		int port = 10000 + Utils::getRandom(10000);
-		std::cout << std::endl << std::endl << "PORT="<< Utils::to_string(port) << std::endl;
 		std::string host;
 		host = "localhost:" + Utils::to_string(port);
 		osock::Address addr(host.c_str());
