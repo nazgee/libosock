@@ -81,20 +81,44 @@ public:
     const http::Status& getStatus() const;
 };
 
+/**
+ * @class StdException
+ * @brief Throwed by low level wrappers, to inform about problems in lowlevel,
+ * standard routines (read/write/close etc)
+ */
 class StdException: public Exception
 {
+private:
+	int itsErrno;
 public:
 	StdException(const std::string& msg, int error_number) :
-		Exception(msg +" STD err: "+ strerror(error_number))
-	{
-	}
-
-	StdException(const std::string& msg) :
-		Exception(msg +" STD err: "+ strerror(errno))
+		Exception(msg +"; errno="+ strerror(error_number)),
+		itsErrno(error_number)
 	{
 	}
 
 	virtual ~StdException(void) throw()
+	{
+	}
+
+	int getErrno()
+	{
+		return itsErrno;
+	}
+};
+
+/**
+ * @class ArgsException
+ * @brief Throwed when bad arguments were provided
+ */
+class ArgsException: public Exception
+{
+public:
+	ArgsException(const std::string& msg) :
+		Exception(msg)
+	{
+	}
+	virtual ~ArgsException(void) throw()
 	{
 	}
 };

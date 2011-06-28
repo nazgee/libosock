@@ -20,13 +20,11 @@
 #ifndef MESSAGES_H_
 #define MESSAGES_H_
 
-#include <vector>
-#include <string>
+
+#include <defines.h>
 
 namespace osock
 {
-
-typedef std::vector<char> data_chunk;
 
 class Message
 {

@@ -21,22 +21,40 @@
 #include <Server/ServerEcho.h>
 #include <Message/StringMessage.h>
 #include <Utilities/Logger.h>
+#include <Message/Parser.h>
 
 static osock::Logger logger("ServerEcho");
 
 namespace osock
 {
 
-ServerEcho::ServerEcho(SocketServer* socketServer) :
-	Server(socketServer)
+ServerEcho::ServerEcho(Auth_p auth, std::string portname, serviceType servicetype) :
+		Server(auth, portname, servicetype)
 {
 	DBG_CONSTRUCTOR;
 }
 
+//ServerEcho::ServerEcho(SocketServer* socketServer) :
+//	Server(socketServer)
+//{
+//	DBG_CONSTRUCTOR;
+//}
+
 void ServerEcho::Serve(Socket& Client)
 {
-		StringMessage msg("", osock::http::NEWLINE);
-		Client.Receive(msg);
-		Client.Send(msg);
+	StringMessage msg("", osock::http::NEWLINE);
+	Client.Receive(msg);
+	Client.Send(msg);
 }
+
+void ServerEcho::Manage(BIO_p bio)
+{
+	Parser parse(bio);
+
+	StringMessage msg("", osock::http::NEWLINE);
+
+	parse.Receive(msg);
+	parse.Send(msg);
+}
+
 }

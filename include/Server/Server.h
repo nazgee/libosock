@@ -23,15 +23,31 @@
 
 #include "../Socket/Socket.h"
 #include "../Address/Address.h"
-
+#include <Security/Auth.h>
+#include <BIO/BIOSocket.h>
 namespace osock
 {
-class SocketServer;
+//class SocketServer;
 class Server
 {
 public:
-	Server(SocketServer* socketServer);
+	typedef enum { serviceCallback, serviceProcess, serviceThread } serviceType;
+private:
+	Auth_p itsAuth;
+	BIOSocket_p itsBIO;
+	serviceType itsServiceType;
+	bool isChild;
+	bool isCancelRequested;
+
+	void doRunCallback(BIO_p client);
+	void doRunProcess(BIO_p client);
+	void doRunThread(BIO_p client);
+public:
+//	Server(SocketServer* socketServer);
+	Server(Auth_p auth, std::string portname, serviceType servicetype = serviceCallback);
 	virtual ~Server();
+
+	void Start();
 	/**
 	 * @brief Starts serving clients using Serve() method
 	 */
@@ -47,7 +63,7 @@ public:
 	 * @brief Implement this function to handle client connections
 	 * @param Client Socket of client to be served
 	 */
-	virtual void Serve(Socket& Client) = 0;
+	virtual void Manage(BIO_p bio) = 0;
 	/**
 	 * @brief Collects return codes of child-processess, to prevent zombies
 	 * @param n
@@ -59,7 +75,7 @@ public:
 	 */
 	static void InstallChildReaper(void (*reaper)(int) = ChildReaper);
 private:
-	SocketServer* itsSocketServer;
+//	SocketServer* itsSocketServer;
 };
 
 }

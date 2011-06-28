@@ -1,44 +1,43 @@
-/*
-	Copyright 2011, Michal Stawinski <michal.stawinski@gmail.com>
-
-	This file is part of libsockets- C++ wrapper over OpenSSL and raw sockets.
-
-	libsockets is free software: you can redistribute it and/or modify
-	it under the terms of the GNU Lesser General Public License as published by
-	the Free Software Foundation, either version 3 of the License, or
-	(at your option) any later version.
-
-	libsockets is distributed in the hope that it will be useful,
-	but WITHOUT ANY WARRANTY; without even the implied warranty of
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-	GNU Lesser General Public License for more details.
-
-	You should have received a copy of the GNU Lesser General Public License
-	along with libsockets.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
-#ifndef SOCKETSERVERSSL_H_
-#define SOCKETSERVERSSL_H_
-
-#include "SocketServer.h"
-#include "../Security/SecurityServerSSL.h"
-
-namespace osock
-{
-class SocketServerSSL: public SocketServer
-{
-public:
-	SocketServerSSL(	int port,
-				std::string certFile,
-				std::string keyFile,
-				std::string trustFile,
-				std::string password,
-				SecurityServerSSL::securityMode method = SecurityServerSSL::securitySSLv3,
-				serviceType type = serviceCallback);
-	virtual ~SocketServerSSL();
-private:
-	SecurityServerSSL* itsSecurityServerSSL;
-};
-} //namespace osock
-
-#endif /* SOCKETSERVERSSL_H_ */
+///*
+//	Copyright 2011, Michal Stawinski <michal.stawinski@gmail.com>
+//
+//	This file is part of libsockets- C++ wrapper over OpenSSL and raw sockets.
+//
+//	libsockets is free software: you can redistribute it and/or modify
+//	it under the terms of the GNU Lesser General Public License as published by
+//	the Free Software Foundation, either version 3 of the License, or
+//	(at your option) any later version.
+//
+//	libsockets is distributed in the hope that it will be useful,
+//	but WITHOUT ANY WARRANTY; without even the implied warranty of
+//	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//	GNU Lesser General Public License for more details.
+//
+//	You should have received a copy of the GNU Lesser General Public License
+//	along with libsockets.  If not, see <http://www.gnu.org/licenses/>.
+//*/
+//
+//#ifndef SOCKETSERVERSSL_H_
+//#define SOCKETSERVERSSL_H_
+//
+//#include "SocketServer.h"
+//#include "../Security/SecurityServerSSL.h"
+//
+//namespace osock
+//{
+//class SocketServerSSL: public SocketServer
+//{
+//public:
+//	SocketServerSSL(	int port,
+//				std::string certFile,
+//				std::string keyFile,
+//				std::string trustFile,
+//				std::string password,
+//				SecurityServerSSL::securityMode method = SecurityServerSSL::securitySSLv3,
+//	virtual ~SocketServerSSL();
+//private:
+//	SecurityServerSSL* itsSecurityServerSSL;
+//};
+//} //namespace osock
+//
+//#endif /* SOCKETSERVERSSL_H_ */

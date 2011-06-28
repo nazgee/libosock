@@ -28,7 +28,7 @@ public:
 	 * @return std::string being xml/html represenatation of a message
 	 */
 	static std::string StringToTag(std::string value, std::string tag, std::string attr);
-
+	static std::string getLastErrorSSL();
 	virtual ~Utils();
 };
 

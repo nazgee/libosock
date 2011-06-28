@@ -10,6 +10,7 @@
 #include <Message/http/Header.h>
 //#define LOGLEVEL LOGLEVEL_DBG
 #include <Utilities/Logger.h>
+#include <Utilities/Utils.h>
 #include <Exception/Exception.h>
 
 #include <time.h>
@@ -88,15 +89,15 @@ data_chunk HttpResponse::doSerialize() const
 	// Reevaluate content length
 	const_cast<http::Header&>(getHeaderLength()).setHeadValue(to_string(getContent().length()));
 
-	DBG << "About to start unpacking" << std::endl;
+	DBG << "About to start serializing" << std::endl;
 	data_chunk ret(itsResponse.Serialize());
-	DBG << "Unpacked itsResponse" << std::endl;
+	DBG << "Serialized itsResponse" << std::endl;
 	data_chunk tmph(itsHeaders.Serialize());
 	ret.insert(ret.end(), tmph.begin(), tmph.end());
-	DBG << "Unpacked itsHeaders" << std::endl;
+	DBG << "Serialized itsHeaders" << std::endl;
 	data_chunk tmpc(itsContent.Serialize());
 	ret.insert(ret.end(), tmpc.begin(), tmpc.end());
-	DBG << "Unpacked itsContent" << std::endl;
+	DBG << "Serialized itsContent" << std::endl;
 	return ret;
 }
 
@@ -114,6 +115,7 @@ void HttpResponse::doDeserializeChunk(const data_chunk& data)
 
 void HttpResponse::doFeedHeaders(const data_chunk& data)
 {
+	DBG << "data=" << Utils::DataToString(data) << std::endl;
 	if (!itsHeaders.isDeserializingComplete() && itsHeaders.DeserializeChunk(data)) {
 		const http::Header& h =
 				dynamic_cast<const http::Header&> (itsHeaders.getLastLink());
@@ -133,8 +135,11 @@ void HttpResponse::doFeedHeaders(const data_chunk& data)
 
 void HttpResponse::doFeedContent(const data_chunk& data)
 {
+	DBG << "data=" << Utils::DataToString(data) << std::endl;
 	if (itsContent.isDeserializingComplete()) {
 		DeserializingComplete(itsContent.getDeserializingRemains());
+	} else {
+		itsContent.DeserializeChunk(data);
 	}
 }
 
@@ -147,11 +152,11 @@ void HttpResponse::doInitHeaders()
 	t = time(NULL);
 	tmp = localtime(&t);
 	if (tmp == NULL) {
-		throw StdException("localtime() failed");
+		throw StdException("localtime() failed", errno);
 	}
 
 	if (strftime(datestr, sizeof(datestr), "%a, %d %b %Y %T %Z", tmp) == 0) {
-		throw StdException("strfrtime() failed");
+		throw StdException("strfrtime() failed", errno);
 	}
 
 	itsHeaders.DeserializingRestart();

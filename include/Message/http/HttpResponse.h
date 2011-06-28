@@ -32,6 +32,7 @@ private:
 	};
 	ChainedMessage itsHeaders;
 protected:
+	// TODO: make it derived from binary message?
 	StringMessage itsContent;
 
 public:

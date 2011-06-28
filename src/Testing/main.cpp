@@ -38,9 +38,14 @@ int main(int ac, char **av)
 
 	//--- Add the top suite to the test runner
 	CPPUNIT_NS::TextUi::TestRunner runner;
-	runner.addTest(CPPUNIT_NS::TestFactoryRegistry::getRegistry(
-					Utils::getSuiteNameUnit()).makeTest());
 
+	if (ac > 2) {
+		runner.addTest(CPPUNIT_NS::TestFactoryRegistry::getRegistry(
+					av[2]).makeTest());
+	} else {
+		runner.addTest(CPPUNIT_NS::TestFactoryRegistry::getRegistry(
+					Utils::getSuiteGroupUnit()).makeTest());
+	}
 	osock::Server::InstallChildReaper();
 	if (ac > 1)
 		osock::Logger::ForceLoglevel((osock::Logger::logLevel)atoi(av[1]));

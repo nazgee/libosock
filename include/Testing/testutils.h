@@ -18,7 +18,21 @@ class Utils
 private:
 	Utils() {}
 public:
-	static std::string getSuiteNameUnit() { return "Unit"; }
+	static std::string getSuiteGroupUnit() { return "units"; }
+		static std::string getSuiteGroupBIO() { return "bios"; }
+			static std::string getSuiteBIO() { return "BIO"; }
+			static std::string getSuiteBIOSocketClient() { return "BIOSocketClient"; }
+		static std::string getSuiteGroupMessage() { return "messages"; }
+			static std::string getSuiteHttpRequest() { return "http::Request"; }
+			static std::string getSuiteHttpResponse() { return "http::Response"; }
+			static std::string getSuiteHttpPath() { return "http::Path"; }
+			static std::string getSuiteHttpHeader() { return "http::Header"; }
+			static std::string getSuiteStringMessage() { return "StringMessage"; }
+		static std::string getSuiteGroupServer() { return "servers"; }
+			static std::string getSuiteServerEcho() { return "ServerEcho"; }
+			static std::string getSuiteBIOServerTest() { return "BIOServerTest"; }
+
+
 	template <class T>
 	static std::string to_string (const T& t)
 	{

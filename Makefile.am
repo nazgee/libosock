@@ -22,6 +22,7 @@ unittest_SOURCES  = src/Testing/main.cpp
 unittest_SOURCES += src/Testing/Unit/Message/StringMessageTest.cpp
 unittest_SOURCES += src/Testing/Unit/Message/MessageTest.cpp
 unittest_SOURCES += src/Testing/Unit/Server/ServerTest.cpp
+unittest_SOURCES += src/Testing/Unit/BIO/BIOTest.cpp
 ## Prepare linker flags
 unittest_LDFLAGS  = $(OPENSSL_LIBS)
 unittest_LDFLAGS += $(CPPUNIT_LIBS)
@@ -83,7 +84,14 @@ libosock_@OSOCK_API_VERSION@_la_SOURCES = src/Message/Message.cpp \
 	src/Utilities/SSLWrap.cpp \
 	src/Utilities/Utils.cpp \
 	src/Server/Server.cpp \
-	src/Server/ServerEcho.cpp
+	src/Server/ServerEcho.cpp \
+	src/Security/AuthSSL.cpp \
+	src/Security/AuthNone.cpp \
+	src/Security/SSLContext.cpp \
+	src/Message/Parser.cpp \
+	src/BIO/BIOSocket.cpp \
+	src/BIO/BIOSSL.cpp \
+	src/BIO/BIO.cpp
 
 ## Instruct libtool to include ABI version information in the generated shared
 ## library file (.so).  The library ABI version is defined in configure.ac, so

@@ -9,6 +9,7 @@
 #include <Utilities/Utils.h>
 
 #include <algorithm>
+#include <openssl/err.h>
 
 namespace osock
 {
@@ -44,6 +45,13 @@ std::string Utils::StringToTag(std::string value, std::string tag, std::string a
 	} else {
 		return value;
 	}
+}
+
+std::string Utils::getLastErrorSSL()
+{
+	// XXX is it thread safe?
+	std::string s(ERR_error_string(ERR_get_error(), 0));
+	return s;
 }
 
 }

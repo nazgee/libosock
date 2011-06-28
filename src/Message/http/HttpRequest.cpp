@@ -22,6 +22,20 @@ HttpRequest::HttpRequest(std::string name) :
 	DBG_CONSTRUCTOR;
 }
 
+HttpRequest::HttpRequest(http::Request& req, std::string name) :
+	Message(name),
+	itsRequest(req)
+{
+	char c[] = "\r\n";
+	data_chunk d;
+
+	d.insert(d.begin(), c, c + strlen(c));
+	itsHeaders.AddLink(new http::Header());
+	doFeedHeaders(d);
+
+	DBG_CONSTRUCTOR;
+}
+
 HttpRequest::~HttpRequest()
 {
 	DBG_CONSTRUCTOR;

@@ -25,6 +25,7 @@ private:
 
 public:
 	HttpRequest(std::string name = "HttpRequest");
+	HttpRequest(http::Request& req, std::string name = "HttpRequest");
 	virtual ~HttpRequest();
 	std::string getCommand();
 	std::string getPath();

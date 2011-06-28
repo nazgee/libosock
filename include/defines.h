@@ -24,10 +24,12 @@
 #include <stdio.h>
 #include <iostream>
 #include <sstream>
+#include <vector>
+#include <string>
 
 namespace osock
 {
-
+typedef std::vector<char> data_chunk;
 namespace http
 {
 static const std::string NEWLINE = "\r\n";

@@ -27,8 +27,10 @@ namespace osock
 class ServerEcho : public Server
 {
 public:
-	ServerEcho(SocketServer* socketServer);
+//	ServerEcho(SocketServer* socketServer);
+	ServerEcho(Auth_p auth, std::string portname, serviceType servicetype = serviceCallback);
 	virtual void Serve(Socket& Client);
+	virtual void Manage(BIO_p bio);
 };
 } // osock
 

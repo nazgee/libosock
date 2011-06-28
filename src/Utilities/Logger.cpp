@@ -169,10 +169,10 @@ std::ostream& Logger::out(logLevel loglevel)
 	} else {
 
 		// XXX this is a nasty workaround to make printouts shorter
-		if (loglevel <= logInfo)
-			return std::cout << std::hex << ((pthread_self() >> 7) & 0xFFF) << std::dec << " " ;
-		else
-			return std::cerr << std::hex << ((pthread_self() >> 7) & 0xFFF) << std::dec << " " ;
+//		if (loglevel <= logInfo)
+			return std::cout << (getpid() % 1000) << ":" << std::hex << ((pthread_self() >> 7) & 0xFFF) << std::dec << " " ;
+//		else
+//			return std::cerr << (getpid() % 1000) << ":" << std::hex << ((pthread_self() >> 7) & 0xFFF) << std::dec << " " ;
 	}
 }
 }

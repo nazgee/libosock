@@ -35,5 +35,10 @@
 #include "Message/http/HttpResponseFile.h"
 #include "Server/Server.h"
 #include "Server/ServerEcho.h"
+#include "BIO/BIO.h"
+#include "BIO/BIOSocket.h"
+#include "Security/AuthNone.h"
+#include "Security/AuthSSL.h"
+#include "Message/Parser.h"
 
 #endif /* LIBSOCKETS_H_ */

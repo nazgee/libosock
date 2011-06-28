@@ -77,6 +77,6 @@ protected:
 	  CPPUNIT_ASSERT_EQUAL(MSG_BINTERMINATOR.length(), m_binary->getTerminator().length());
   }
 };
-
-CPPUNIT_TEST_SUITE_NAMED_REGISTRATION(StringMessageTest, Utils::getSuiteNameUnit());
+CPPUNIT_TEST_SUITE_NAMED_REGISTRATION(StringMessageTest, Utils::getSuiteStringMessage());
+CPPUNIT_REGISTRY_ADD(Utils::getSuiteStringMessage(), Utils::getSuiteGroupMessage());
 

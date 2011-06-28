@@ -79,6 +79,11 @@ public:
 
 	void virtual tearDown(void)
 	{
+		for (std::vector<osock::Message*>::iterator ic =
+				itsMessagesToTest.begin(); ic != itsMessagesToTest.end(); ++ic) {
+			delete (*ic);
+		}
+
 		// clear test vectors
 		itsTestDataValid.clear();
 		itsTestDataInvalid.clear();

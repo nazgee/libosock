@@ -55,7 +55,7 @@ Message* Message::Clone() const
 data_chunk Message::Serialize() const
 {
 	if (!isAllowed(MSG_ALLOWED_UNPACK))
-		throw Exception("Unpack() called on incomplete Message!");
+		throw Exception("Serialize() called on incomplete Message!");
 
 	return doSerialize();
 }
@@ -78,8 +78,10 @@ std::string Message::doToTag(std::string tag, std::string attr, std::string tail
 
 bool Message::DeserializeChunk(const data_chunk& data)
 {
-	if (!isAllowed(MSG_ALLOWED_PACK))
-		throw Exception("Pack() called when not allowed!");
+	if (!isAllowed(MSG_ALLOWED_PACK)) {
+		DBG << this << "; itsRemains=" << Utils::DataToString(itsRemains) << std::endl;
+		throw Exception("DeserializeChunk() called when not allowed!");
+	}
 
 	if (data.size() == 0) {
 		return false;
@@ -92,7 +94,7 @@ bool Message::DeserializeChunk(const data_chunk& data)
 	doDeserializeChunk(data);
 
 	if (isDeserializingComplete()) {
-		NFO << "Packed!"
+		NFO << "Deserialized!"
 						<< "; REST" << Utils::DataToString(itsRemains)
 						<< "; INFO: " << doToString() << std::endl;
 	}
@@ -117,8 +119,12 @@ void Message::DeserializingComplete(const data_chunk& remains)
 void Message::SerializingExtend()
 {
 	if (isAllowed(MSG_ALLOWED_REMAINS)) {
-		DBG << "Pack() allowed, but prepend new data with Remains!" << std::endl;
-		clearAllowed(MSG_ALLOWED_PACK);
+		if (itsRemains.size()) {
+			DBG << "Deserializing extended, remember to prepend new data with remains!" << std::endl;
+			clearAllowed(MSG_ALLOWED_PACK);
+		} else {
+			DBG << "Deserializing extended, no need to prepend new data with remains" << std::endl;
+		}
 	}
 
 	clearAllowed(MSG_ALLOWED_UNPACK);

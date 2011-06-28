@@ -41,7 +41,8 @@ public:
 		intstallTestMessage(new osock::http::Header());
 	}
 };
-CPPUNIT_TEST_SUITE_NAMED_REGISTRATION(MessageTest_http_Header, Utils::getSuiteNameUnit());
+CPPUNIT_TEST_SUITE_NAMED_REGISTRATION(MessageTest_http_Header, Utils::getSuiteHttpHeader());
+CPPUNIT_REGISTRY_ADD(Utils::getSuiteHttpHeader(), Utils::getSuiteGroupMessage());
 
 class MessageTest_http_Path: public MessageTest
 {
@@ -78,7 +79,8 @@ public:
 		intstallTestMessage(new osock::http::Path());
 	}
 };
-CPPUNIT_TEST_SUITE_NAMED_REGISTRATION(MessageTest_http_Path, Utils::getSuiteNameUnit());
+CPPUNIT_TEST_SUITE_NAMED_REGISTRATION(MessageTest_http_Path, Utils::getSuiteHttpPath());
+CPPUNIT_REGISTRY_ADD(Utils::getSuiteHttpPath(), Utils::getSuiteGroupMessage());
 
 
 class MessageTest_http_Request: public MessageTest
@@ -116,7 +118,8 @@ public:
 		intstallTestMessage(new osock::http::Request());
 	}
 };
-CPPUNIT_TEST_SUITE_NAMED_REGISTRATION(MessageTest_http_Request, Utils::getSuiteNameUnit());
+CPPUNIT_TEST_SUITE_NAMED_REGISTRATION(MessageTest_http_Request, Utils::getSuiteHttpRequest());
+CPPUNIT_REGISTRY_ADD(Utils::getSuiteHttpRequest(), Utils::getSuiteGroupMessage());
 
 class MessageTest_http_Response: public MessageTest
 {
@@ -153,4 +156,7 @@ public:
 		intstallTestMessage(new osock::http::Response());
 	}
 };
-CPPUNIT_TEST_SUITE_NAMED_REGISTRATION(MessageTest_http_Response, Utils::getSuiteNameUnit());
+CPPUNIT_TEST_SUITE_NAMED_REGISTRATION(MessageTest_http_Response, Utils::getSuiteHttpResponse());
+CPPUNIT_REGISTRY_ADD(Utils::getSuiteHttpResponse(), Utils::getSuiteGroupMessage());
+
+CPPUNIT_REGISTRY_ADD(Utils::getSuiteGroupMessage(), Utils::getSuiteGroupUnit());

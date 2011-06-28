@@ -55,8 +55,9 @@ Socket::Socket(Socket& sock)
 
 	int sd;
 	if ((sd = dup(sock.GetSD())) < 0)
-		throw StdException("Can't copy socket");
+		throw StdException("Can't copy socket", errno);
 
+	delete itsSecurity;
 	itsSecurity = new Security(BIO_new_fd(sd, BIO_NOCLOSE));
 
 	DBG_CONSTRUCTOR;

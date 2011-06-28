@@ -48,7 +48,6 @@ public:
 						securityMode method = securitySSLv3);
 	virtual ~SecurityServerSSL();
 
-	SSL* GetSSL();
 	void SetCertificate(std::string certFile);
 	void SetKey(std::string keyFile);
 	void SetTrust(std::string trustFile);
@@ -56,6 +55,7 @@ public:
 	virtual BIO* DoHandshake(BIO* clientToShake);
 
 protected:
+	SSL* GetSSL();
 	SSL_CTX* itsCTX;
 	SSL* itsSSL;
 	std::string itsPassword;	//TODO move password to Certificate/Key class
