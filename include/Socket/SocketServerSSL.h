@@ -33,7 +33,7 @@ public:
 				std::string keyFile,
 				std::string trustFile,
 				std::string password,
-				SecurityServerSSL::securityMode method = SecurityServerSSL::securitySSLv2,
+				SecurityServerSSL::securityMode method = SecurityServerSSL::securitySSLv3,
 				serviceType type = serviceCallback);
 	virtual ~SocketServerSSL();
 private:

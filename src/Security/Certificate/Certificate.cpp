@@ -27,14 +27,14 @@ static osock::Logger logger("Certificate");
 
 namespace osock
 {
-Certificate::Certificate(std::string certFile, SSL_CTX* ctx) :
+Certificate::Certificate(std::string certFile, const SSL_CTX* ctx) :
 	itsCTX(ctx),
 	itsCertFile(certFile)
 {
 	DBG_CONSTRUCTOR;
 }
 
-Certificate::Certificate(X509* cert, SSL_CTX* ctx) :
+Certificate::Certificate(X509* cert, const SSL_CTX* ctx) :
 	itsCTX(ctx)
 {
 	assert(0); //TODO to be implemented
@@ -51,7 +51,7 @@ void Certificate::SetFile(std::string certFile)
 	itsCertFile = certFile;
 }
 
-void Certificate::SetContext(SSL_CTX* context)
+void Certificate::SetContext(const SSL_CTX* context)
 {
 	itsCTX = context;
 }
@@ -64,7 +64,7 @@ void Certificate::Apply()
 		return;
 	}
 
-	if (SSL_CTX_use_certificate_file(itsCTX, itsCertFile.c_str(), SSL_FILETYPE_PEM)<= 0) {
+	if (SSL_CTX_use_certificate_file(const_cast<SSL_CTX*>(itsCTX), itsCertFile.c_str(), SSL_FILETYPE_PEM)<= 0) {
 		throw_SSL("SSL_CTX_use_certificate_file failed");
 	}
 }

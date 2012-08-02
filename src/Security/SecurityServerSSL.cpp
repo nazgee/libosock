@@ -147,15 +147,17 @@ BIO* SecurityServerSSL::DoHandshake(BIO* clientToShake)
 	return ssl_bio;
 }
 
-SSL_METHOD* SecurityServerSSL::GetMethod()
+const SSL_METHOD* SecurityServerSSL::GetMethod()
 {
 	switch (itsSecurityMode) {
 		case securityTLSv1: {
 			return SSLWrap::TLSv1_server_method();
 		} break;
+#ifndef OPENSSL_NO_SSL2
 		case securitySSLv2: {
 			return SSLWrap::SSLv2_server_method();
 		} break;
+#endif
 		case securitySSLv3: {
 			return SSLWrap::SSLv3_server_method();
 		} break;

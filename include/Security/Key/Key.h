@@ -28,15 +28,15 @@ namespace osock
 class Key
 {
 private:
-	SSL_CTX* itsCTX;
+	const SSL_CTX* itsCTX;
 	std::string itsKeyFile;
 public:
 	//TODO three types of constructors should be made available: RSA*/array/file
-	Key(std::string keyFile = "", SSL_CTX* ctx = NULL);
+	Key(std::string keyFile = "", const SSL_CTX* ctx = NULL);
 	virtual ~Key();
 
 	void SetFile(std::string keyFile);
-	void SetContext(SSL_CTX* conext);
+	void SetContext(const SSL_CTX* conext);
 
 	void Apply();
 };

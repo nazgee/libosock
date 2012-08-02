@@ -37,7 +37,7 @@ public:
 
 	void SetVerify(trustMode trustMode);
 	void SetFile(std::string trustFile);
-	void SetContext(SSL_CTX* ctx);
+	void SetContext(const SSL_CTX* ctx);
 
 	void Apply();
 

@@ -127,14 +127,11 @@ void SecurityClientSSL::SetTrust(std::string trustFile)
 	itsTrust->SetVerify(Trust::trustRequire);
 }
 
-SSL_METHOD* SecurityClientSSL::GetMethod()
+const SSL_METHOD* SecurityClientSSL::GetMethod()
 {
 	switch (itsSecurityMode) {
 		case securityTLSv1: {
 			return TLSv1_client_method();
-		} break;
-		case securitySSLv2: {
-			return SSLv2_client_method();
 		} break;
 		case securitySSLv3: {
 			return SSLv3_client_method();

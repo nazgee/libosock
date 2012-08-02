@@ -28,15 +28,15 @@ namespace osock
 class Certificate
 {
 private:
-	SSL_CTX* itsCTX;
+	const SSL_CTX* itsCTX;
 	std::string itsCertFile;
 public:
-	Certificate(std::string certFile = "", SSL_CTX* ctx = NULL );
-	Certificate(X509* cert, SSL_CTX* ctx);
+	Certificate(std::string certFile = "", const SSL_CTX* ctx = NULL );
+	Certificate(X509* cert, const SSL_CTX* ctx);
 	virtual ~Certificate();
 
 	void SetFile(std::string certFile);
-	void SetContext(SSL_CTX* context);
+	void SetContext(const SSL_CTX* context);
 
 	void Apply();
 };

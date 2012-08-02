@@ -33,7 +33,7 @@ namespace osock
 {
 namespace SSLWrap
 {
-	SSL_CTX *SSL_CTX_new(SSL_METHOD *meth)
+	SSL_CTX *SSL_CTX_new(const SSL_METHOD *meth)
 	{
 		SSL_CTX* ctx;
 		ctx = ::SSL_CTX_new(meth);
@@ -192,33 +192,35 @@ namespace SSLWrap
 		return l;
 	}
 
-	SSL_METHOD *TLSv1_server_method(void)
+	const SSL_METHOD *TLSv1_server_method(void)
 	{
-		SSL_METHOD *m;
+		const SSL_METHOD *m;
 		m = ::TLSv1_server_method();
 		DBG_FUNC <<  "() : " << (void*)m << std::endl;
 		return m;
 	}
 
-	SSL_METHOD *SSLv2_server_method(void)
+#ifndef OPENSSL_NO_SSL2
+	const SSL_METHOD *SSLv2_server_method(void)
 	{
-		SSL_METHOD *m;
+		const SSL_METHOD *m;
 		m = ::SSLv2_server_method();
 		DBG_FUNC <<  "() : " << (void*)m << std::endl;
 		return m;
 	}
+#endif
 
-	SSL_METHOD *SSLv3_server_method(void)
+	const SSL_METHOD *SSLv3_server_method(void)
 	{
-		SSL_METHOD *m;
+		const SSL_METHOD *m;
 		m = ::SSLv3_server_method();
 		DBG_FUNC << "SSLv3_server_method() : " << (void*)m << std::endl;
 		return m;
 	}
 
-	SSL_METHOD *SSLv23_server_method(void)
+	const SSL_METHOD *SSLv23_server_method(void)
 	{
-		SSL_METHOD *m;
+		const SSL_METHOD *m;
 		m = ::SSLv23_server_method();
 		DBG_FUNC <<  "() : " << (void*)m << std::endl;
 		return m;

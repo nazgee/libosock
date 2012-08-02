@@ -26,7 +26,7 @@ namespace osock
 {
 namespace SSLWrap
 {
-	SSL_CTX *SSL_CTX_new(SSL_METHOD *meth);
+	SSL_CTX *SSL_CTX_new(const SSL_METHOD *meth);
 	void	SSL_CTX_free(SSL_CTX *ctx);
 	SSL *SSL_new(SSL_CTX *ctx);
 	void BIO_set_read_tmo(BIO *b, int timeout_ms);
@@ -66,10 +66,12 @@ namespace SSLWrap
 	void BIO_do_accept_(BIO* b);
 	long BIO_set_accept_bios_(BIO* b, BIO* bio);
 	long BIO_get_ssl_(BIO* b, SSL** ssl);
-	SSL_METHOD *TLSv1_server_method(void);
-	SSL_METHOD *SSLv2_server_method(void);
-	SSL_METHOD *SSLv3_server_method(void);
-	SSL_METHOD *SSLv23_server_method(void);
+	const SSL_METHOD *TLSv1_server_method(void);
+#ifndef OPENSSL_NO_SSL2
+	const SSL_METHOD *SSLv2_server_method(void);
+#endif
+	const SSL_METHOD *SSLv3_server_method(void);
+	const SSL_METHOD *SSLv23_server_method(void);
 	int BIO_should_retry_(BIO* b);
 	int BIO_get_fd_(BIO *b);
 	void BIO_free_all(BIO *b);

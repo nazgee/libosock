@@ -50,9 +50,9 @@ void Trust::SetFile(std::string trustFile)
 	itsTrutsFile = trustFile;
 }
 
-void Trust::SetContext(SSL_CTX* ctx)
+void Trust::SetContext(const SSL_CTX* ctx)
 {
-	itsCTX = ctx;
+	itsCTX = const_cast<SSL_CTX*>(ctx);
 }
 
 void Trust::Apply()

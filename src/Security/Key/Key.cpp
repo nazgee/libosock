@@ -26,7 +26,7 @@ static osock::Logger logger("Key");
 
 namespace osock
 {
-Key::Key(std::string keyFile, SSL_CTX* ctx) :
+Key::Key(std::string keyFile, const SSL_CTX* ctx) :
 	itsCTX(ctx),
 	itsKeyFile(keyFile)
 {
@@ -43,7 +43,7 @@ void Key::SetFile(std::string keyFile)
 	itsKeyFile = keyFile;
 }
 
-void Key::SetContext(SSL_CTX* context)
+void Key::SetContext(const SSL_CTX* context)
 {
 	itsCTX = context;
 }
@@ -57,7 +57,7 @@ void Key::Apply()
 	}
 
 	/* set the private key from keyFile */
-	if (SSL_CTX_use_PrivateKey_file(itsCTX, itsKeyFile.c_str(), SSL_FILETYPE_PEM) <= 0) {
+	if (SSL_CTX_use_PrivateKey_file(const_cast<SSL_CTX*>(itsCTX), itsKeyFile.c_str(), SSL_FILETYPE_PEM) <= 0) {
 		throw_SSL("Loading Private key failed");
 	}
 	/* verify private key */

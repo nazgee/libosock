@@ -33,7 +33,6 @@ public:
 	typedef enum
 	{
 		securityTLSv1,
-		securitySSLv2,
 		securitySSLv3,
 		securitySSLv23
 	} securityMode;
@@ -43,7 +42,7 @@ public:
 						std::string keyFile,
 						std::string trustFile,
 						std::string password,
-						securityMode method = securitySSLv2);
+						securityMode method = securitySSLv3);
 	virtual ~SecurityClientSSL();
 
 	SSL* GetSSL();
@@ -62,7 +61,7 @@ protected:
 	Key* itsKey;
 	Trust* itsTrust;
 
-	SSL_METHOD* GetMethod();
+	const SSL_METHOD* GetMethod();
 	static int passwordCallback(char *buf, int size, int rwflag, void *usrdata);
 };
 } //namespace osock
