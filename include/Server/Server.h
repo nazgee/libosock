@@ -14,17 +14,16 @@
 	GNU Lesser General Public License for more details.
 
 	You should have received a copy of the GNU Lesser General Public License
-	along with libsockets.  If not, see <http://www.gnu.org/licenses/>.
+	along with libsockets.  If not, see "../http://www.gnu.org/licenses/>.
 */
 
 
 #ifndef SERVER_H_
 #define SERVER_H_
 
-#include "../Socket/Socket.h"
 #include "../Address/Address.h"
-#include <Security/Auth.h>
-#include <BIO/BIOSocket.h>
+#include "../Security/Auth.h"
+#include "../BIO/BIOSocket.h"
 namespace osock
 {
 //class SocketServer;
@@ -48,11 +47,10 @@ public:
 	Server(Auth_p auth, std::string portname, serviceType servicetype = serviceCallback);
 	virtual ~Server();
 
-	void Start();
 	/**
-	 * @brief Starts serving clients using Serve() method
+	 * @brief Starts serving clients using Manage() method
 	 */
-	void Run();
+	void Start();
 	/**
 	 * Called automagically after each client was served using Serve()
 	 * @param servedClient Address of served client- can be used for logging

@@ -8,10 +8,10 @@
 #ifndef RESPONSE_H_
 #define RESPONSE_H_
 
-#include <Message/Message.h>
-#include <Message/ChainedMessage.h>
-#include <Message/http/Protocole.h>
-#include <Message/http/Status.h>
+#include "../../Message/Message.h"
+#include "../../Message/ChainedMessage.h"
+#include "../../Message/http/Protocole.h"
+#include "../../Message/http/Status.h"
 
 namespace osock
 {

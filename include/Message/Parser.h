@@ -9,8 +9,8 @@
 #define PARSER_H_
 
 #include <boost/utility.hpp>
-#include <Message/Message.h>
-#include <BIO/BIO.h>
+#include "../Message/Message.h"
+#include "../BIO/BIO.h"
 
 namespace osock
 {

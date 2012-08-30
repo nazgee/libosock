@@ -71,13 +71,6 @@ libosock_@OSOCK_API_VERSION@_la_SOURCES = src/Message/Message.cpp \
 	src/Security/Certificate/Certificate.cpp \
 	src/Security/SecurityClientUnsafe.cpp \
 	src/Security/SecurityClient.cpp \
-	src/Socket/SocketClient.cpp \
-	src/Socket/SocketClientSSL.cpp \
-	src/Socket/SocketServer.cpp \
-	src/Socket/SocketClientUnsafe.cpp \
-	src/Socket/SocketServerSSL.cpp \
-	src/Socket/SocketServerUnsafe.cpp \
-	src/Socket/Socket.cpp \
 	src/Address/Address.cpp \
 	src/Exception/Exception.cpp \
 	src/Utilities/Logger.cpp \
@@ -113,7 +106,11 @@ osock_includedir = $(includedir)/osock-$(OSOCK_API_VERSION)
 osockmessage_includedir = $(osock_includedir)/Message
 osockmessage_include_HEADERS = include/Message/StringMessage.h \
 	include/Message/ChainedMessage.h \
-	include/Message/http/Path.h \
+	include/Message/Message.h \
+	include/Message/Parser.h
+
+osockmessagehttp_includedir = $(osock_includedir)/Message/http
+osockmessagehttp_include_HEADERS = include/Message/http/Path.h \
 	include/Message/http/Command.h \
 	include/Message/http/Protocole.h \
 	include/Message/http/Header.h \
@@ -122,9 +119,8 @@ osockmessage_include_HEADERS = include/Message/StringMessage.h \
 	include/Message/http/Response.h \
 	include/Message/http/HttpRequest.h \
 	include/Message/http/HttpResponse.h \
-	include/Message/http/HttpResponseFile.h \
-	include/Message/Message.h
-	
+	include/Message/http/HttpResponseFile.h
+
 osocksecurity_includedir = $(osock_includedir)/Security
 osocksecurity_include_HEADERS = include/Security/Trust/Trust.h \
 	include/Security/SecurityServerSSL.h \
@@ -137,15 +133,6 @@ osocksecurity_include_HEADERS = include/Security/Trust/Trust.h \
 	include/Security/SecurityServerUnsafe.h \
 	include/Security/SecurityClientSSL.h
 
-osocksocket_includedir = $(osock_includedir)/Socket
-osocksocket_include_HEADERS = include/Socket/SocketClientUnsafe.h \
-	include/Socket/SocketServerUnsafe.h \
-	include/Socket/SocketClient.h \
-	include/Socket/Socket.h \
-	include/Socket/SocketServer.h \
-	include/Socket/SocketClientSSL.h \
-	include/Socket/SocketServerSSL.h
-	
 osockserver_includedir = $(osock_includedir)/Server
 osockserver_include_HEADERS = include/Server/Server.h \
 	include/Server/ServerEcho.h
@@ -154,7 +141,7 @@ osockaddress_includedir = $(osock_includedir)/Address
 osockaddress_include_HEADERS = include/Address/Address.h
 
 osockexception_includedir = $(osock_includedir)/Exception
-osockexception_include_HEADERS = include/Exception/Exception.h			
+osockexception_include_HEADERS = include/Exception/Exception.h
 
 osockloose_includedir = $(osock_includedir)
 osockloose_include_HEADERS = include/osock.h \

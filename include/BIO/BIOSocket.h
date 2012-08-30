@@ -8,7 +8,8 @@
 #ifndef SOCKETBIO_H_
 #define SOCKETBIO_H_
 
-#include <BIO/BIO.h>
+#include "../BIO/BIO.h"
+
 #include <boost/shared_ptr.hpp>
 
 namespace osock

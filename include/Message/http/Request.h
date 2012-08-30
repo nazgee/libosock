@@ -8,11 +8,11 @@
 #ifndef REQUEST_H_
 #define REQUEST_H_
 
-#include "Message/Message.h"
-#include "Message/ChainedMessage.h"
-#include "Message/http/Command.h"
-#include "Message/http/Path.h"
-#include "Message/http/Protocole.h"
+#include "../../Message/Message.h"
+#include "../../Message/ChainedMessage.h"
+#include "../../Message/http/Command.h"
+#include "../../Message/http/Path.h"
+#include "../../Message/http/Protocole.h"
 
 namespace osock
 {

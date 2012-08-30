@@ -8,11 +8,11 @@
 #ifndef HTTPRESPONSE_H_
 #define HTTPRESPONSE_H_
 
-#include <Message/Message.h>
-#include <Message/http/Response.h>
-#include <Message/http/Header.h>
-#include <Message/http/Status.h>
-#include <Message/StringMessage.h>
+#include "../../Message/Message.h"
+#include "../../Message/http/Response.h"
+#include "../../Message/http/Header.h"
+#include "../../Message/http/Status.h"
+#include "../../Message/StringMessage.h"
 
 namespace osock
 {

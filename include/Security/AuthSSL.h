@@ -8,8 +8,8 @@
 #ifndef AUTHSSL_H_
 #define AUTHSSL_H_
 
-#include <Security/Auth.h>
-#include <Security/SSLContext.h>
+#include "../Security/Auth.h"
+#include "../Security/SSLContext.h"
 
 namespace osock
 {

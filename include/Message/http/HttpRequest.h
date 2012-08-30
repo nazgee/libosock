@@ -10,9 +10,9 @@
 
 
 #include <boost/ptr_container/ptr_vector.hpp>
-#include <Message/Message.h>
-#include <Message/ChainedMessage.h>
-#include <Message/http/Request.h>
+#include "../../Message/Message.h"
+#include "../../Message/ChainedMessage.h"
+#include "../../Message/http/Request.h"
 
 namespace osock
 {

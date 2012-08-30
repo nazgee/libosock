@@ -20,7 +20,6 @@
 #include <wait.h>
 #include <signal.h>
 
-#include <Socket/SocketServer.h>
 #include <Server/Server.h>
 #include <Utilities/Logger.h>
 #include <Utilities/Utils.h>
@@ -30,20 +29,12 @@ static osock::Logger logger("Server");
 namespace osock
 {
 
-//Server::Server(SocketServer* socketServer) :
-//		itsSocketServer(socketServer)
-//{
-//	DBG_CONSTRUCTOR;
-//}
-
 Server::Server(Auth_p auth, std::string portname, serviceType servicetype) :
 		itsAuth(auth),
 		itsBIO(BIOSocket::PopulateAcceptBIO(portname)),
 		itsServiceType(servicetype),
 		isChild(false),
 		itsPortName(portname)
-//,
-//		itsSocketServer(NULL)
 {
 	DBG_CONSTRUCTOR;
 }
@@ -59,15 +50,6 @@ bool Server::onServed(Address& servedClient)
 	DBG << "Serving " << servedClient << " done! Waiting for next client." << std::endl;
 	return true;
 }
-
-//void Server::Manage(BIO_p bio)
-//{
-//	DBG << "Waiting for client message" << std::endl;
-//	data_chunk d = bio->ReadWithRetry();
-//	DBG << "RXed message" << Utils::DataToString(d) << "; sending it back" << std::endl;
-//	bio->WriteWithRetry(d);
-//	DBG << "TXed data; client served" << std::endl;
-//}
 
 void Server::doRunCallback(BIO_p client)
 {
@@ -150,20 +132,6 @@ void Server::Start()
 	if (isChild) {
 		exit(0);
 	}
-}
-
-void Server::Run()
-{
-//	Address client;
-//	do {
-//		itsSocketServer->Accept(client, NULL, this);
-//	} while (itsSocketServer->IsMainInstance() && onServed(client));
-//
-//	if (!itsSocketServer->IsMainInstance()) {
-//		delete itsSocketServer;
-//		DBG << "Serving " << client << " done!" << std::endl;
-//		exit(0);
-//	}
 }
 
 void Server::ChildReaper(int n)

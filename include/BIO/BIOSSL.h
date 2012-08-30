@@ -8,8 +8,8 @@
 #ifndef BIOSSL_H_
 #define BIOSSL_H_
 
-#include <BIO/BIO.h>
-#include <Security/SSLContext.h>
+#include "../BIO/BIO.h"
+#include "../Security/SSLContext.h"
 
 namespace osock
 {

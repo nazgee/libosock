@@ -34,19 +34,6 @@ ServerEcho::ServerEcho(Auth_p auth, std::string portname, serviceType servicetyp
 	DBG_CONSTRUCTOR;
 }
 
-//ServerEcho::ServerEcho(SocketServer* socketServer) :
-//	Server(socketServer)
-//{
-//	DBG_CONSTRUCTOR;
-//}
-
-void ServerEcho::Serve(Socket& Client)
-{
-	StringMessage msg("", osock::http::NEWLINE);
-	Client.Receive(msg);
-	Client.Send(msg);
-}
-
 void ServerEcho::Manage(BIO_p bio)
 {
 	Parser parse(bio);

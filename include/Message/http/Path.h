@@ -8,7 +8,7 @@
 #ifndef PATH_H_
 #define PATH_H_
 
-#include "Message/StringMessage.h"
+#include "../../Message/StringMessage.h"
 
 namespace osock
 {

@@ -20,7 +20,7 @@
 #ifndef STRINGMESSAGE_H_
 #define STRINGMESSAGE_H_
 
-#include "Message.h"
+#include "../Message/Message.h"
 
 namespace osock
 {

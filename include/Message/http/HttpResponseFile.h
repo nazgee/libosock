@@ -10,8 +10,8 @@
 
 #include <defines.h>
 //#define LOGLEVEL LOGLEVEL_DBG
-#include <Utilities/Logger.h>
-#include <Message/http/HttpResponse.h>
+#include "../../Utilities/Logger.h"
+#include "../../Message/http/HttpResponse.h"
 
 #include <fstream>
 

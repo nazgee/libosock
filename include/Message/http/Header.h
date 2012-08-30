@@ -8,7 +8,7 @@
 #ifndef HEADER_H_
 #define HEADER_H_
 
-#include "Message/StringMessage.h"
+#include "../../Message/StringMessage.h"
 
 namespace osock
 {

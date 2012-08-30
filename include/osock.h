@@ -20,11 +20,6 @@
 #ifndef LIBSOCKETS_H_
 #define LIBSOCKETS_H_
 
-#include "Utilities/Logger.h"
-#include "Socket/SocketServerSSL.h"
-#include "Socket/SocketServerUnsafe.h"
-#include "Socket/SocketClientSSL.h"
-#include "Socket/SocketClientUnsafe.h"
 #include "Exception/Exception.h"
 #include "Message/StringMessage.h"
 #include "Message/ChainedMessage.h"

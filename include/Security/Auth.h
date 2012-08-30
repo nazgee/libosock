@@ -8,7 +8,7 @@
 #ifndef AUTH_H_
 #define AUTH_H_
 #include <boost/utility.hpp>
-#include <BIO/BIO.h>
+#include "../BIO/BIO.h"
 
 namespace osock
 {

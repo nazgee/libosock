@@ -20,10 +20,11 @@
 #ifndef BIO_H_
 #define BIO_H_
 
+#include "../Exception/Exception.h"
+
 #include <defines.h>
 #include <openssl/ssl.h>
 #include <openssl/bio.h>
-#include <Exception/Exception.h>
 #include <boost/utility.hpp>
 #include <boost/shared_ptr.hpp>
 #include <boost/weak_ptr.hpp>

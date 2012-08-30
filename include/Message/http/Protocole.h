@@ -8,7 +8,7 @@
 #ifndef PROTOCOLE_H_
 #define PROTOCOLE_H_
 
-#include "Message/StringMessage.h"
+#include "../../Message/StringMessage.h"
 
 namespace osock
 {

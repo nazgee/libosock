@@ -8,8 +8,8 @@
 #ifndef AUTHNONE_H_
 #define AUTHNONE_H_
 
-#include <Security/Auth.h>
-#include <Security/SSLContext.h>
+#include "../Security/Auth.h"
+#include "../Security/SSLContext.h"
 
 namespace osock
 {
