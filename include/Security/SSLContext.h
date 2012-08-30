@@ -23,11 +23,15 @@ public:
 	typedef enum
 	{
 		serverTLSv1,
+#ifndef OPENSSL_NO_SSL2
 		serverSSLv2,
+#endif
 		serverSSLv3,
 		serverSSLv23,
 		clientTLSv1,
+#ifndef OPENSSL_NO_SSL2
 		clientSSLv2,
+#endif
 		clientSSLv3,
 		clientSSLv23
 	} securityMode;
@@ -57,7 +61,7 @@ public:
 										std::string trustFile = "",
 										std::string password = "");
 
-	static SSL_METHOD* GetMethod(securityMode mode);
+	static const SSL_METHOD* GetMethod(securityMode mode);
 };
 }
 

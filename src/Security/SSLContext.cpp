@@ -107,15 +107,17 @@ int SSLContext::PasswordCallback(char *buf, int size, int rwflag, void *userdata
 	}
 }
 
-SSL_METHOD* SSLContext::GetMethod(securityMode mode)
+const SSL_METHOD* SSLContext::GetMethod(securityMode mode)
 {
 	switch (mode) {
 		case serverTLSv1: {
 			return TLSv1_server_method();
 		} break;
+#ifndef OPENSSL_NO_SSL2
 		case serverSSLv2: {
 			return SSLv2_server_method();
 		} break;
+#endif
 		case serverSSLv3: {
 			return SSLv3_server_method();
 		} break;
@@ -125,9 +127,11 @@ SSL_METHOD* SSLContext::GetMethod(securityMode mode)
 		case clientTLSv1: {
 			return TLSv1_client_method();
 		} break;
+#ifndef OPENSSL_NO_SSL2
 		case clientSSLv2: {
 			return SSLv2_client_method();
 		} break;
+#endif
 		case clientSSLv3: {
 			return SSLv3_client_method();
 		} break;
