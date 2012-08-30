@@ -54,13 +54,13 @@ int main(int ac, char **av)
 
 	if (result.wasSuccessful()) {
 		std::cout << "No failures encountered- nice one!" << std::endl;
-		return 0;
+		return EXIT_SUCCESS;
+	} else {
+		std::cout << "Oops!" << std::endl;
+		//--- Output info about the failures
+		CPPUNIT_NS::TextOutputter outputter(&result, std::cout);
+		outputter.printFailures();
+
+		return EXIT_FAILURE;
 	}
-
-	std::cout << "Oops!" << std::endl;
-	//--- Output info about the failures
-	CPPUNIT_NS::TextOutputter outputter(&result, std::cout);
-	outputter.printFailures();
-
-	return 1;
 }
