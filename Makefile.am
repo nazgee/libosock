@@ -21,7 +21,7 @@ EXTRA_PROGRAMS = unittest
 unittest_SOURCES  = src/Testing/main.cpp
 unittest_SOURCES += src/Testing/Unit/Message/StringMessageTest.cpp
 unittest_SOURCES += src/Testing/Unit/Message/MessageTest.cpp
-unittest_SOURCES += src/Testing/Unit/Server/ServerTest.cpp
+unittest_SOURCES += src/Testing/Unit/Server/EchoServerTest.cpp
 unittest_SOURCES += src/Testing/Unit/BIO/BIOTest.cpp
 ## Prepare linker flags
 unittest_LDFLAGS  = $(OPENSSL_LIBS)

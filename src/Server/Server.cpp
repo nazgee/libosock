@@ -40,7 +40,8 @@ Server::Server(Auth_p auth, std::string portname, serviceType servicetype) :
 		itsAuth(auth),
 		itsBIO(BIOSocket::PopulateAcceptBIO(portname)),
 		itsServiceType(servicetype),
-		isChild(false)
+		isChild(false),
+		itsPortName(portname)
 //,
 //		itsSocketServer(NULL)
 {

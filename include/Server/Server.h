@@ -38,6 +38,7 @@ private:
 	serviceType itsServiceType;
 	bool isChild;
 	bool isCancelRequested;
+	std::string itsPortName;
 
 	void doRunCallback(BIO_p client);
 	void doRunProcess(BIO_p client);
@@ -74,6 +75,10 @@ public:
 	 * @param reaper
 	 */
 	static void InstallChildReaper(void (*reaper)(int) = ChildReaper);
+
+	std::string getPortName() const {
+		return itsPortName;
+	}
 private:
 //	SocketServer* itsSocketServer;
 };
