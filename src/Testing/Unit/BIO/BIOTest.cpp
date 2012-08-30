@@ -120,7 +120,8 @@ protected:
 	{
 		sleep(1);
 		std::string host("localhost:");
-		host += Utils::to_string((unsigned int)port);
+		intptr_t portnum =(intptr_t)port;
+		host += Utils::to_string(portnum);
 
 		osock::BIOSocket_p c = osock::BIOSocket::PopulateClientBIO(host);
 		c->setWriteTimeout(100);
@@ -131,7 +132,7 @@ protected:
 
 	void acceptShallWork() {
 		pthread_t pinger;
-		int port = Utils::getFreePort(10000,10000);
+		intptr_t port = Utils::getFreePort(10000,10000);
 		osock::BIOSocket_p s = osock::BIOSocket::PopulateAcceptBIO(Utils::to_string(port));
 
 		int res = pthread_create(&pinger, NULL, pingerThread, (void*) port);
