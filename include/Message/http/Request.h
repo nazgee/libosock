@@ -5,8 +5,8 @@
  *      Author: nazgee
  */
 
-#ifndef REQUEST_H_
-#define REQUEST_H_
+#ifndef OSOCKREQUEST_H_
+#define OSOCKREQUEST_H_
 
 #include "../../Message/Message.h"
 #include "../../Message/ChainedMessage.h"

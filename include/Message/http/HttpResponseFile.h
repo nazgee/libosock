@@ -5,10 +5,9 @@
  *      Author: nazgee
  */
 
-#ifndef HTTPRESPONSEFILE_H_
-#define HTTPRESPONSEFILE_H_
+#ifndef OSOCKHTTPRESPONSEFILE_H_
+#define OSOCKHTTPRESPONSEFILE_H_
 
-#include <defines.h>
 //#define LOGLEVEL LOGLEVEL_DBG
 #include "../../Utilities/Logger.h"
 #include "../../Message/http/HttpResponse.h"

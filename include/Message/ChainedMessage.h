@@ -5,8 +5,8 @@
  *      Author: nazgee
  */
 
-#ifndef CHAINEDMESSAGE_H_
-#define CHAINEDMESSAGE_H_
+#ifndef OSOCKCHAINEDMESSAGE_H_
+#define OSOCKCHAINEDMESSAGE_H_
 
 #include "Message.h"
 #include <boost/ptr_container/ptr_vector.hpp>

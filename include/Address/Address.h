@@ -17,8 +17,8 @@
 	along with libsockets.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HOSTADDRESS_H_
-#define HOSTADDRESS_H_
+#ifndef OSOCKHOSTADDRESS_H_
+#define OSOCHOSTADDRESS_H_
 
 #include <stdint.h>
 #include <string>

@@ -17,8 +17,8 @@
 	along with libsockets.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef STRINGMESSAGE_H_
-#define STRINGMESSAGE_H_
+#ifndef OSOCKSTRINGMESSAGE_H_
+#define OSOCKSTRINGMESSAGE_H_
 
 #include "../Message/Message.h"
 

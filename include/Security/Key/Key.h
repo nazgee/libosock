@@ -17,8 +17,8 @@
 	along with libsockets.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef KEY_H_
-#define KEY_H_
+#ifndef OSOCKKEY_H_
+#define OSOCKKEY_H_
 
 #include <openssl/ssl.h>
 #include <string>

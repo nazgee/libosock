@@ -17,8 +17,8 @@
 	along with libsockets.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef TRUST_H_
-#define TRUST_H_
+#ifndef OSOCKTRUST_H_
+#define OSOCKTRUST_H_
 
 #include <openssl/ssl.h>
 #include <string>

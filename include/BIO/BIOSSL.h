@@ -5,8 +5,8 @@
  *      Author: nazgee
  */
 
-#ifndef BIOSSL_H_
-#define BIOSSL_H_
+#ifndef OSOCBIOSSL_H_
+#define OSOCBIOSSL_H_
 
 #include "../BIO/BIO.h"
 #include "../Security/SSLContext.h"

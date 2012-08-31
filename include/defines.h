@@ -17,8 +17,8 @@
 	along with libsockets.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef DEFINES_H_
-#define DEFINES_H_
+#ifndef OSOCKDEFINES_H_
+#define OSOCKDEFINES_H_
 
 #include <sys/socket.h>
 #include <stdio.h>

@@ -17,8 +17,8 @@
 	along with libsockets.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef EXCEPTIONS_H_
-#define EXCEPTIONS_H_
+#ifndef OSOCEXCEPTIONS_H_
+#define OSOCEXCEPTIONS_H_
 
 #include <openssl/err.h>
 #include <string.h>	//strerror()

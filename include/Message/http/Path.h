@@ -5,8 +5,8 @@
  *      Author: nazgee
  */
 
-#ifndef PATH_H_
-#define PATH_H_
+#ifndef OSOCKPATH_H_
+#define OSOCKPATH_H_
 
 #include "../../Message/StringMessage.h"
 

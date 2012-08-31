@@ -5,8 +5,8 @@
  *      Author: nazgee
  */
 
-#ifndef AUTH_H_
-#define AUTH_H_
+#ifndef OSOCKAUTH_H_
+#define OSOCKAUTH_H_
 #include <boost/utility.hpp>
 #include "../BIO/BIO.h"
 
@@ -19,6 +19,7 @@ class Auth : public boost::noncopyable
 {
 public:
 	virtual BIO_p Authenticate(BIO_p bio2auth) = 0;
+	virtual ~Auth() { }
 };
 }
 

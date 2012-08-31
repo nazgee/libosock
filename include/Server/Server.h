@@ -18,8 +18,8 @@
 */
 
 
-#ifndef SERVER_H_
-#define SERVER_H_
+#ifndef OSOCKSERVER_H_
+#define OSOCKSERVER_H_
 
 #include "../Address/Address.h"
 #include "../Security/Auth.h"

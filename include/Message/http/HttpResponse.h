@@ -5,8 +5,8 @@
  *      Author: nazgee
  */
 
-#ifndef HTTPRESPONSE_H_
-#define HTTPRESPONSE_H_
+#ifndef OSOCKHTTPRESPONSE_H_
+#define OSOCKHTTPRESPONSE_H_
 
 #include "../../Message/Message.h"
 #include "../../Message/http/Response.h"

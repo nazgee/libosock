@@ -5,8 +5,8 @@
  *      Author: nazgee
  */
 
-#ifndef HTTPREQUEST_H_
-#define HTTPREQUEST_H_
+#ifndef OSOCKHTTPREQUEST_H_
+#define OSOCKHTTPREQUEST_H_
 
 
 #include <boost/ptr_container/ptr_vector.hpp>

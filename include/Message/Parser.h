@@ -5,8 +5,8 @@
  *      Author: nazgee
  */
 
-#ifndef PARSER_H_
-#define PARSER_H_
+#ifndef OSOCKPARSER_H_
+#define OSOCKPARSER_H_
 
 #include <boost/utility.hpp>
 #include "../Message/Message.h"

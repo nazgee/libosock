@@ -5,8 +5,8 @@
  *      Author: nazgee
  */
 
-#ifndef SSLCONTEXT_H_
-#define SSLCONTEXT_H_
+#ifndef OSOCKSSLCONTEXT_H_
+#define OSOCKSSLCONTEXT_H_
 
 #include <openssl/ssl.h>
 #include <boost/shared_ptr.hpp>

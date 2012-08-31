@@ -5,8 +5,8 @@
  *      Author: nazgee
  */
 
-#ifndef HEADER_H_
-#define HEADER_H_
+#ifndef OSOCKHEADER_H_
+#define OSOCKHEADER_H_
 
 #include "../../Message/StringMessage.h"
 

@@ -5,8 +5,8 @@
  *      Author: nazgee
  */
 
-#ifndef PROTOCOLE_H_
-#define PROTOCOLE_H_
+#ifndef OSOCKPROTOCOLE_H_
+#define OSOCKPROTOCOLE_H_
 
 #include "../../Message/StringMessage.h"
 

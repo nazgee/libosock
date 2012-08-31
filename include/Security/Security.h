@@ -17,8 +17,8 @@
 	along with libsockets.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef SECURITY_H_
-#define SECURITY_H_
+#ifndef OSOCKSECURITY_H_
+#define OSOCKSECURITY_H_
 
 #include "../Address/Address.h"
 #include <openssl/ssl.h>

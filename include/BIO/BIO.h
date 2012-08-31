@@ -17,12 +17,12 @@
 	along with libsockets.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef BIO_H_
-#define BIO_H_
+#ifndef OSOCBIO_H_
+#define OSOCBIO_H_
 
 #include "../Exception/Exception.h"
 
-#include <defines.h>
+#include "../defines.h"
 #include <openssl/ssl.h>
 #include <openssl/bio.h>
 #include <boost/utility.hpp>

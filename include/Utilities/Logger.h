@@ -16,8 +16,8 @@
 	You should have received a copy of the GNU Lesser General Public License
 	along with libsockets.  If not, see <http://www.gnu.org/licenses/>.
 */
-#ifndef LOGGER_H_
-#define LOGGER_H_
+#ifndef OSOCKLOGGER_H_
+#define OSOCKLOGGER_H_
 
 #include <typeinfo>
 #include <iostream>
@@ -25,7 +25,7 @@
 #include <map>
 #include <cxxabi.h>
 
-#include <defines.h>
+#include "../defines.h"
 #include <stdlib.h>
 
 namespace osock

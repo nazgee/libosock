@@ -5,8 +5,8 @@
  *      Author: nazgee
  */
 
-#ifndef COMMAND_H_
-#define COMMAND_H_
+#ifndef OSOCCOMMAND_H_
+#define OSOCCOMMAND_H_
 
 #include "../../Message/StringMessage.h"
 

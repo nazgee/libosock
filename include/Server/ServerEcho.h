@@ -17,8 +17,8 @@
  along with libsockets.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SERVERECHO_H_
-#define SERVERECHO_H_
+#ifndef OSOCKSERVERECHO_H_
+#define OSOCKSERVERECHO_H_
 
 #include "Server.h"
 

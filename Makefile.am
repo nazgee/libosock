@@ -123,19 +123,31 @@ osockmessagehttp_include_HEADERS = include/Message/http/Path.h \
 
 osocksecurity_includedir = $(osock_includedir)/Security
 osocksecurity_include_HEADERS = include/Security/Trust/Trust.h \
-	include/Security/SecurityServerSSL.h \
-	include/Security/Key/Key.h \
-	include/Security/SecurityClientUnsafe.h \
-	include/Security/SecurityServer.h \
-	include/Security/Security.h \
 	include/Security/Certificate/Certificate.h \
-	include/Security/SecurityClient.h \
+	include/Security/Key/Key.h \
+	include/Security/SSLContext.h \
+	include/Security/Auth.h \
+	include/Security/AuthNone.h \
+	include/Security/AuthSSL.h \
+	include/Security/Security.h \
+	include/Security/SecurityServer.h \
+	include/Security/SecurityServerSSL.h \
 	include/Security/SecurityServerUnsafe.h \
+	include/Security/SecurityClient.h \
+	include/Security/SecurityClientUnsafe.h \
 	include/Security/SecurityClientSSL.h
 
 osockserver_includedir = $(osock_includedir)/Server
 osockserver_include_HEADERS = include/Server/Server.h \
 	include/Server/ServerEcho.h
+
+osockutilities_includedir = $(osock_includedir)/Utilities
+osockutilities_include_HEADERS = include/Utilities/Logger.h
+
+osockbio_includedir = $(osock_includedir)/BIO
+osockbio_include_HEADERS = include/BIO/BIO.h \
+	include/BIO/BIOSocket.h \
+	include/BIO/BIOSSL.h
 	
 osockaddress_includedir = $(osock_includedir)/Address
 osockaddress_include_HEADERS = include/Address/Address.h

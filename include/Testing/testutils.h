@@ -5,8 +5,8 @@
  *      Author: nazgee
  */
 
-#ifndef TESTUTILS_H_
-#define TESTUTILS_H_
+#ifndef OSOCKTESTUTILS_H_
+#define OSOCKTESTUTILS_H_
 
 #include <iostream>
 #include <sstream>

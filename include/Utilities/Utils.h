@@ -5,8 +5,8 @@
  *      Author: nazgee
  */
 
-#ifndef UTILS_H_
-#define UTILS_H_
+#ifndef OSOCKUTILS_H_
+#define OSOCKUTILS_H_
 
 #include <string>
 #include <Message/Message.h>

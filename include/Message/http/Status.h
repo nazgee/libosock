@@ -5,8 +5,8 @@
  *      Author: nazgee
  */
 
-#ifndef STATUS_H_
-#define STATUS_H_
+#ifndef OSOCKSTATUS_H_
+#define OSOCKSTATUS_H_
 
 #include "../../Message/Message.h"
 #include "../../Message/ChainedMessage.h"

@@ -5,8 +5,8 @@
  *      Author: nazgee
  */
 
-#ifndef RESPONSE_H_
-#define RESPONSE_H_
+#ifndef OSOCKRESPONSE_H_
+#define OSOCKRESPONSE_H_
 
 #include "../../Message/Message.h"
 #include "../../Message/ChainedMessage.h"

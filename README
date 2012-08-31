@@ -1,7 +1,8 @@
-libosock
+# libosock - C++ socket library
 ----------
 
-This project is an attempt to build simple to use, yet efficient Object/C++ Library for Sockets and SSL.
+This project is an attempt to build simple to use, yet efficient object-oriented
+C++ Library for sockets and SSL.
 
 In order to build this library you might need to:
 

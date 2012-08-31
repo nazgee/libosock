@@ -17,8 +17,8 @@
 	along with libsockets.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef SSLWRAP_H_
-#define SSLWRAP_H_
+#ifndef OSOCKSSLWRAP_H_
+#define OSOCKSSLWRAP_H_
 
 #include <openssl/ssl.h>
 

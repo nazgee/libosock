@@ -5,8 +5,8 @@
  *      Author: nazgee
  */
 
-#ifndef SOCKETBIO_H_
-#define SOCKETBIO_H_
+#ifndef OSOCSOCKETBIO_H_
+#define OSOCSOCKETBIO_H_
 
 #include "../BIO/BIO.h"
 

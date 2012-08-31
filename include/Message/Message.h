@@ -17,11 +17,11 @@
  along with libsockets.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MESSAGES_H_
-#define MESSAGES_H_
+#ifndef OSOCKMESSAGES_H_
+#define OSOCKMESSAGES_H_
 
 
-#include <defines.h>
+#include "../defines.h"
 
 namespace osock
 {

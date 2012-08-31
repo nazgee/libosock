@@ -5,8 +5,8 @@
  *      Author: nazgee
  */
 
-#ifndef MESSAGETEST_H_
-#define MESSAGETEST_H_
+#ifndef OSOCKMESSAGETEST_H_
+#define OSOCKMESSAGETEST_H_
 
 #include <osock.h>
 #include <testutils.h>

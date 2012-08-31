@@ -17,8 +17,8 @@
 	along with libsockets.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef ClientSecurity_H_
-#define ClientSecurity_H_
+#ifndef OSOCKClientSecurity_H_
+#define OSOCKClientSecurity_H_
 
 #include "Security.h"
 

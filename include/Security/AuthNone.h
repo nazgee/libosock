@@ -5,8 +5,8 @@
  *      Author: nazgee
  */
 
-#ifndef AUTHNONE_H_
-#define AUTHNONE_H_
+#ifndef OSOCKAUTHNONE_H_
+#define OSOCKAUTHNONE_H_
 
 #include "../Security/Auth.h"
 #include "../Security/SSLContext.h"
