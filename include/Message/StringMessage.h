@@ -31,7 +31,7 @@ protected:
 
 public:
 	StringMessage(unsigned short dataLen, const std::string& terminator, std::string name = "StringMessage");
-	StringMessage(const std::string& data, const std::string& terminator, std::string name = "StringMessage");
+	StringMessage(const std::string& data, const std::string& terminator = osock::http::NEWLINE, std::string name = "StringMessage");
 	StringMessage(const StringMessage& copy_from_me);
 	virtual ~StringMessage(void);
 
