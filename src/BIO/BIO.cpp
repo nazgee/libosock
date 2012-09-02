@@ -53,21 +53,19 @@ data_chunk BIO::doRead() const
 		if (rxedNumber < 0) {
 			NFO << "BIO read interrupted" << std::endl;
 
-			if (BIO_should_retry(itsBIO)) {
+			if (this->ShouldRetry()) {
 				std::string s("Recoverable error when reading from BIO");
-				if (errno == EAGAIN) {
-					throw StdException(s, errno);
-				} else if (errno == EWOULDBLOCK) {
-					throw StdException(s, errno);
+				if ((errno == EAGAIN) || (errno == EWOULDBLOCK)) {
+					throw RecoverableException(s);
 				}
 			} else {
 				std::string s("Fatal error when reading from BIO");
 				s += Utils::getLastErrorSSL();
-				throw StdException(s, errno);
+				throw StdException(s);
 			}
 		} else if (rxedNumber == 0) {
 			std::string s("Remote died, when reading from BIO");
-			throw StdException(s, errno);
+			throw RemoteDiedException(s);
 		} else {
 			tempData.resize(rxedNumber);
 			DBG << "Data read from BIO" << Utils::DataToString(tempData)
@@ -77,7 +75,7 @@ data_chunk BIO::doRead() const
 	return tempData;
 }
 
-bool BIO::ShouldRetry()
+bool BIO::ShouldRetry() const
 {
 	return BIO_should_retry(this->getBIO());
 }
@@ -97,19 +95,17 @@ unsigned int BIO::doWrite(const data_chunk& data_to_write, int offset) const
 	for (;;) {
 		written = BIO_write(itsBIO, &data_to_write.at(offset), num2wr);
 		if (written <= 0) {
-			if (BIO_should_retry(itsBIO)) {
+			if (this->ShouldRetry()) {
 				std::string s("Recoverable error when writing to BIO;");
-				if (errno == EAGAIN) {
-					throw StdException(s, errno);
-				} else if (errno == EWOULDBLOCK) {
-					throw StdException(s, errno);
+				if ((errno == EAGAIN) || (errno == EWOULDBLOCK)) {
+					throw RecoverableException(s);
 				}
 				continue;
 			}
 
 			std::string s("Fatal error when writing to BIO; ");
 			s += Utils::getLastErrorSSL();
-			throw StdException(s, errno);
+			throw StdException(s);
 		}
 		break;
 	}
@@ -127,7 +123,7 @@ int BIO::getFD() const
 	int sd;
 	long l = ::BIO_get_fd(itsBIO, &sd);
 	if (l <= 0) {
-		throw StdException("Could not get file descriptor for BIO", errno);
+		throw StdException("Could not get file descriptor for BIO");
 	}
 
 	return sd;
@@ -148,9 +144,8 @@ data_chunk BIO::ReadWithRetry() const
 	for (;;) {
 		try {
 			return doRead();
-		} catch (StdException& ex) {
-			if (ex.getErrno() != EWOULDBLOCK && ex.getErrno() != EAGAIN)
-				throw ex;
+		} catch (RecoverableException& ex) {
+
 		}
 	}
 }
@@ -173,9 +168,8 @@ void BIO::WriteWithRetry(const data_chunk& data2wr) const
 			data_chunk tmp;
 			tmp.insert(tmp.end(), data2wr.begin() + written, data2wr.end());
 			written += doWrite(tmp, written);
-		} catch (StdException& ex) {
-			if (ex.getErrno() != EWOULDBLOCK && ex.getErrno() != EAGAIN)
-				throw ex;
+		} catch (RecoverableException& ex) {
+
 		}
 	} while (written < data2wr.size());
 }
@@ -189,7 +183,7 @@ void BIO::setClose(bool closedescriptor)
 		l = BIO_set_close(itsBIO, BIO_NOCLOSE);
 
 	if (l != 1)
-		throw StdException("Could not set close mode for BIO", errno);
+		throw StdException("Could not set close mode for BIO");
 }
 
 void BIO::pushBIO(BIO_p bio)

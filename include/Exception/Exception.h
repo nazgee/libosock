@@ -88,22 +88,14 @@ public:
  */
 class StdException: public Exception
 {
-private:
-	int itsErrno;
 public:
-	StdException(const std::string& msg, int error_number) :
-		Exception(msg +"; errno="+ strerror(error_number)),
-		itsErrno(error_number)
+	StdException(const std::string& msg) :
+		Exception(msg +"; errno="+ strerror(errno))
 	{
 	}
 
 	virtual ~StdException(void) throw()
 	{
-	}
-
-	int getErrno()
-	{
-		return itsErrno;
 	}
 };
 

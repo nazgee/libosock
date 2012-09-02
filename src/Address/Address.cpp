@@ -101,7 +101,7 @@ Address::Address(BIO* bio) :
 	struct sockaddr peer;
 	socklen_t peer_len = sizeof(peer);
 	if (getpeername(sock, &peer, &peer_len) == -1) {
-		throw StdException("getpeername failed", errno);
+		throw StdException("getpeername failed");
 	}
 
 	char hbuff[256];

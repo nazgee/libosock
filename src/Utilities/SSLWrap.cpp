@@ -61,7 +61,7 @@ namespace SSLWrap
 		tv.tv_usec = (timeout_ms - tv.tv_sec * 1000) / 1000;
 
 		if( setsockopt(BIO_get_fd(b, NULL), SOL_SOCKET, SO_RCVTIMEO, (char *)&tv,sizeof(struct timeval)))
-			throw StdException("setsockopt failed!", errno);
+			throw StdException("setsockopt failed!");
 	}
 
 

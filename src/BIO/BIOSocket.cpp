@@ -18,14 +18,14 @@ BIOSocket_p BIOSocket::PopulateAcceptBIO(std::string portname, unsigned int chun
 	::BIO* b;
 	b = ::BIO_new_accept(const_cast<char*>(portname.c_str()));
 	if (b == NULL) {
-		throw StdException("Creation of new accept BIO failed", errno);
+		throw StdException("Creation of new accept BIO failed");
 	}
 	BIOSocket_p ret(new BIOSocket(b, chunksize));
 
 	// First call of BIO_do_accpept does not really accept a connection-
 	// instead it does some initial-setup only
 	if ( BIO_do_accept(b) <= 0 ) {
-		throw StdException("Accept BIO init failed", errno);
+		throw StdException("Accept BIO init failed");
 	}
 	return ret;
 }
@@ -36,13 +36,13 @@ BIOSocket_p BIOSocket::PopulateClientBIO(std::string hostname, unsigned int chun
 	::BIO* b;
 	b = ::BIO_new_connect(const_cast<char*>(hostname.c_str()));
 	if (b == NULL) {
-		throw StdException("Creation of new connect BIO failed", errno);
+		throw StdException("Creation of new connect BIO failed");
 	}
 	BIOSocket_p ret(new BIOSocket(b, chunksize));
 
 	while (BIO_do_connect(b) <= 0) {
 		if (!BIO_should_retry(b)) {
-			throw StdException("Connecting to server failed", errno);
+			throw StdException("Connecting to server failed");
 		}
 	}
 
@@ -64,7 +64,7 @@ void BIOSocket::setOption(int level, int optname, void* optvalue,
 		socklen_t optlen)
 {
 	if (setsockopt(getFD(), level, optname, optvalue, optlen)) {
-		throw StdException("Setting socket option failed", errno);
+		throw StdException("Setting socket option failed");
 	}
 }
 
@@ -93,13 +93,13 @@ boost::shared_ptr<BIOSocket> BIOSocket::AcceptIncoming()
 
 	// Sit and wait on our accept channel
 	if (BIO_do_accept(getBIO()) <= 0) {
-		throw StdException("Accepting client failed", errno);
+		throw StdException("Accepting client failed");
 	}
 
 	// Pop out incoming client from our accept channel
 	out = BIO_pop(getBIO());
 	if (out == NULL) {
-		throw StdException("Popping client BIO failed", errno);
+		throw StdException("Popping client BIO failed");
 	}
 
 	boost::shared_ptr<BIOSocket> ret(new BIOSocket(out, getChunkSize()));

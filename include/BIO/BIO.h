@@ -65,7 +65,7 @@ protected:
 	 * @param offset Offset from which data_to_write should be written
 	 */
 	unsigned int doWrite(const data_chunk& data_to_write, int offset = 0) const;
-	bool ShouldRetry();
+	bool ShouldRetry() const;
 public:
 	/**
 	 * @brief Constructor of BIO class- takes OpenSSL object
@@ -111,6 +111,20 @@ public:
 	void popBIO();
 	BIO_p getTopBIO();
 	BIO_p getBottomBIO();
+
+	class RemoteDiedException : public StdException {
+	public:
+		RemoteDiedException(const std::string& msg) :
+			StdException(msg) {
+		};
+	};
+
+	class RecoverableException : public StdException {
+	public:
+		RecoverableException(const std::string& msg) :
+			StdException(msg) {
+		};
+	};
 };
 
 }

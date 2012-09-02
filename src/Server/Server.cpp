@@ -64,7 +64,7 @@ void Server::doRunProcess(BIO_p client)
 {
 	int childpid = fork();
 	if (childpid < 0)
-		throw StdException("Error while forking!", errno);
+		throw StdException("Error while forking!");
 
 	if (childpid == 0) {
 		isChild = true;
@@ -114,18 +114,21 @@ void Server::Start()
 		DBG << "Server is starting to accept clients" << std::endl;
 		BIOSocket_p client = itsBIO->AcceptIncoming();
 
-		switch (itsServiceType) {
-			case serviceCallback: {
-				doRunCallback(client);
-			} break;
-			case serviceProcess: {
-				doRunProcess(client);
-			} break;
-			case serviceThread: {
-				doRunThread(client);
-			} break;
-			default:
-				assert(0);
+		try {
+			switch (itsServiceType) {
+				case serviceCallback: {
+					doRunCallback(client);
+				} break;
+				case serviceProcess: {
+					doRunProcess(client);
+				} break;
+				case serviceThread: {
+					doRunThread(client);
+				} break;
+				default:
+					assert(0);
+			}
+		} catch (BIO::RemoteDiedException& e) {
 		}
 	} while(!isChild && onServed(client));
 

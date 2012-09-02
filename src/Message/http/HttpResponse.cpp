@@ -152,11 +152,11 @@ void HttpResponse::doInitHeaders()
 	t = time(NULL);
 	tmp = localtime(&t);
 	if (tmp == NULL) {
-		throw StdException("localtime() failed", errno);
+		throw StdException("localtime() failed");
 	}
 
 	if (strftime(datestr, sizeof(datestr), "%a, %d %b %Y %T %Z", tmp) == 0) {
-		throw StdException("strfrtime() failed", errno);
+		throw StdException("strfrtime() failed");
 	}
 
 	itsHeaders.DeserializingRestart();
