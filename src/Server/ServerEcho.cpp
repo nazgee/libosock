@@ -34,7 +34,7 @@ ServerEcho::ServerEcho(Auth_p auth, std::string portname, serviceType servicetyp
 	DBG_CONSTRUCTOR;
 }
 
-void ServerEcho::Manage(BIO_p bio)
+void ServerEcho::Manage(osock::BIO_p bio)
 {
 	Parser parse(bio);
 

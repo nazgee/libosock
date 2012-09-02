@@ -28,7 +28,7 @@ class ServerEcho : public Server
 {
 public:
 	ServerEcho(Auth_p auth, std::string portname, serviceType servicetype = serviceCallback);
-	virtual void Manage(BIO_p bio);
+	virtual void Manage(osock::BIO_p bio);
 };
 } // osock
 

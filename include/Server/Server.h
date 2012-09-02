@@ -62,7 +62,7 @@ public:
 	 * @brief Implement this function to handle client connections
 	 * @param Client Socket of client to be served
 	 */
-	virtual void Manage(BIO_p bio) = 0;
+	virtual void Manage(osock::BIO_p bio) = 0;
 	/**
 	 * @brief Collects return codes of child-processess, to prevent zombies
 	 * @param n
