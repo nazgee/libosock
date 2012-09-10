@@ -38,6 +38,7 @@ public:
 	std::string getTerminator() const;
 	void setTerminator(std::string terminator);
 	std::string getString() const;
+	void setString(const std::string& new_body);
 
 protected:
 	virtual data_chunk doSerialize() const;

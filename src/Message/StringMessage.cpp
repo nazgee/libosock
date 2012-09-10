@@ -79,6 +79,12 @@ std::string StringMessage::getString() const
 	return this->substr(0, this->length() - itsTerminator.length());
 }
 
+void StringMessage::setString(const std::string& new_body)
+{
+	this->assign(new_body);
+	this->append(itsTerminator);
+}
+
 data_chunk StringMessage::doSerialize() const
 {
 	return data_chunk(this->data(), this->data() + this->size());
