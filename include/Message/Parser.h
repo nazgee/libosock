@@ -23,6 +23,8 @@ public:
 	Parser(BIO_p bio);
 	void Send(Message& msg) const;
 	void Receive(Message& msg);
+	void ReceiveWithoutRetry(Message& msg);
+	void Flush();
 };
 }
 #endif /* PARSER_H_ */

@@ -42,4 +42,27 @@ void Parser::Receive(Message& msg)
 			<< Utils::DataToString(itsRemainsOfData) << std::endl;
 }
 
+void Parser::ReceiveWithoutRetry(Message& msg)
+{
+	DBG << "Getting message ready for deserialiaztion; Remains"
+			<< Utils::DataToString(itsRemainsOfData) << std::endl;
+	msg.DeserializingRestart();
+
+	if (!msg.DeserializeChunk(itsRemainsOfData)) {
+		DBG << "Waiting for data" << std::endl;
+		do {
+			itsRemainsOfData = itsBIO->Read();
+		} while (!msg.DeserializeChunk(itsRemainsOfData));
+	}
+
+	// Store excessive data for future use
+	itsRemainsOfData = msg.getDeserializingRemains();
+	DBG << "Message Received(); Remains from current read:"
+			<< Utils::DataToString(itsRemainsOfData) << std::endl;
+}
+
+void Parser::Flush() {
+	itsRemainsOfData.clear();
+}
+
 }

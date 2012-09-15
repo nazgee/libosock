@@ -20,9 +20,9 @@ typedef boost::shared_ptr<BIOSocket> BIOSocket_p;
 
 class BIOSocket : public BIO
 {
-private:
-	void setOption(int level, int optnam, void* optvalue, socklen_t optlen);
 public:
+	void setOption(int level, int optnam, void* optvalue, socklen_t optlen);
+	void getOption(int level, int optnam, void* optvalue, socklen_t& optlen);
 
 	/**
 	 * @brief Creates new accepting BIO listening for clients on a given port
@@ -56,6 +56,7 @@ public:
 	 * indefinitely
 	 */
 	void setReadTimeout(int ms);
+	int getReadTimeout();
 	/**
 	 * @brief Sets timeout for Write() operations on a given socket BIO
 	 * @param ms timeout value in milliseconds; when set to 0, Read() will block

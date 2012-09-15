@@ -68,14 +68,34 @@ void BIOSocket::setOption(int level, int optname, void* optvalue,
 	}
 }
 
+void BIOSocket::getOption(int level, int optname, void* optvalue,
+		socklen_t& optlen)
+{
+	if (getsockopt(getFD(), level, optname, optvalue, &optlen)) {
+		throw StdException("Setting socket option failed");
+	}
+}
+
 void BIOSocket::setReadTimeout(int ms)
 {
 	// XXX fix values smaller than 1000!
 	struct timeval tv;
 	tv.tv_sec = ms / 1000;
-	tv.tv_usec = (ms - tv.tv_sec * 1000) / 1000;
+	tv.tv_usec = (ms - tv.tv_sec * 1000) * 1000;
 
 	setOption(SOL_SOCKET, SO_RCVTIMEO, &tv, sizeof(struct timeval));
+}
+
+int BIOSocket::getReadTimeout()
+{
+	unsigned int ret, size;
+	// XXX fix values smaller than 1000!
+	struct timeval tv;
+	size = sizeof(struct timeval);
+
+	getOption(SOL_SOCKET, SO_RCVTIMEO, &tv, size);
+
+	return ret;
 }
 
 void BIOSocket::setWriteTimeout(int ms)
