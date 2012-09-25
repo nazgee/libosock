@@ -64,6 +64,10 @@ AC_PROG_RANLIB
 PKG_CHECK_MODULES(OPENSSL, openssl >= 0.9.8)
 PKG_CHECK_MODULES(CPPUNIT, cppunit >= 1.12)
 
+if pkg-config --atleast-version=0.9.9 openssl
+then
+  AC_DEFINE([LIBSSL_WITHOUT_CONST_PARAMS], [], [Defined when we use old flavor of openssl])
+fi
 
 ### Checks for header files.
 AC_CHECK_HEADERS([arpa/inet.h netdb.h stdint.h stdlib.h string.h sys/socket.h])
