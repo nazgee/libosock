@@ -5,7 +5,7 @@
 # (package, version, [bug-report], [tarname], [url])
 AC_INIT([libosock], [0.5], [michal.stawinski@gmail.com], [tarname],
         [http://www.nazgee.eu])
-AC_PREREQ([2.67])
+AC_PREREQ([2.44])
 
 AC_CONFIG_MACRO_DIR([m4])
 
