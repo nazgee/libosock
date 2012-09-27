@@ -55,11 +55,13 @@ bool Server::onServed(Address& servedClient)
 
 void Server::doRunCallback(BIO_p client)
 {
-	// Perform handshake to decide whether client is authorized
-	BIO_p auth = itsAuth->Authenticate(client);
-	Manage(auth);
-
-	DBG << "Client served (callback)" << std::endl;
+	try {
+		// Perform handshake to decide whether client is authorized
+		BIO_p auth = itsAuth->Authenticate(client);
+		Manage(auth);
+	} catch (osock::BIO::RemoteDiedException &e) {
+		WRN << "Client died (callback)" << std::endl;
+	}
 }
 
 void Server::doRunProcess(BIO_p client)
@@ -77,14 +79,14 @@ void Server::doRunProcess(BIO_p client)
 		// Close fd manually, so we are not leaking descriptors
 		close(itsBIO->getFD());
 
-		// Perform handshake to decide whether client is authorized
-		BIO_p auth = itsAuth->Authenticate(client);
-		//FIX: this check is not needed
-		if (auth) {
+		try {
+			// Perform handshake to decide whether client is authorized
+			BIO_p auth = itsAuth->Authenticate(client);
 			Manage(auth);
-		} else {
-			NFO << "Client not authorized (fork)" << std::endl;
+		} catch (osock::BIO::RemoteDiedException &e) {
+			WRN << "Client died (fork)" << std::endl;
 		}
+
 
 		DBG << "Client served (fork)" << std::endl;
 	} else {
@@ -100,11 +102,15 @@ void Server::doRunProcess(BIO_p client)
 
 void Server::serverThread(BIO_p client)
 {
-	// Perform handshake to decide whether client is authorized
-	BIO_p auth = itsAuth->Authenticate(client);
-	Manage(auth);
+	try {
+		// Perform handshake to decide whether client is authorized
+		BIO_p auth = itsAuth->Authenticate(client);
+		Manage(auth);
+	} catch (osock::BIO::RemoteDiedException &e) {
+		WRN << "Client died (thread)" << std::endl;
+	}
 
-	ERR << "Client served (thread)" << std::endl;
+	DBG << "Client served (thread)" << std::endl;
 }
 
 void Server::doRunThread(BIO_p client)
