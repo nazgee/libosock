@@ -42,6 +42,7 @@ private:
 	void doRunCallback(BIO_p client);
 	void doRunProcess(BIO_p client);
 	void doRunThread(BIO_p client);
+	void serverThread(BIO_p client);
 public:
 //	Server(SocketServer* socketServer);
 	Server(Auth_p auth, std::string portname, serviceType servicetype = serviceCallback);

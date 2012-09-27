@@ -19,6 +19,8 @@
 
 #include <wait.h>
 #include <signal.h>
+#include <boost/thread.hpp>
+#include <boost/bind.hpp>
 
 #include <Server/Server.h>
 #include <Utilities/Logger.h>
@@ -96,11 +98,19 @@ void Server::doRunProcess(BIO_p client)
 	}
 }
 
+void Server::serverThread(BIO_p client)
+{
+	// Perform handshake to decide whether client is authorized
+	BIO_p auth = itsAuth->Authenticate(client);
+	Manage(auth);
+
+	ERR << "Client served (thread)" << std::endl;
+}
+
 void Server::doRunThread(BIO_p client)
 {
 #if defined(OPENSSL_THREADS)
-	// Thread support enabled
-	assert(0); //TODO implement it
+	boost::thread thread( boost::bind(&Server::serverThread, this, client));
 #else
 	// No thread support
 	assert(0);

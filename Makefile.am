@@ -26,11 +26,14 @@ unittest_SOURCES += src/Testing/Unit/BIO/BIOTest.cpp
 ## Prepare linker flags
 unittest_LDFLAGS  = $(OPENSSL_LIBS)
 unittest_LDFLAGS += $(CPPUNIT_LIBS)
+unittest_LDFLAGS += $(BOOST_THREAD_LDFLAGS)
+unittest_LDFLAGS += $(BOOST_THREAD_LIBS)
 unittest_LDFLAGS += -L$(top_srcdir) -losock-$(OSOCK_API_VERSION) -lpthread
 ## Prepare compiler flags
 unittest_CXXFLAGS  = -Iinclude -Iinclude/Testing -Wall 
 unittest_CXXFLAGS += $(OPENSSL_CFLAGS)
-unittest_CXXFLAGS += $(CPPUNIT_CFLAGS) 
+unittest_CXXFLAGS += $(CPPUNIT_CFLAGS)
+unittest_CXXFLAGS += $(BOOST_CPPFLAGS)
 
 ## Define a libtool archive target "libosock-@OSOCK_API_VERSION@.la", with
 ## @OSOCK_API_VERSION@ substituted into the generated Makefile at configure
@@ -91,7 +94,10 @@ libosock_@OSOCK_API_VERSION@_la_SOURCES = src/Message/Message.cpp \
 ## that all version information is kept in one place.
 libosock_@OSOCK_API_VERSION@_la_LDFLAGS = -version-info $(OSOCK_SO_VERSION)
 libosock_@OSOCK_API_VERSION@_la_LDFLAGS += $(OPENSSL_LIBS)
+libosock_@OSOCK_API_VERSION@_la_LDFLAGS += $(BOOST_THREAD_LDFLAGS)
+libosock_@OSOCK_API_VERSION@_la_LDFLAGS += $(BOOST_THREAD_LIBS)
 libosock_@OSOCK_API_VERSION@_la_CXXFLAGS = -I$(top_srcdir)/include $(OPENSSL_CFLAGS) -Wall
+libosock_@OSOCK_API_VERSION@_la_CXXFLAGS += $(BOOST_CPPFLAGS)
 
 #Add include dirs needed for a successfull compilation
 #AM_CXXFLAGS = -I$(top_srcdir)/include -Wall $(OPENSSL_CFLAGS)

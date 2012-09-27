@@ -57,12 +57,15 @@ AC_PROG_INSTALL
 AC_PROG_LN_S
 AC_PROG_MAKE_SET
 AC_PROG_RANLIB
+AC_PROG_LIBTOOL
 
 ### Checks for libraries.
 # this will create 2 variables: OPENSSL_CFLAGS and OPENSSL_LIBS 
 # containing respectively, the flags for the C compiler and the linker.
 PKG_CHECK_MODULES(OPENSSL, openssl >= 0.9.8)
 PKG_CHECK_MODULES(CPPUNIT, cppunit >= 1.12)
+BOOST_REQUIRE
+BOOST_THREADS
 
 if pkg-config --atleast-version=0.9.9 openssl
 then

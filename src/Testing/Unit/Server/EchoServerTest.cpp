@@ -12,7 +12,7 @@
 class SingleClientEchoServer : public osock::ServerEcho {
 public:
 	SingleClientEchoServer(osock::Auth_p auth, std::string portname) :
-		 osock::ServerEcho(auth, portname) {
+		 osock::ServerEcho(auth, portname, osock::Server::serviceThread) {
 	}
 
 	virtual bool onServed(osock::Address& servedClient) {
