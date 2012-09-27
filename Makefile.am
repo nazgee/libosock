@@ -92,11 +92,11 @@ libosock_@OSOCK_API_VERSION@_la_SOURCES = src/Message/Message.cpp \
 ## Instruct libtool to include ABI version information in the generated shared
 ## library file (.so).  The library ABI version is defined in configure.ac, so
 ## that all version information is kept in one place.
-libosock_@OSOCK_API_VERSION@_la_LDFLAGS = -version-info $(OSOCK_SO_VERSION)
+libosock_@OSOCK_API_VERSION@_la_LDFLAGS = -fPIC -version-info $(OSOCK_SO_VERSION)
 libosock_@OSOCK_API_VERSION@_la_LDFLAGS += $(OPENSSL_LIBS)
 libosock_@OSOCK_API_VERSION@_la_LDFLAGS += $(BOOST_THREAD_LDFLAGS)
 libosock_@OSOCK_API_VERSION@_la_LDFLAGS += $(BOOST_THREAD_LIBS)
-libosock_@OSOCK_API_VERSION@_la_CXXFLAGS = -I$(top_srcdir)/include $(OPENSSL_CFLAGS) -Wall
+libosock_@OSOCK_API_VERSION@_la_CXXFLAGS = -fPIC -I$(top_srcdir)/include $(OPENSSL_CFLAGS) -Wall
 libosock_@OSOCK_API_VERSION@_la_CXXFLAGS += $(BOOST_CPPFLAGS)
 
 #Add include dirs needed for a successfull compilation

@@ -65,7 +65,7 @@ AC_PROG_LIBTOOL
 PKG_CHECK_MODULES(OPENSSL, openssl >= 0.9.8)
 PKG_CHECK_MODULES(CPPUNIT, cppunit >= 1.12)
 BOOST_REQUIRE
-BOOST_THREADS
+BOOST_THREADS([mt])
 
 if pkg-config --atleast-version=0.9.9 openssl
 then
