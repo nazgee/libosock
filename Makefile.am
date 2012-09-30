@@ -79,6 +79,7 @@ libosock_@OSOCK_API_VERSION@_la_SOURCES = src/Message/Message.cpp \
 	src/Utilities/Logger.cpp \
 	src/Utilities/SSLWrap.cpp \
 	src/Utilities/Utils.cpp \
+	src/Utilities/sd-daemon.cpp \
 	src/Server/Server.cpp \
 	src/Server/ServerEcho.cpp \
 	src/Security/AuthSSL.cpp \
@@ -100,7 +101,8 @@ libosock_@OSOCK_API_VERSION@_la_CXXFLAGS = -fPIC -I$(top_srcdir)/include $(OPENS
 libosock_@OSOCK_API_VERSION@_la_CXXFLAGS += $(BOOST_CPPFLAGS)
 
 #Add include dirs needed for a successfull compilation
-#AM_CXXFLAGS = -I$(top_srcdir)/include -Wall $(OPENSSL_CFLAGS)
+#AM_XXFLAGS = -I$(top_srcdir)/include/ -I./include/
+AM_CFLAGS = -I$(top_srcdir)/include/
 
 ## Define the list of public header files and their install location.  The
 ## nobase_ prefix instructs Automake to not strip the directory part from each

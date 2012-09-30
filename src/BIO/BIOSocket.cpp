@@ -7,6 +7,7 @@
 
 #include <BIO/BIOSocket.h>
 #include <Utilities/Logger.h>
+#include <Utilities/sd-daemon.h>
 static osock::Logger logger("BIOSocket");
 
 namespace osock
@@ -14,20 +15,41 @@ namespace osock
 
 BIOSocket_p BIOSocket::PopulateAcceptBIO(std::string portname, unsigned int chunksize)
 {
-	DBG_FUNC << "Populating accept BIO; port=" << portname << std::endl;
-	::BIO* b;
-	b = ::BIO_new_accept(const_cast<char*>(portname.c_str()));
-	if (b == NULL) {
-		throw StdException("Creation of new accept BIO failed");
-	}
-	BIOSocket_p ret(new BIOSocket(b, chunksize));
+	int n = sd_listen_fds(1);
+	if (n > 1) {
+		throw Exception("sd_listen_fds() returned more than one fd...");
+	} else if (n == 1) {
+		DBG_FUNC << "Populating accept BIO; fd=" << SD_LISTEN_FDS_START << std::endl;
+		::BIO* b;
+		b = ::BIO_new(BIO_s_accept());
+		BIO_set_fd(b, SD_LISTEN_FDS_START, BIO_CLOSE);
+		BIO_set_accept_port(b, portname.c_str());
+		BIOSocket_p ret(new BIOSocket(b, chunksize));
 
-	// First call of BIO_do_accpept does not really accept a connection-
-	// instead it does some initial-setup only
-	if ( BIO_do_accept(b) <= 0 ) {
-		throw StdException("Accept BIO init failed");
+		// First call of BIO_do_accpept does not really accept a connection-
+		// instead it does some initial-setup only
+		if ( BIO_do_accept(b) <= 0 ) {
+			throw SSLException("Accept BIO init failed from systemd");
+		}
+
+		return ret;
+	} else {
+		DBG_FUNC << "Populating accept BIO; port=" << portname << std::endl;
+		::BIO* b;
+		b = ::BIO_new_accept(const_cast<char*>(portname.c_str()));
+		if (b == NULL) {
+			throw StdException("Creation of new accept BIO failed");
+		}
+		BIO_set_bind_mode(b, BIO_BIND_REUSEADDR_IF_UNUSED);
+		BIOSocket_p ret(new BIOSocket(b, chunksize));
+
+		// First call of BIO_do_accpept does not really accept a connection-
+		// instead it does some initial-setup only
+		if ( BIO_do_accept(b) <= 0 ) {
+			throw StdException("Accept BIO init failed");
+		}
+		return ret;
 	}
-	return ret;
 }
 
 BIOSocket_p BIOSocket::PopulateClientBIO(std::string hostname, unsigned int chunksize)
@@ -111,7 +133,6 @@ boost::shared_ptr<BIOSocket> BIOSocket::AcceptIncoming()
 {
 	::BIO* out;
 
-	// Sit and wait on our accept channel
 	if (BIO_do_accept(getBIO()) <= 0) {
 		throw StdException("Accepting client failed");
 	}
