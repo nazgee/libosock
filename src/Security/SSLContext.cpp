@@ -29,7 +29,11 @@ SSLContext::SSLContext(	securityMode method,
 	libsslInit();
 
 	// Create SSL context
+#ifdef LIBSSL_WITHOUT_CONST_PARAMS
 	SSL_CTX* tmp = SSL_CTX_new(GetMethod(itsSecurityMode));
+#else
+	SSL_CTX* tmp = SSL_CTX_new(const_cast<SSL_METHOD *>(GetMethod(itsSecurityMode)));
+#endif
 	if (tmp == NULL) {
 		throw_SSL("SSL_CTX_new failed");
 	}

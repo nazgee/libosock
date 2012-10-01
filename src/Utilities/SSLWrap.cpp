@@ -36,7 +36,11 @@ namespace SSLWrap
 	SSL_CTX *SSL_CTX_new(const SSL_METHOD *meth)
 	{
 		SSL_CTX* ctx;
+#ifdef LIBSSL_WITHOUT_CONST_PARAMS
 		ctx = ::SSL_CTX_new(meth);
+#else
+		ctx = ::SSL_CTX_new(const_cast<SSL_METHOD *>(meth));
+#endif
 		DBG_FUNC <<  "( meth=" << (void*) meth << " ) : " << (void*)ctx << std::endl;
 		return ctx;
 	}
