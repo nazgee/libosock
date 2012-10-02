@@ -50,7 +50,7 @@ data_chunk BIO::doRead() const
 	int rxedNumber = -1;
 	while (rxedNumber < 0) {
 		rxedNumber = BIO_read(itsBIO, &tempData.at(0), itsChunkSize);
-		if (rxedNumber < 0) {
+		if (rxedNumber <= 0) {
 			NFO << "BIO read interrupted" << std::endl;
 
 			if (this->ShouldRetry()) {
@@ -59,13 +59,10 @@ data_chunk BIO::doRead() const
 					throw RecoverableException(s);
 				}
 			} else {
-				std::string s("Fatal error when reading from BIO");
+				std::string s("Fatal error when reading from BIO; ");
 				s += Utils::getLastErrorSSL();
-				throw StdException(s);
+				throw RemoteDiedException(s);
 			}
-		} else if (rxedNumber == 0) {
-			std::string s("Remote died, when reading from BIO");
-			throw RemoteDiedException(s);
 		} else {
 			tempData.resize(rxedNumber);
 			DBG << "Data read from BIO" << Utils::DataToString(tempData)
@@ -96,16 +93,15 @@ unsigned int BIO::doWrite(const data_chunk& data_to_write, int offset) const
 		written = BIO_write(itsBIO, &data_to_write.at(offset), num2wr);
 		if (written <= 0) {
 			if (this->ShouldRetry()) {
-				std::string s("Recoverable error when writing to BIO;");
+				std::string s("Recoverable error when writing to BIO");
 				if ((errno == EAGAIN) || (errno == EWOULDBLOCK)) {
 					throw RecoverableException(s);
 				}
-				continue;
 			}
 
 			std::string s("Fatal error when writing to BIO; ");
 			s += Utils::getLastErrorSSL();
-			throw StdException(s);
+			throw RemoteDiedException(s);
 		}
 		break;
 	}
