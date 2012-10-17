@@ -24,10 +24,11 @@
 #include "../Address/Address.h"
 #include "../Security/Auth.h"
 #include "../BIO/BIOSocket.h"
+#include <boost/utility.hpp>
 namespace osock
 {
 //class SocketServer;
-class Server
+class Server : boost::noncopyable
 {
 public:
 	typedef enum { serviceCallback, serviceProcess, serviceThread } serviceType;
@@ -43,6 +44,7 @@ private:
 	void doRunProcess(BIO_p client);
 	void doRunThread(BIO_p client);
 	void serverThread(BIO_p client);
+
 public:
 //	Server(SocketServer* socketServer);
 	Server(Auth_p auth, std::string portname, serviceType servicetype = serviceCallback);
@@ -75,8 +77,20 @@ public:
 	 */
 	static void InstallChildReaper(void (*reaper)(int) = ChildReaper);
 
+	Auth_p getAuth() const {
+		return itsAuth;
+	}
+
+	BIOSocket_p getBio() const {
+		return itsBIO;
+	}
+
 	std::string getPortName() const {
 		return itsPortName;
+	}
+
+	serviceType getServiceType() const {
+		return itsServiceType;
 	}
 private:
 //	SocketServer* itsSocketServer;

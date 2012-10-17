@@ -28,7 +28,7 @@ unittest_LDFLAGS  = $(OPENSSL_LIBS)
 unittest_LDFLAGS += $(CPPUNIT_LIBS)
 unittest_LDFLAGS += $(BOOST_THREAD_LDFLAGS)
 unittest_LDFLAGS += $(BOOST_THREAD_LIBS)
-unittest_LDFLAGS += -L$(top_srcdir) -losock-$(OSOCK_API_VERSION) -lpthread
+unittest_LDFLAGS += -L$(top_srcdir) -lpthread -losock-$(OSOCK_API_VERSION)
 ## Prepare compiler flags
 unittest_CXXFLAGS  = -Iinclude -Iinclude/Testing -Wall 
 unittest_CXXFLAGS += $(OPENSSL_CFLAGS)
